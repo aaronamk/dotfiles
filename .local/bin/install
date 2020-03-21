@@ -1,0 +1,57 @@
+#!/bin/bash
+pacman -S \
+zsh \
+adobe-source-code-pro-fonts \
+ttf-font-awesome \
+pulseaudio \
+acpi \
+
+xdotool \
+redshift \
+
+git \
+cmake \
+make \
+python \
+gcc \
+gdb \
+
+i3-gaps \
+i3blocks \
+i3-status \
+i3lock \
+
+tlp \
+rofi \
+vim \
+less \
+mpv \
+feh \
+firefox \
+neofetch \
+grep \
+file-roller \
+man-pages \
+gparted \
+pass \
+rsync \
+
+sxhkd \
+xmodmap \
+xrandr \
+autorandr \
+imagemagick \
+brightnessctl \
+pavucontrol
+
+cd ~
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -rf yay
+
+yay -S \
+balena-etcher \
+discord \
+lf
