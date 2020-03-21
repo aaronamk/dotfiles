@@ -1,0 +1,76 @@
+# launch terminal applications
+mod3 + {Return, shift + Return, semicolon}
+	{$TERMINAL, $TERMINAL -e ranger, $TERMINAL -e $EDITOR}
+
+# rofi
+{mod3 + d, alt + Tab}
+	rofi {-show, -show window}
+
+# toggle bar
+super + b
+	polybar-msg cmd toggle
+
+# lock screen
+super + Escape
+	i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png
+
+# launch browser
+mod3 + {_,shift} + backslash
+	$BROWSER {_,-private}
+
+# volume
+XF86Audio{Mute,LowerVolume,RaiseVolume}
+	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,volume @DEFAULT_SINK@ +2%}
+super + {Left,Right}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
+
+# music
+{Pause, super + Prior, super + Next}
+	spotify_ctrl {p, Left, Right}
+
+# brightness
+XF86MonBrightness{Down,Up}
+	set_brightness {-, +}
+super + {Down,Up}
+	set_brightness {-, +}
+
+# redshift
+super + shift + {Down,Up}
+	{brightnessctl set 1 | redshift -P -O 2500 -b 0.9,redshift -x}
+
+# screenshot
+Print
+	import ~/pictures/screenshot.png
+
+# rename workspace
+super + F2
+	rename_ws
+
+# close window
+mod3 + q
+	wmctrl -c :ACTIVE:
+
+super + c
+	pkill -USR1 -x sxhkd
+
+# session functions
+super + Scroll_Lock
+	systemctl suspend
+super + shift + q
+	session_options
+
+####################################################################################################
+############################################### bspwm ##############################################
+####################################################################################################
+
+# switch / move windows
+#mod3 + {_,shift + }{h,j,k,l}
+#	bspc node -{f,s} {west,south,north,east}
+#
+## change window size
+#mod3 + alt + {h,j,k,l}
+#	bspc node -{f,s} {}
+#
+## focus a desktop
+#mod3 + {_,shift + }{0-9}
+#	bspc {desktop -f,node -d} {0-9}
