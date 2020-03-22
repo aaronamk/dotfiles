@@ -1,6 +1,4 @@
 [Default Applications]
-x-scheme-handler/magnet=torrent.desktop;
-application/x-bittorrent=torrent.desktop;
 application/pdf=/usr/bin/zathura;
 application/epub+zip=org.gnome.FileRoller.desktop;
 application/gzip=org.gnome.FileRoller.desktop;
