@@ -106,9 +106,9 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 
 # configs
-alias fontrc="nvim .config/fontconfig/fonts.conf"
 alias grubrc="sudo nvim /etc/default/grub"
-alias vrc="sudo nvim /etc/xdg/nvim/init.vim"
+alias fontrc="nvim .config/fontconfig/fonts.conf"
+alias vrc="nvim .config/nvim/init.vim"
 alias zrc="nvim ~/.config/zsh/.zshrc"
 alias i3rc="nvim ~/.config/i3/config"
 alias sxhkdrc="nvim ~/.config/sxhkd/sxhkdrc"
