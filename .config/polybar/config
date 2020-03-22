@@ -1,0 +1,196 @@
+[colors]
+;background = ${xrdb:color0:#222}
+black = #000000
+dark-gray = #555555
+;foreground = ${xrdb:color7:#222}
+white = #ffffff
+light-white = #dddddd
+light-gray = #aaaaaa
+blue = #00ffff
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[bar/secondary]
+width = 100%
+height = 18
+bottom = true
+monitor = ${env:MONITOR:}
+
+background = ${colors.black}
+foreground = ${colors.white}
+
+line-size = 1
+line-color = #f00
+
+font-0=Source Code Pro Semibold:size=12;2
+font-1=Font Awesome 5 Free Solid:size=12;2
+font-2=Noto Sans:size=12;2
+
+modules-left = i3
+modules-center = title_secondary
+modules-right = date
+separator = "%{F#aaaaaa} ‖ %{F-}"
+
+[bar/bottom]
+enable-ipc=true
+width = 100%
+height = 16
+bottom = true
+monitor = ${env:MONITOR:}
+
+background = ${colors.black}
+foreground = ${colors.white}
+
+line-size = 1
+line-color = #f00
+
+tray-position = right
+tray-detached = true
+tray-offset-y = -16
+
+font-0=Source Code Pro Semibold:size=10;2
+font-1=Font Awesome 5 Free Solid:size=10;2
+font-2=Noto Sans:size=10;2
+
+modules-left = i3 music
+modules-center = title
+modules-right = network audio battery memory date
+separator = "%{F#aaaaaa} ‖ %{F-}"
+
+[module/network]
+type = internal/network
+interface = wlp4s0
+interval = 5
+
+label-disconnected = "%{F#55555}%{F-}"
+label-connected =  %signal%% [%essid%]
+
+[module/audio]
+type = internal/pulseaudio
+label-volume =  %percentage%%
+label-muted =  %percentage%%
+label-muted-foreground = #555555
+
+[module/music]
+type = custom/script
+exec = music
+
+[module/title]
+type = internal/xwindow
+label = " %title:0:100:...% "
+label-background = ${colors.light-gray}
+label-foreground = ${colors.black}
+
+[module/title_secondary]
+type = internal/xwindow
+label = " %title:0:50:...% "
+label-background = ${colors.light-gray}
+label-foreground = ${colors.black}
+
+[module/battery]
+time-format = %H:%M
+label-charging =  %percentage%%
+label-discharging =  %percentage%% [%time%]
+label-full = 
+
+type = internal/battery
+full-at = 97
+battery = BAT1
+adapter = AC
+poll-interval = 10
+
+[module/date]
+type = internal/date
+date = %m-%d-%Y %I:%M:%S %P
+
+[module/memory]
+type = custom/script
+exec = memory
+
+[module/xworkspaces]
+type = internal/xworkspaces
+format = <label-state>
+enable-scroll = false
+strip-wsnumbers = true
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+label-mode-padding = 1
+label-mode-foreground = ${colors.white}
+
+; focused = Active workspace on focused monitor
+label-focused = %name%
+label-focused-background = ${colors.blue}
+label-focused-foreground = ${colors.black}
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %name%
+label-unfocused-foreground = ${colors.white}
+label-unfocused-padding =
+;label-unfocused-overline = ${colors.light-gray}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %name%
+label-visible-background = ${colors.light-gray}
+label-visible-foreground = ${colors.black}
+label-visible-padding = 1
+
+; urgent = Workspace with urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+
+; Separator in between workspaces
+label-separator = "  "
+label-separator-foreground = ${colors.light-gray}
+;label-separator-overline = ${colors.light-gray}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+enable-scroll = false
+strip-wsnumbers = true
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+label-mode-padding = 1
+label-mode-foreground = ${colors.white}
+
+; focused = Active workspace on focused monitor
+label-focused = %name%
+label-focused-background = ${colors.blue}
+label-focused-foreground = ${colors.black}
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %name%
+label-unfocused-foreground = ${colors.white}
+label-unfocused-padding =
+;label-unfocused-overline = ${colors.light-gray}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %name%
+label-visible-background = ${colors.light-gray}
+label-visible-foreground = ${colors.black}
+label-visible-padding = 1
+
+; urgent = Workspace with urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+
+; Separator in between workspaces
+label-separator = "  "
+label-separator-foreground = ${colors.light-gray}
+;label-separator-overline = ${colors.light-gray}
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+; vim:ft=dosini
