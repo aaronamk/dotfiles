@@ -1,2 +1,2 @@
 # dotfiles
-mostly my own concoctions
+Configuration files I use for the programs I run on Linux.
