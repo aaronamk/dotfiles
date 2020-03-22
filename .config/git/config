@@ -1,0 +1,6 @@
+[user]
+	email = amklein@email.wm.edu
+	name = aaronamk
+[credential]
+	username = aaronamk
+	helper = /usr/bin/pass-git-helper

@@ -1,0 +1,102 @@
+/**
+ * User: qball
+ * Copyright: Dave Davenport
+ */
+* {
+    text-color:         #cccccc;
+    background-color:   #000000;
+    border-color:       #555555;
+    dark: #1c1c1c;
+    black:      #000000;
+    gray:       #555555;
+    silver:     #93a1a1;
+    //
+    // Red
+    red:         #cd5c5c;
+    lightred:    #cc5533;
+    //
+    // Green
+    green:       #86af80;
+    lightgreen:  #88cc22;
+    //
+    // Yellow
+    yellow:      #e8ae5b;
+    lightyellow:     #ffa75d;
+    //
+    // Blue
+    blue:      #6495ed;
+    lightblue:     #87ceeb;
+    //
+    // Magenta
+    magenta:      #deb887;
+    lightmagenta:     #996600;
+    //
+    // Cyan
+    cyan:      #b0c4de;
+    lightcyan:     #b0c4de;
+    //
+    // White
+    white:      #ffffff;
+    lightwhite:     #fdfdfd;
+    //
+    // Bold, Italic, Underline
+    highlight:     bold #ffffff;
+}
+#window {
+    height:     50%;
+    width:      50em;
+    location:   center;
+    anchor:     center;
+    border:     1px 1px 1px 1px;
+    text-color: @white;
+}
+
+#mode-switcher {
+    border: 0px 0px 0px 0px;
+    background-color: @white;
+    padding: 0px;
+}
+#button selected {
+    border-color: @lightgreen;
+    text-color: @white;
+}
+#inputbar {
+    background-color: @gray;
+    text-color: @white;
+    padding: 0px;
+    border: 0px 0px 1px 0px;
+}
+#mainbox {
+    expand: true;
+    background-color: #000000aa;
+    spacing: 5px;
+}
+#listview {
+    padding: 0em 5px 0em 5px;
+    dynamic: false;
+}
+#element selected  normal {
+    background-color: @gray;
+}
+#element normal active {
+    text-color: @lightblue;
+}
+#element normal urgent {
+    text-color: @lightred;
+}
+#element alternate normal {
+}
+#element alternate active {
+    text-color: @lightblue;
+}
+#element alternate urgent {
+    text-color: @lightred;
+}
+#element selected active {
+    background-color: @lightblue;
+    text-color: @dark;
+}
+#element selected urgent {
+    background-color: @lightred;
+    text-color: @dark;
+}
