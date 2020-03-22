@@ -7,4 +7,4 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
 
-exec i3
+exec bspwm

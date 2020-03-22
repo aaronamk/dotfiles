@@ -63,14 +63,14 @@ super + shift + q
 ############################################### bspwm ##############################################
 ####################################################################################################
 
-# switch / move windows
-#mod3 + {_,shift + }{h,j,k,l}
-#	bspc node -{f,s} {west,south,north,east}
-#
-## change window size
-#mod3 + alt + {h,j,k,l}
-#	bspc node -{f,s} {}
-#
-## focus a desktop
-#mod3 + {_,shift + }{0-9}
-#	bspc {desktop -f,node -d} {0-9}
+ switch / move windows
+mod3 + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# change window size
+mod3 + alt + {h,j,k,l}
+	bspc node -{f,s} {}
+
+# focus a desktop
+mod3 + {_,shift + }{0-9}
+	bspc {desktop -f,node -d} {0-9}
