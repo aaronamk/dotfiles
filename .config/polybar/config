@@ -55,7 +55,7 @@ font-2=Noto Sans:size=10;2
 
 modules-left = i3 music
 modules-center = title
-modules-right = network audio battery memory date
+modules-right = network audio BAT1 memory date
 separator = "%{F#aaaaaa} ‖ %{F-}"
 
 [module/network]
@@ -88,14 +88,27 @@ label = " %title:0:50:...% "
 label-background = ${colors.light-gray}
 label-foreground = ${colors.black}
 
-[module/battery]
+[module/BAT0]
 time-format = %H:%M
 label-charging =  %percentage%%
 label-discharging =  %percentage%% [%time%]
 label-full = 
 
 type = internal/battery
-full-at = 97
+full-at = 80
+battery = BAT0
+adapter = AC
+poll-interval = 10
+
+[module/BAT1]
+time-format = %H:%M
+label-charging =  %percentage%%
+label-discharging =  %percentage%% [%time%]
+label-full =
+; 
+
+type = internal/battery
+full-at = 80
 battery = BAT1
 adapter = AC
 poll-interval = 10

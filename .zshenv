@@ -31,4 +31,4 @@ export GNUPGHOME=$XDG_DATA_HOME/gnupg
 
 export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
 
-export MAYA_APP_DIR=$HOME/wm/2020_spring/maya
+export MAYA_APP_DIR=$HOME/wm/20_spring/maya

@@ -1,5 +1,3 @@
 #!/bin/bash
 
-desktop=$(wmctrl -d | grep "22:" | cut -c 1)
-
-xdotool search --sync --desktop $desktop --name "Firefox" key --clearmodifiers alt+shift+$1
+xdotool search --sync "Mozilla Firefox" key --clearmodifiers alt+shift+$1
