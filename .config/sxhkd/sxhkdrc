@@ -1,8 +1,22 @@
+# reload
+super + r
+	pkill -USR1 -x sxhkd; \
+	xmodmap /home/ak/.config/Xmodmap/config; \
+	load_polybar
+
+# close window
+mod3 + q
+	wmctrl -c :ACTIVE:
+
 # launch terminal applications
 mod3 + {Return, shift + Return, semicolon}
 	{$TERMINAL, $TERMINAL -e ranger, $TERMINAL -e $EDITOR}
 
-# rofi
+# launch browser
+mod3 + {_,shift} + backslash
+	$BROWSER {_,-private}
+
+# launch rofi
 {mod3 + d, alt + Tab}
 	rofi {-show, -show window}
 
@@ -14,9 +28,19 @@ super + b
 super + Escape
 	i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png
 
-# launch browser
-mod3 + {_,shift} + backslash
-	$BROWSER {_,-private}
+# screenshot
+Print
+	import ~/pictures/screenshot.png
+
+# rename workspace
+super + F2
+	rename_ws
+
+# session functions
+super + Scroll_Lock
+	systemctl suspend
+super + shift + q
+	session_options
 
 # volume
 XF86Audio{Mute,LowerVolume,RaiseVolume}
@@ -36,25 +60,4 @@ super + {Down,Up}
 
 # redshift
 super + shift + {Down,Up}
-	{brightnessctl set 1 | redshift -P -O 2500 -b 0.9,redshift -x}
-
-# screenshot
-Print
-	import ~/pictures/screenshot.png
-
-# rename workspace
-super + F2
-	rename_ws
-
-# close window
-mod3 + q
-	wmctrl -c :ACTIVE:
-
-super + c
-	pkill -USR1 -x sxhkd
-
-# session functions
-super + Scroll_Lock
-	systemctl suspend
-super + shift + q
-	session_options
+	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
