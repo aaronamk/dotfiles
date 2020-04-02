@@ -18,7 +18,7 @@ export SSH_AUTH_SOCK &
 xss-lock -- i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png &
 
 # start polybar
-~/.config/polybar/launch.sh &
+load_polybar &
 
 # start i3
 exec i3
