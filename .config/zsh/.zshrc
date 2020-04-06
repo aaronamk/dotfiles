@@ -86,6 +86,7 @@ alias grep="grep --color=auto"
 alias s="sudo "
 alias se="sudoedit"
 alias p="pacman"
+alias dmenu="rofi -dmenu"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
@@ -101,6 +102,7 @@ alias rc="~/bin/configs.sh"
 
 # locations
 alias apps="cd /usr/share/applications"
+alias themes="cd /usr/share/themes"
 alias input="cd /usr/share/X11/xorg.conf.d"
 alias -g ...='../..'
 alias -g ....='../../..'

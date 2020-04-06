@@ -115,7 +115,7 @@ poll-interval = 10
 
 [module/date]
 type = internal/date
-date = %m-%d-%Y %I:%M:%S %P
+date = %m-%d-%y %I:%M:%S %P
 
 [module/memory]
 type = custom/script

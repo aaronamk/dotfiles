@@ -30,7 +30,7 @@ super + Escape
 
 # screenshot
 Print
-	import ~/pictures/screenshot.png
+	import ~/pictures/screenshot_tmp.png && $(mv ~/pictures/screenshot_tmp.png ~/pictures/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
 
 # rename workspace
 super + F2
