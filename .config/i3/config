@@ -2,10 +2,8 @@
 set $mod_t Mod3
 set $mod Mod4
 
-# always:
-exec_always xmodmap /home/ak/.config/Xmodmap/config
+# refresh these, just to make sure
 exec_always --no-startup-id autorandr -c
-exec_always ~/.config/polybar/launch.sh
 
 # colors
 # class                 border  backgr. text    indicator child_border
@@ -16,9 +14,9 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #aaaaaa   #aaaaaa
 
 default_border pixel 2
-hide_edge_borders smart
 gaps inner 5
 gaps outer -4
+hide_edge_borders smart
 
 font pango:Source Code Pro Semibold 10
 font pango:FontAwesome 10
@@ -148,9 +146,7 @@ bindsym $mod+Shift+space focus mode_toggle
 # focus the parent container
 bindsym $mod_t+a focus parent
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3
 bindsym $mod+Shift+r restart
 
 # youtube

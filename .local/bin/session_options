@@ -1,6 +1,6 @@
 #!/bin/bash
 
-selection=$(echo -e "cancel\nLogout\nShut Down\nRestart" | rofi -width -150 -dmenu -i -p "Exit?")
+selection=$(echo -e "cancel\nLogout\nShut Down\nReboot" | rofi -width -150 -dmenu -i -p "Exit?")
 
 case $selection in
 	cancel)
@@ -12,7 +12,7 @@ case $selection in
 	"Shut Down")
 		$(shutdown now)
 		;;
-	"Restart")
+	"Reboot")
 		$(systemctl reboot)
 		;;
 esac

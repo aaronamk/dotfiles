@@ -79,12 +79,14 @@ plugins=(git)
 bindkey '^[[1;5A' history-substring-search-up
 bindkey '^[[1;5B' history-substring-search-down
 
-
 # aliases
+alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
 alias ls="ls --color=auto --group-directories-first"
 alias grep="grep --color=auto"
 alias s="sudo "
+alias se="sudoedit"
 alias p="pacman"
+alias dmenu="rofi -dmenu"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
@@ -100,13 +102,16 @@ alias rc="~/bin/configs.sh"
 
 # locations
 alias apps="cd /usr/share/applications"
+alias themes="cd /usr/share/themes"
 alias input="cd /usr/share/X11/xorg.conf.d"
 alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
 
 # configs
-alias grubrc="sudo nvim /etc/default/grub"
+alias grubrc="sudoedit /etc/default/grub"
+alias tlprc="sudoedit /etc/tlp.conf"
+alias libinputrc="cd /etc/X11/xorg.conf.d"
 alias fontrc="nvim .config/fontconfig/fonts.conf"
 alias vrc="nvim .config/nvim/init.vim"
 alias zrc="nvim ~/.config/zsh/.zshrc"

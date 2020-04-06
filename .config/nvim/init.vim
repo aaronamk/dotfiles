@@ -11,6 +11,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'donRaphaco/neotex', { 'for': 'tex'}
 Plug 'dense-analysis/ale'
 Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'airblade/vim-gitgutter'
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()

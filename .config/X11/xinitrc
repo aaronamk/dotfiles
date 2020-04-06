@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# remap caps and tab
+xmodmap /home/ak/.config/Xmodmap/config &
+xcape -e 'Control_L=Escape;Hyper_R=Tab' &
+
+# hotkeys
+sxhkd &
+
+# remove cursor when typing
+xbanish &
+
+# gnome authentication agent
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK &
+
+# lock screen
+xss-lock -n /usr/share/doc/xss-lock/dim-screen.sh -- i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png &
+
+# start polybar
+load_polybar &
+
+# start i3
+exec bspwm
