@@ -27,13 +27,14 @@ font-0=Source Code Pro Semibold:size=12;2
 font-1=Font Awesome 5 Free Solid:size=12;2
 font-2=Noto Sans:size=12;2
 
-modules-left = i3
+modules-left = bspwm
 modules-center = title_secondary
 modules-right = date
 separator = "%{F#aaaaaa} ‖ %{F-}"
 
 [bar/bottom]
 enable-ipc=true
+wm-restack = i3
 width = 100%
 height = 16
 bottom = true
@@ -53,7 +54,7 @@ font-0=Source Code Pro Semibold:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
-modules-left = i3 music
+modules-left = bspwm music
 modules-center = title
 modules-right = network audio BAT1 memory date
 separator = "%{F#aaaaaa} ‖ %{F-}"
