@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remap caps and tab
-xmodmap /home/ak/.config/Xmodmap/config &
+xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
 
 # hotkeys
@@ -18,7 +18,7 @@ export SSH_AUTH_SOCK &
 xss-lock -n /usr/share/doc/xss-lock/dim-screen.sh -- i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png &
 
 # start polybar
-load_polybar &
+load_polybar.sh &
 
 # start i3
 exec i3
