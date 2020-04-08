@@ -74,7 +74,7 @@ label-muted-foreground = #555555
 
 [module/music]
 type = custom/script
-exec = music
+exec = music.sh
 
 [module/title]
 type = internal/xwindow
@@ -119,7 +119,7 @@ date = %m-%d-%y %I:%M:%S %P
 
 [module/memory]
 type = custom/script
-exec = memory
+exec = memory.sh
 
 [module/i3]
 type = internal/i3
