@@ -20,7 +20,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export XDG_CONFIG_HOME=$HOME/.config
 export PASSWORD_STORE_DIR=$XDG_CONFIG_HOME/password-store
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
 export XDG_CACHE_HOME=$HOME/.cache
