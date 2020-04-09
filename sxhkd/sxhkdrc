@@ -34,13 +34,13 @@ Print
 
 # rename workspace
 super + F2
-	rename_ws
+	rename_ws.sh
 
 # session functions
 super + Scroll_Lock
 	systemctl suspend
 super + shift + q
-	session_options
+	session_options.sh
 
 # volume
 XF86Audio{Mute,LowerVolume,RaiseVolume}
@@ -50,13 +50,13 @@ super + {Left,Right}
 
 # music
 {Pause, super + Prior, super + Next}
-	spotify_ctrl {p, Left, Right}
+	spotify_ctrl.sh {p, Left, Right}
 
 # brightness
 XF86MonBrightness{Down,Up}
-	set_brightness {-, +}
+	set_brightness.sh {-, +}
 super + {Down,Up}
-	set_brightness {-, +}
+	set_brightness.sh {-, +}
 
 # redshift
 super + shift + {Down,Up}

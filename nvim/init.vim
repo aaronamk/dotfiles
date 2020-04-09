@@ -40,5 +40,7 @@ map <C-space> :call CurtineIncSw()<CR>
 
 set clipboard=unnamedplus
 
+let g:netrw_dirhistmax = 0
+
 " Delete trailing whitespace
 autocmd BufWritePre * %s/\s\+$//e
