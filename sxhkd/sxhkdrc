@@ -2,7 +2,7 @@
 super + r
 	pkill -USR1 -x sxhkd; \
 	xmodmap /home/ak/.config/Xmodmap/config; \
-	load_polybar
+	load_polybar.sh
 
 # close window
 mod3 + q
