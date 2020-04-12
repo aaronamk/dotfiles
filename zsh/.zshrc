@@ -96,7 +96,7 @@ alias r="ranger"
 alias shutdown="sudo shutdown -h now"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias update-mirrors="reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
-alias rc="~/bin/configs.sh"
+alias rc="configs.sh"
 
 # Other
 

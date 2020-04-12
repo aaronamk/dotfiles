@@ -8,13 +8,8 @@ export SUDO_EDITOR=nvim
 
 export PASSWORD_STORE_GENERATED_LENGTH=16
 
-# Scripts path
-typeset -U PATH path
-BINPATH="$HOME/.local/bin"
-path+=("$BINPATH" ${BINPATH}/*/)
-export PATH
-
-export PATH="$HOME/.local/bin:$PATH"
+# Add scripts path
+export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
 
 # ~/ cleaning
 export XDG_CONFIG_HOME=$HOME/.config

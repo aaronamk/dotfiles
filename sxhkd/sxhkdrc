@@ -10,7 +10,7 @@ mod3 + q
 
 # launch terminal applications
 mod3 + {Return, shift + Return, semicolon}
-	{$TERMINAL, $TERMINAL -e ranger, $TERMINAL -e $EDITOR}
+	{$TERMINAL, $TERMINAL -e vifm, $TERMINAL -e $EDITOR}
 
 # launch browser
 mod3 + {_,shift} + backslash
