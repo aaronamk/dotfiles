@@ -150,4 +150,4 @@ bindsym $mod_t+a focus parent
 bindsym $mod+Shift+r restart
 
 # youtube
-bindsym $mod_t+y workspace $ws12, exec firefox -new-window youtube.com
+bindsym --no-auto-back-and-forth $mod_t+y workspace $ws12, exec firefox -new-window youtube.com
