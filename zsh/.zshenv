@@ -22,8 +22,6 @@ export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
 
 export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
 
-export SCRIPTS=$HOME/.local/bin
-
 # Add scripts path
-#export PATH="$PATH:$(ls -d $HOME/.local/bin/*/ | tr '\n' ':' | sed 's/\x2F:/:/g' | sed 's/:*$//')"
+export SCRIPTS=$HOME/.local/bin
 export PATH="$SCRIPTS:$(ls -d $SCRIPTS/*/ | tr -s '\n' ':' | sed 's/\x2F:/:/g')$PATH"
