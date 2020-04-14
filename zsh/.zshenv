@@ -25,3 +25,8 @@ export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
 # Add scripts path
 export SCRIPTS=$HOME/.local/bin
 export PATH="$SCRIPTS:$(ls -d $SCRIPTS/*/ | tr -s '\n' ':' | sed 's/\x2F:/:/g')$PATH"
+
+export XDG_DESKTOP_DIR="$HOME/Desktop"
+export XDG_DOWNLOAD_DIR="$HOME/Downloads"
+export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_PICTURES_DIR="$HOME/Pictures"

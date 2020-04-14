@@ -151,3 +151,9 @@ bindsym $mod+Shift+r restart
 
 # youtube
 bindsym $mod_t+y workspace --no-auto-back-and-forth $ws12, exec firefox -new-window youtube.com
+
+# spotify
+for_window [title="Spotify – "] move container to workspace $ws22
+
+# messenger
+for_window [title="Messenger - Mozilla Firefox"] move container to workspace $ws11
