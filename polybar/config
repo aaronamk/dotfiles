@@ -53,7 +53,7 @@ font-0=Source Code Pro Semibold:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
-modules-left = i3 music
+modules-left = i3 spotify
 modules-center = title
 modules-right = network audio BAT1 memory date
 separator = "%{F#aaaaaa} ┃ %{F-}"
@@ -72,9 +72,9 @@ label-volume =  %percentage%%
 label-muted =  %percentage%%
 label-muted-foreground = #555555
 
-[module/music]
+[module/spotify]
 type = custom/script
-exec = music.sh
+exec = spotify.sh
 
 [module/title]
 type = internal/xwindow

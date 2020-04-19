@@ -26,11 +26,11 @@ super + b
 
 # lock screen
 super + Escape
-	i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png
+	i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png
 
 # screenshot
 Print
-	$(import ~/Pictures/screenshot_tmp.png && mv ~/Pictures/screenshot_tmp.png ~/Pictures/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
+	$(import $XDG_PICTURES_DIR/screenshot_tmp.png && mv $XDG_PICTURES_DIR/screenshot_tmp.png $XDG_PICTURES_DIR/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
 
 # rename workspace
 super + F2

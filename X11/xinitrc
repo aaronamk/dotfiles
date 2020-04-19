@@ -15,7 +15,10 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK &
 
 # lock screen
-xss-lock -n /usr/share/doc/xss-lock/dim-screen.sh -- i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png &
+xss-lock -n /usr/share/doc/xss-lock/dim-screen.sh -- i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png &
+
+# start music player daemon
+mpd &
 
 # start polybar
 load_polybar.sh &
