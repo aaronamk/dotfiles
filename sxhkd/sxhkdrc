@@ -48,7 +48,11 @@ XF86Audio{Mute,LowerVolume,RaiseVolume}
 super + {Left,Right}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 
-# music
+# mpd
+super + {comma,period}
+	mpc {prev,next}
+
+# spotify
 {Pause, super + Prior, super + Next}
 	spotify_ctrl.sh {p, Left, Right}
 

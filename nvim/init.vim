@@ -27,13 +27,14 @@ set mouse=a
 set number
 syntax on
 set wildmode=longest,list,full
+set cc=81
+hi ColorColumn ctermbg=236
 
 set splitbelow splitright
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-"map <C-> <C-w>=
 nnoremap <silent> <CR> :noh<CR><CR>
 
 map <C-space> :call CurtineIncSw()<CR>
