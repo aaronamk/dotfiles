@@ -24,4 +24,4 @@ mpd &
 load_polybar.sh &
 
 # start i3
-exec i3
+exec herbstluftwm
