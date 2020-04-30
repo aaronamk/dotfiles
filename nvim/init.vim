@@ -21,12 +21,17 @@ set autoread
 
 au FocusGained * :checktime
 set title
-set tabstop=4
-set shiftwidth=4
+
 set mouse=a
 set number
 syntax on
 set wildmode=longest,list,full
+
+set tabstop=4
+set shiftwidth=4
+set list
+set listchars=tab:>-
+
 set cc=81
 hi ColorColumn ctermbg=236
 

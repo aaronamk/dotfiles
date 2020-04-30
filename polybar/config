@@ -121,6 +121,51 @@ date = %m-%d-%y %I:%M:%S %P
 type = custom/script
 exec = memory.sh
 
+[module/workspaces]
+type = internal/xworkspaces
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; Create click handler used to focus desktop
+; Default: true
+enable-click = false
+
+; Create scroll handlers used to cycle desktops
+; Default: true
+enable-scroll = false
+
+; focused = Active workspace on focused monitor
+label-focused = %index% %name%
+label-focused-background = ${colors.blue}
+label-focused-foreground = ${colors.black}
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index% %name%
+label-unfocused-foreground = ${colors.white}
+label-unfocused-padding =
+;label-unfocused-overline = ${colors.light-gray}
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index% %name%
+label-visible-background = ${colors.light-gray}
+label-visible-foreground = ${colors.black}
+label-visible-padding = 1
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index% %name%
+label-urgent-background = ${colors.alert}
+
+; Separator in between workspaces
+label-separator = "  "
+label-separator-foreground = ${colors.light-gray}
+;label-separator-overline = ${colors.light-gray}
+
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
