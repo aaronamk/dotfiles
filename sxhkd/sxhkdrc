@@ -17,7 +17,7 @@ mod3 + {_,shift} + backslash
 	$BROWSER {_,-private}
 
 # launch rofi
-{mod3 + d, alt + Tab}
+{mod3 + slash, alt + Tab}
 	rofi {-show, -show window}
 
 # toggle bar
