@@ -20,7 +20,7 @@ mod3 + {Return, shift + Return, semicolon}
 
 # launch browser
 mod3 + {_,shift} + backslash
-	$BROWSER {_,-private}
+	$BROWSER {_,-private-window}
 
 # launch rofi
 {mod3 + slash, alt + Tab}
