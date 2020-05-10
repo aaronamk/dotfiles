@@ -30,7 +30,7 @@ set title
 set mouse=a
 set clipboard=unnamedplus
 syntax on
-set relativenumber
+set number
 
 highlight VertSplit cterm=NONE
 

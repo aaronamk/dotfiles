@@ -90,12 +90,13 @@ bindsym $mod_t+Shift+F2 move container to workspace number $ws12
 bindsym $mod_t+Shift+F12 move container to workspace number $ws22
 
 workspace_auto_back_and_forth yes
+focus_on_window_activation focus
 
 # change to workspace 1
 exec --no-startup-id i3-msg workspace number $ws1
 
 # Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+floating_modifier $mod_t
 
 # change focus
 bindsym $mod_t+h focus left

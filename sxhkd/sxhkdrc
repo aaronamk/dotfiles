@@ -9,10 +9,10 @@ mod3 + q
 	wmctrl -c :ACTIVE:
 
 # switch desktop (fallback, slightly slower)
-mod3 + {0-9}
-	xdotool set_desktop {0-9}
-mod3 + {comma,period}
-	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1, + 1})"
+#mod3 + {0-9}
+#	xdotool set_desktop {0-9}
+#mod3 + {comma,period}
+#	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1, + 1})"
 
 # launch terminal applications
 mod3 + {Return, shift + Return, semicolon}

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Set Xresources location
+ xrdb -load $HOME $XDG_CONFIG_HOME/Xresources
+
 # remap caps and tab
 xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
