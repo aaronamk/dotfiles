@@ -1,8 +1,12 @@
 set viminfo+=n~/.config/nvim/viminfo
 
+let mapleader=" "
+
 let g:neotex_enabled=2
 "let g:deoplete#enable_at_startup = 1
 "let g:ale_complion_enabled = 1
+let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_italic=1
 
 " plugins
 call plug#begin('/home/ak/.local/share/nvim/plugged')
@@ -13,6 +17,7 @@ Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'donRaphaco/neotex', { 'for': 'tex'}
 Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'morhetz/gruvbox'
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
@@ -23,8 +28,15 @@ autocmd BufRead *.txt set lbr
 
 au FocusGained * :checktime
 
+" fix latex problem
+autocmd BufRead,BufNewFile *.tex set filetype=tex
+
 " auto update file when changed from something else
 set autoread
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+autocmd vimenter * colorscheme gruvbox
+set termguicolors
 
 set title
 set mouse=a
@@ -64,7 +76,6 @@ nnoremap <silent> <CR> :noh<CR><CR>
 
 " switch between header and source
 map <C-space> :call CurtineIncSw()<CR>
-
 
 " disable annoying hist file
 let g:netrw_dirhistmax = 0

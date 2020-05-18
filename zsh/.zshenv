@@ -1,10 +1,10 @@
 # Default programs
 export EDITOR="nvim"
+export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="st"
+export TERMINAL="termite"
 export BROWSER="firefox"
-export FILE="lf"
-export SUDO_EDITOR=nvim
+export FILE="vifm"
 
 export PASSWORD_STORE_GENERATED_LENGTH=16
 

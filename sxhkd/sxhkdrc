@@ -1,8 +1,9 @@
 # reload
 super + r
+	load_polybar.sh; \
 	pkill -USR1 -x sxhkd; \
 	xmodmap /home/ak/.config/Xmodmap/config; \
-	load_polybar.sh
+	xrdb -load $XDG_CONFIG_HOME/Xresources
 
 # close window
 mod3 + q
@@ -21,6 +22,12 @@ mod3 + {Return, shift + Return, semicolon}
 # launch browser
 mod3 + {_,shift} + backslash
 	$BROWSER {_,-private-window}
+
+# launch music player
+mod3 + m
+	pkill ncmpcpp; \
+	mpc rescan; \
+	$TERMINAL -e ncmpcpp
 
 # launch rofi
 {mod3 + slash, alt + Tab}
@@ -55,11 +62,11 @@ super + {Left,Right}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 
 # mpd
-super + {comma,period}
-	mpc {prev,next}
+{Pause, super + comma, super + period}
+	mpc {toggle, prev,next}
 
 # spotify
-{Pause, super + Prior, super + Next}
+super + {p, Prior, Next}
 	spotify_ctrl.sh {p, Left, Right}
 
 # brightness

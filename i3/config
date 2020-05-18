@@ -153,6 +153,9 @@ bindsym $mod+Shift+r restart
 # youtube
 bindsym $mod_t+y workspace --no-auto-back-and-forth $ws12, exec firefox -new-window youtube.com
 
+# music daemon
+for_window [class="ncmpcpp"] floating enable
+
 # spotify
 for_window [title="Spotify – "] move --no-auto-back-and-forth container to workspace $ws22
 
