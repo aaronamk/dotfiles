@@ -17,6 +17,7 @@ Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'donRaphaco/neotex', { 'for': 'tex'}
 Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'rrethy/vim-hexokinase'
 Plug 'morhetz/gruvbox'
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -33,10 +34,14 @@ autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 " auto update file when changed from something else
 set autoread
+set nocompatible
+filetype plugin on
+set path+=**
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 autocmd vimenter * colorscheme gruvbox
 set termguicolors
+let g:Hexokinase_highlighters = ['backgroundfull']
 
 set title
 set mouse=a
@@ -64,7 +69,9 @@ set cc=81
 hi ColorColumn ctermbg=236
 
 " enable ctrl+delete like other editors
-"imap <C-BS> <Esc>bcaw
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
+imap <C-BS> <C-W>
 
 " screen splitting hotkeys to mirror window manager
 set splitbelow splitright
