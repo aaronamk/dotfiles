@@ -30,7 +30,7 @@ font-2=Noto Sans:size=12;2
 modules-left = bspwm
 modules-center = title_secondary
 modules-right = date
-separator = "%{F#aaaaaa} ‖ %{F-}"
+separator = "%{F#aaaaaa} ┃ %{F-}"
 
 [bar/bottom]
 enable-ipc=true
@@ -54,10 +54,10 @@ font-0=Source Code Pro Semibold:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
-modules-left = bspwm music
+modules-left = bspwm mpd spotify
 modules-center = title
 modules-right = network audio BAT1 memory date
-separator = "%{F#aaaaaa} ‖ %{F-}"
+separator = "%{F#aaaaaa} ┃ %{F-}"
 
 [module/network]
 type = internal/network
@@ -73,9 +73,16 @@ label-volume =  %percentage%%
 label-muted =  %percentage%%
 label-muted-foreground = #555555
 
-[module/music]
+[module/mpd]
+type = internal/mpd
+host = 127.0.0.1
+port = 6600
+; format-online = <toggle> <label-song>
+label-song = %title% • %artist%
+
+[module/spotify]
 type = custom/script
-exec = music.sh
+exec = spotify.sh
 
 [module/title]
 type = internal/xwindow
@@ -163,3 +170,5 @@ label-separator-foreground = ${colors.light-gray}
 screenchange-reload = true
 
 ; vim:ft=dosini
+[colors]
+;background = ${xrdb:color0:#222}

@@ -29,43 +29,30 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] ||
-     [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'
-  elif [[ ${KEYMAP} == main ]] ||
-       [[ ${KEYMAP} == viins ]] ||
-       [[ ${KEYMAP} = '' ]] ||
-       [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'
-  fi
+	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+		echo -ne '\e[1 q'
+	elif [[ ${KEYMAP} == main ]] ||
+	     [[ ${KEYMAP} == viins ]] ||
+	     [[ ${KEYMAP} = '' ]] ||
+	     [[ $1 = 'beam' ]]; then
+		echo -ne '\e[5 q'
+	fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
+	zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+	echo -ne "\e[5 q"
 }
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-# use lf
-lfcd () {
-    tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-    fi
-}
-bindkey -s '^o' 'ranger\n'
-
 DISABLE_AUTO_TITLE="true"
 
 case $TERM in
-  st*)
-    precmd () {print -Pn "\e]0;%~\a"}
-    ;;
+	st*)
+		precmd () {print -Pn "\e]0;%~\a"}
+		;;
 esac
 
 CASE_SENSITIVE="false"
@@ -78,6 +65,8 @@ plugins=(git)
 
 bindkey '^[[1;5A' history-substring-search-up
 bindkey '^[[1;5B' history-substring-search-down
+
+ZSH_THEME="gruvbox"
 
 # aliases
 alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
@@ -96,7 +85,7 @@ alias r="ranger"
 alias shutdown="sudo shutdown -h now"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias update-mirrors="reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
-alias rc="~/bin/configs.sh"
+alias rc="configs.sh"
 
 # Other
 
@@ -119,5 +108,6 @@ alias i3rc="nvim ~/.config/i3/config"
 alias sxhkdrc="nvim ~/.config/sxhkd/sxhkdrc"
 alias strc="nvim ~/.config/suckless/st/config.h"
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
+source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null

@@ -1,23 +1,36 @@
 # reload
 super + r
+	load_polybar.sh; \
 	pkill -USR1 -x sxhkd; \
 	xmodmap /home/ak/.config/Xmodmap/config; \
-	load_polybar
+	xrdb -load $XDG_CONFIG_HOME/Xresources
 
 # close window
 mod3 + q
 	wmctrl -c :ACTIVE:
 
+# switch desktop (fallback, slightly slower)
+#mod3 + {0-9}
+#	xdotool set_desktop {0-9}
+#mod3 + {comma,period}
+#	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1, + 1})"
+
 # launch terminal applications
 mod3 + {Return, shift + Return, semicolon}
-	{$TERMINAL, $TERMINAL -e ranger, $TERMINAL -e $EDITOR}
+	{$TERMINAL -e tmux, $TERMINAL -e vifm, $TERMINAL -e $EDITOR}
 
 # launch browser
 mod3 + {_,shift} + backslash
-	$BROWSER {_,-private}
+	$BROWSER {_,-private-window}
+
+# launch music player
+mod3 + m
+	pkill ncmpcpp; \
+	mpc rescan; \
+	$TERMINAL -e ncmpcpp
 
 # launch rofi
-{mod3 + d, alt + Tab}
+{mod3 + slash, alt + Tab}
 	rofi {-show, -show window}
 
 # toggle bar
@@ -26,11 +39,11 @@ super + b
 
 # lock screen
 super + Escape
-	i3lock -n -u -c 1c69b1 -i ~/pictures/backgrounds/blue_screen.png
+	i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png
 
 # screenshot
 Print
-	import ~/pictures/screenshot_tmp.png && $(mv ~/pictures/screenshot_tmp.png ~/pictures/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
+	$(import $XDG_PICTURES_DIR/screenshot_tmp.png && mv $XDG_PICTURES_DIR/screenshot_tmp.png $XDG_PICTURES_DIR/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
 
 # rename workspace
 super + F2
@@ -48,8 +61,12 @@ XF86Audio{Mute,LowerVolume,RaiseVolume}
 super + {Left,Right}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 
-# music
-{Pause, super + Prior, super + Next}
+# mpd
+{Pause, super + comma, super + period}
+	mpc {toggle, prev,next}
+
+# spotify
+super + {p, Prior, Next}
 	spotify_ctrl.sh {p, Left, Right}
 
 # brightness

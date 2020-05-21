@@ -55,9 +55,13 @@ workspace $ws11 output eDP1
 workspace $ws11 output DP1
 workspace $ws22 output eDP1
 
-# move workspace to left and right monitors
+# focus workspace left or right monitor
 bindsym $mod_t+Shift+bracketleft move workspace to output left
 bindsym $mod_t+Shift+bracketright move workspace to output right
+
+# move workspace to left or right monitor
+bindsym $mod_t+bracketleft focus output left
+bindsym $mod_t+bracketright focus output right
 
 # switch to workspace
 bindsym $mod_t+1 workspace number $ws1
@@ -90,12 +94,13 @@ bindsym $mod_t+Shift+F2 move container to workspace number $ws12
 bindsym $mod_t+Shift+F12 move container to workspace number $ws22
 
 workspace_auto_back_and_forth yes
+focus_on_window_activation focus
 
 # change to workspace 1
 exec --no-startup-id i3-msg workspace number $ws1
 
 # Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+floating_modifier $mod_t
 
 # change focus
 bindsym $mod_t+h focus left
@@ -150,4 +155,13 @@ bindsym $mod_t+a focus parent
 bindsym $mod+Shift+r restart
 
 # youtube
-bindsym $mod_t+y workspace $ws12, exec firefox -new-window youtube.com
+bindsym $mod_t+y workspace --no-auto-back-and-forth $ws12, exec firefox -new-window youtube.com
+
+# music daemon
+for_window [class="ncmpcpp"] floating enable
+
+# spotify
+for_window [title="Spotify – "] move --no-auto-back-and-forth container to workspace $ws22
+
+# messenger
+for_window [title="Messenger - Mozilla Firefox"] move --no-auto-back-and-forth container to workspace $ws11
