@@ -55,9 +55,13 @@ workspace $ws11 output eDP1
 workspace $ws11 output DP1
 workspace $ws22 output eDP1
 
-# move workspace to left and right monitors
+# focus workspace left or right monitor
 bindsym $mod_t+Shift+bracketleft move workspace to output left
 bindsym $mod_t+Shift+bracketright move workspace to output right
+
+# move workspace to left or right monitor
+bindsym $mod_t+bracketleft focus output left
+bindsym $mod_t+bracketright focus output right
 
 # switch to workspace
 bindsym $mod_t+1 workspace number $ws1

@@ -17,7 +17,7 @@ mod3 + q
 
 # launch terminal applications
 mod3 + {Return, shift + Return, semicolon}
-	{$TERMINAL, $TERMINAL -e vifm, $TERMINAL -e $EDITOR}
+	{$TERMINAL -e tmux, $TERMINAL -e vifm, $TERMINAL -e $EDITOR}
 
 # launch browser
 mod3 + {_,shift} + backslash

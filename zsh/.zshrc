@@ -66,6 +66,8 @@ plugins=(git)
 bindkey '^[[1;5A' history-substring-search-up
 bindkey '^[[1;5B' history-substring-search-down
 
+ZSH_THEME="gruvbox"
+
 # aliases
 alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
 alias ls="ls --color=auto --group-directories-first"
@@ -108,3 +110,4 @@ alias strc="nvim ~/.config/suckless/st/config.h"
 
 #source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
+source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null
