@@ -106,5 +106,5 @@ alias i3rc="nvim ~/.config/i3/config"
 alias sxhkdrc="nvim ~/.config/sxhkd/sxhkdrc"
 alias strc="nvim ~/.config/suckless/st/config.h"
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null

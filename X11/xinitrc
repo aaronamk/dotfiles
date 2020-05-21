@@ -1,23 +1,26 @@
 #!/bin/bash
 
+# load Xresources database
+xrdb -load $XDG_CONFIG_HOME/Xresources
+
 # remap caps and tab
 xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
 
-# hotkeys
+# start hotkey daemon
 sxhkd &
 
 # remove cursor when typing
 xbanish &
 
-# gnome authentication agent
+# start authentication agent
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK &
 
-# lock screen
+# start lock screen daemon
 xss-lock -n /usr/share/doc/xss-lock/dim-screen.sh -- i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png &
 
-# start music player daemon
+# start music daemon
 mpd &
 
 # start polybar
