@@ -7,6 +7,9 @@ xrdb -load $XDG_CONFIG_HOME/Xresources
 xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
 
+# add displays
+autorandr -c
+
 # start hotkey daemon
 sxhkd &
 

@@ -7,6 +7,9 @@
 
 " ------------------------------------------------------------------------------
 
+" Remove ../ entry
+set dotdirs=rootparent
+
 " Command used to edit files in various contexts.  The default is vim.
 " If you would like to use another vi clone such as Elvis or Vile
 " you will need to change this setting.
@@ -116,8 +119,10 @@ set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
 " :mark mark /full/directory/path [filename]
 
-mark b ~/bin/
-mark h ~/
+mark H ~/
+mark b ~/.local/bin
+mark c ~/.config
+mark M ~/Music
 
 " ------------------------------------------------------------------------------
 

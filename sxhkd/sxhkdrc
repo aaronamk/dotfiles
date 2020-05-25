@@ -5,6 +5,10 @@ super + r
 	xmodmap /home/ak/.config/Xmodmap/config; \
 	xrdb -load $XDG_CONFIG_HOME/Xresources
 
+# arrow keys
+mod4 + {h,j,k,l}
+	xdotool --clearmodifiers key {0xff51,Down,Up,Right}
+
 # close window
 mod3 + q
 	wmctrl -c :ACTIVE:
@@ -12,12 +16,12 @@ mod3 + q
 # switch desktop (fallback, slightly slower)
 #mod3 + {0-9}
 #	xdotool set_desktop {0-9}
-#mod3 + {comma,period}
-#	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1, + 1})"
+mod3 + {comma,period}
+	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1,+ 1})"
 
 # launch terminal applications
-mod3 + {Return, shift + Return, semicolon}
-	{$TERMINAL -e tmux, $TERMINAL -e vifm, $TERMINAL -e $EDITOR}
+mod3 + {Return,shift + Return,semicolon}
+	{$TERMINAL -e tmux,$TERMINAL -e vifm,TERMINAL -e $EDITOR}
 
 # launch browser
 mod3 + {_,shift} + backslash
@@ -30,8 +34,8 @@ mod3 + m
 	$TERMINAL -e ncmpcpp
 
 # launch rofi
-{mod3 + slash, alt + Tab}
-	rofi {-show, -show window}
+{mod3 + slash,alt + Tab}
+	rofi {-show,-show window}
 
 # toggle bar
 super + b
@@ -62,26 +66,26 @@ super + {Left,Right}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 
 # mpd
-{Pause, super + comma, super + period}
-	mpc {toggle, prev,next}
+{Pause,super + comma,super + period}
+	mpc {toggle,prev,next}
 
 # spotify
-super + {p, Prior, Next}
-	spotify_ctrl.sh {p, Left, Right}
+super + {p,Prior,Next}
+	spotify_ctrl.sh {p,Left,Right}
 
 # brightness
 XF86MonBrightness{Down,Up}
-	set_brightness.sh {-, +}
+	set_brightness.sh {-,+}
 super + {Down,Up}
-	set_brightness.sh {-, +}
+	set_brightness.sh {-,+}
 
 # redshift
 super + shift + {Down,Up}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
 
-####################################################################################################
-############################################### bspwm ##############################################
-####################################################################################################
+################################################################################
+#################################### bspwm #####################################
+################################################################################
 
 # switch / move windows
 mod3 + {_,shift + }{h,j,k,l}
@@ -94,3 +98,15 @@ mod3 + alt + {h,j,k,l}
 # focus a desktop
 mod3 + {_,shift + }{0-9}
 	bspc {desktop -f,node -d} {0-9}
+
+# next desktop
+mod3 + {bracketleft,bracketright}
+	bspc monitor -f {prev,next}
+
+# add a desktop
+mod3 + {BackSpace,n}
+	bspc {desktop -r,monitor -a "$(rofi -dmenu "name: ")"}
+
+# toggle fullscreen
+mod3 + f
+	bspc desktop -l next

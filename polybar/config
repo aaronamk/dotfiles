@@ -1,3 +1,6 @@
+[global/wm]
+margin-top = 0
+
 [colors]
 ;background = ${xrdb:color0:#222}
 black = #000000
@@ -13,9 +16,10 @@ alert = #bd2c40
 
 [bar/secondary]
 width = 100%
-height = 18
+height = 16
 bottom = true
 monitor = ${env:MONITOR:}
+override-redirect = true
 
 background = ${colors.black}
 foreground = ${colors.white}
@@ -23,9 +27,9 @@ foreground = ${colors.white}
 line-size = 1
 line-color = #f00
 
-font-0=Source Code Pro Semibold:size=12;2
-font-1=Font Awesome 5 Free Solid:size=12;2
-font-2=Noto Sans:size=12;2
+font-0=Source Code Pro Semibold:size=10;2
+font-1=Font Awesome 5 Free Solid:size=10;2
+font-2=Noto Sans:size=10;2
 
 modules-left = bspwm
 modules-center = title_secondary
@@ -39,6 +43,7 @@ width = 100%
 height = 16
 bottom = true
 monitor = ${env:MONITOR:}
+override-redirect = true
 
 background = ${colors.black}
 foreground = ${colors.white}
@@ -145,11 +150,7 @@ label-focused-background = ${colors.blue}
 label-focused-foreground = ${colors.black}
 label-focused-padding = 1
 
-; unfocused = Inactive workspace on any monitor
-label-unfocused = %name%
-label-unfocused-foreground = ${colors.white}
-label-unfocused-padding =
-;label-unfocused-overline = ${colors.light-gray}
+;label-occupied = %index%:%name%
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %name%
@@ -162,7 +163,7 @@ label-urgent = %name%
 label-urgent-background = ${colors.alert}
 
 ; Separator in between workspaces
-label-separator = "  "
+label-separator = " "
 label-separator-foreground = ${colors.light-gray}
 ;label-separator-overline = ${colors.light-gray}
 
@@ -170,5 +171,3 @@ label-separator-foreground = ${colors.light-gray}
 screenchange-reload = true
 
 ; vim:ft=dosini
-[colors]
-;background = ${xrdb:color0:#222}
