@@ -73,6 +73,10 @@ noremap! <C-BS> <C-w>
 noremap! <C-h> <C-w>
 imap <C-BS> <C-W>
 
+" find/replace
+nnoremap <Leader>/ :%s//g<Left><Left>
+vnoremap <Leader>/ y:%s//g<Left><Left><C-r>"/
+
 " screen splitting hotkeys to mirror window manager
 set splitbelow splitright
 map <C-h> <C-w>h
