@@ -4,6 +4,7 @@ super + r
 	pkill -USR1 -x sxhkd; \
 	xmodmap /home/ak/.config/Xmodmap/config; \
 	xrdb -load $XDG_CONFIG_HOME/Xresources
+	~/.config/bspwm/bspwmrc
 
 # arrow keys
 mod4 + {h,j,k,l}
@@ -16,12 +17,12 @@ mod3 + q
 # switch desktop (fallback, slightly slower)
 #mod3 + {0-9}
 #	xdotool set_desktop {0-9}
-mod3 + {comma,period}
-	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1,+ 1})"
+#mod3 + {comma,period}
+#	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1,+ 1})"
 
 # launch terminal applications
 mod3 + {Return,shift + Return,semicolon}
-	{$TERMINAL -e tmux,$TERMINAL -e vifm,TERMINAL -e $EDITOR}
+	{$TERMINAL -e tmux,$TERMINAL -e vifm,$TERMINAL -e $EDITOR}
 
 # launch browser
 mod3 + {_,shift} + backslash
@@ -87,11 +88,11 @@ super + shift + {Down,Up}
 #################################### bspwm #####################################
 ################################################################################
 
-# switch / move windows
-mod3 + {_,shift + }{h,j,k,l}
-	bspc node -{f,s} {west,south,north,east}
+# switch / move window
+mod3 + {_,ctrl + ,shift + }{h,j,k,l}
+	bspc node -{f,s,n} {west,south,north,east} --follow
 
-# change window size
+# resize window
 mod3 + alt + {h,j,k,l}
 	bspc node -{f,s} {}
 
@@ -99,9 +100,13 @@ mod3 + alt + {h,j,k,l}
 mod3 + {_,shift + }{0-9}
 	bspc {desktop -f,node -d} {0-9}
 
-# next desktop
-mod3 + {bracketleft,bracketright}
-	bspc monitor -f {prev,next}
+# switch destkops
+mod3 + {_,shift + }{comma,period}
+	bspc {desktop --focus,node --to-desktop} {prev,next} --follow
+
+# switch monitors
+mod3 + {_,shift + }{bracketleft,bracketright}
+	bspc {monitor -f,desktop -m} {prev,next} --follow
 
 # add a desktop
 mod3 + {BackSpace,n}

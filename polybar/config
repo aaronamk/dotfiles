@@ -136,13 +136,17 @@ exec = memory.sh
 
 [module/bspwm]
 type = internal/bspwm
-format = <label-state> <label-mode>
 enable-scroll = false
 
 ; Only show workspaces on the same output as the bar
 pin-workspaces = true
 label-mode-padding = 1
 label-mode-foreground = ${colors.white}
+
+label-dimmed = %name%
+label-dimmed-background = ${colors.light-gray}
+label-dimmed-foreground = ${colors.black}
+label-dimmed-padding = 1
 
 ; focused = Active workspace on focused monitor
 label-focused = %name%
@@ -152,20 +156,9 @@ label-focused-padding = 1
 
 ;label-occupied = %index%:%name%
 
-; visible = Active workspace on unfocused monitor
-label-visible = %name%
-label-visible-background = ${colors.light-gray}
-label-visible-foreground = ${colors.black}
-label-visible-padding = 1
-
-; urgent = Workspace with urgency hint set
-label-urgent = %name%
-label-urgent-background = ${colors.alert}
-
 ; Separator in between workspaces
 label-separator = " "
 label-separator-foreground = ${colors.light-gray}
-;label-separator-overline = ${colors.light-gray}
 
 [settings]
 screenchange-reload = true
