@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# add displays
+autorandr -c
+
 # load Xresources database
 xrdb -load $XDG_CONFIG_HOME/Xresources
 
@@ -7,8 +10,8 @@ xrdb -load $XDG_CONFIG_HOME/Xresources
 xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
 xcape -e 'Control_L=Escape;Hyper_R=Tab' &
 
-# add displays
-autorandr -c
+# set keyrepeat
+xset r rate 300 35
 
 # start hotkey daemon
 sxhkd &
