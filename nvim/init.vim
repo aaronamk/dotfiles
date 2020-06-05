@@ -69,24 +69,22 @@ set cc=81
 hi ColorColumn ctermbg=236
 
 " enable ctrl+delete like other editors
-noremap! <C-BS> <C-w>
-noremap! <C-h> <C-w>
-imap <C-BS> <C-W>
+nnoremap <BS> bcw
 
 " find/replace
 nnoremap <Leader>/ :%s//g<Left><Left>
-vnoremap <Leader>/ y:%s//g<Left><Left><C-r>"/
+vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
 " screen splitting hotkeys to mirror window manager
 set splitbelow splitright
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
 nnoremap <silent> <CR> :noh<CR><CR>
 
 " switch between header and source
-map <C-space> :call CurtineIncSw()<CR>
+map <c-space> :call CurtineIncSw()<CR>
 
 " disable annoying hist file
 let g:netrw_dirhistmax = 0

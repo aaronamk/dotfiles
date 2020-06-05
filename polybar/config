@@ -3,16 +3,13 @@ margin-top = 0
 
 [colors]
 ;background = ${xrdb:color0:#222}
-black = #000000
-dark-gray = #555555
+background = #000000
+dark-gray = #32302f
 ;foreground = ${xrdb:color7:#222}
-white = #ffffff
-light-white = #dddddd
-light-gray = #aaaaaa
-blue = #00ffff
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+white = #ebdbb2
+light-white = #ebdbb2
+light-gray = #928374
+highlight = #fabd2f
 
 [bar/secondary]
 width = 100%
@@ -21,7 +18,7 @@ bottom = true
 monitor = ${env:MONITOR:}
 override-redirect = true
 
-background = ${colors.black}
+background = ${colors.background}
 foreground = ${colors.white}
 
 line-size = 1
@@ -45,7 +42,7 @@ bottom = true
 monitor = ${env:MONITOR:}
 override-redirect = true
 
-background = ${colors.black}
+background = ${colors.background}
 foreground = ${colors.white}
 
 line-size = 1
@@ -76,7 +73,7 @@ label-connected =  %signal%% [%essid%]
 type = internal/pulseaudio
 label-volume =  %percentage%%
 label-muted =  %percentage%%
-label-muted-foreground = #555555
+label-muted-foreground = #32302f
 
 [module/mpd]
 type = internal/mpd
@@ -93,13 +90,13 @@ exec = spotify.sh
 type = internal/xwindow
 label = " %title:0:100:...% "
 label-background = ${colors.light-gray}
-label-foreground = ${colors.black}
+label-foreground = ${colors.background}
 
 [module/title_secondary]
 type = internal/xwindow
 label = " %title:0:50:...% "
 label-background = ${colors.light-gray}
-label-foreground = ${colors.black}
+label-foreground = ${colors.background}
 
 [module/BAT0]
 time-format = %H:%M
@@ -145,13 +142,13 @@ label-mode-foreground = ${colors.white}
 
 label-dimmed = %name%
 label-dimmed-background = ${colors.light-gray}
-label-dimmed-foreground = ${colors.black}
+label-dimmed-foreground = ${colors.background}
 label-dimmed-padding = 1
 
 ; focused = Active workspace on focused monitor
 label-focused = %name%
-label-focused-background = ${colors.blue}
-label-focused-foreground = ${colors.black}
+label-focused-background = ${colors.highlight}
+label-focused-foreground = ${colors.background}
 label-focused-padding = 1
 
 ;label-occupied = %index%:%name%

@@ -6,7 +6,11 @@ export TERMINAL="st"
 export BROWSER="firefox"
 export FILE="vifm"
 
+# Settings
 export PASSWORD_STORE_GENERATED_LENGTH=16
+export FZF_DEFAULT_OPTS="--reverse"
+export QT_QPA_PLATFORMTHEME="gtk2"
+export MOZ_USE_XINPUT2="1"
 
 # ~/ cleaning
 export XDG_CONFIG_HOME=$HOME/.config
