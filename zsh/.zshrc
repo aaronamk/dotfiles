@@ -1,4 +1,4 @@
-# Vi mode
+# Vi bindings
 bindkey -v
 export KEYTIMEOUT=1
 bindkey '^K' history-substring-search-up
