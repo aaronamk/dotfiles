@@ -1,3 +1,9 @@
+# Vi mode
+bindkey -v
+export KEYTIMEOUT=1
+bindkey '^K' history-substring-search-up
+bindkey '^J' history-substring-search-down
+
 # git
 autoload -Uz compinit && compinit
 autoload -Uz vcs_info
@@ -40,7 +46,6 @@ function zle-keymap-select {
 }
 zle -N zle-keymap-select
 zle-line-init() {
-	zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
 	echo -ne "\e[5 q"
 }
 zle -N zle-line-init
@@ -62,9 +67,6 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(git)
-
-bindkey '^[[1;5A' history-substring-search-up
-bindkey '^[[1;5B' history-substring-search-down
 
 ZSH_THEME="gruvbox"
 
@@ -108,6 +110,5 @@ alias i3rc="nvim ~/.config/i3/config"
 alias sxhkdrc="nvim ~/.config/sxhkd/sxhkdrc"
 alias strc="nvim ~/.config/suckless/st/config.h"
 
-#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null

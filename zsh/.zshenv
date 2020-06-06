@@ -16,6 +16,7 @@ export MOZ_USE_XINPUT2="1"
 export XDG_CONFIG_HOME=$HOME/.config
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
 
 export XDG_DATA_HOME=$HOME/.local/share
 export PASSWORD_STORE_DIR=$XDG_DATA_HOME/password-store
