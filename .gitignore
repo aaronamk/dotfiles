@@ -1,0 +1,16 @@
+MusicBrainz/
+QtProject.conf
+Unknown Organization/
+byobu/
+dconf/
+discord/
+gtk-3.0/bookmarks
+ncmpcpp/error.log
+ncmpcpp/patterns.list
+ncmpcpp/tmux_session
+nvim/viminfo
+pulse/
+vifm/vifm-help.txt
+vifm/vifminfo
+zoomus.conf
+zsh/.zcompdump

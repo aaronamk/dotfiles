@@ -4,3 +4,5 @@
 [credential]
 	username = aaronamk
 	helper = /usr/bin/pass-git-helper
+[pull]
+	rebase = false
