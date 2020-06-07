@@ -1,40 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>inputrc - dotfiles - My dotfiles used for LARBS
-</title>
-<link rel="icon" type="image/png" href="../../favicon.png" />
-<link rel="alternate" type="application/atom+xml" title="dotfiles Atom Feed" href="../../atom.xml" />
-<link rel="stylesheet" type="text/css" href="../../style.css" />
-</head>
-<body>
-<table><tr><td><a href="../../../"><img src="../../logo.png" alt="" width="32" height="32" /></a></td><td><h1>dotfiles</h1><span class="desc">My dotfiles used for LARBS
-</span></td></tr><tr><td></td><td>
-<a href="../../log.html">Log</a> | <a href="../../files.html">Files</a> | <a href="../../refs.html">Refs</a> | <a href="../../file/.gitmodules.html">Submodules</a> | <a href="../../file/README.md.html">README</a> | <a href="../../file/LICENSE.html">LICENSE</a></td></tr></table>
-<hr/>
-<div id="content">
-<p> inputrc (372B)</p><hr/><pre id="blob">
-<a href="#l1" class="line" id="l1">      1</a> $include /etc/inputrc
-<a href="#l2" class="line" id="l2">      2</a> set editing-mode vi
-<a href="#l3" class="line" id="l3">      3</a> $if mode=vi
-<a href="#l4" class="line" id="l4">      4</a> 
-<a href="#l5" class="line" id="l5">      5</a> set show-mode-in-prompt on
-<a href="#l6" class="line" id="l6">      6</a> set vi-ins-mode-string \1\e[6 q\2
-<a href="#l7" class="line" id="l7">      7</a> set vi-cmd-mode-string \1\e[2 q\2
-<a href="#l8" class="line" id="l8">      8</a> 
-<a href="#l9" class="line" id="l9">      9</a> set keymap vi-command
-<a href="#l10" class="line" id="l10">     10</a> # these are for vi-command mode
-<a href="#l11" class="line" id="l11">     11</a> Control-l: clear-screen
-<a href="#l12" class="line" id="l12">     12</a> Control-a: beginning-of-line
-<a href="#l13" class="line" id="l13">     13</a> 
-<a href="#l14" class="line" id="l14">     14</a> set keymap vi-insert
-<a href="#l15" class="line" id="l15">     15</a> # these are for vi-insert mode
-<a href="#l16" class="line" id="l16">     16</a> Control-l: clear-screen
-<a href="#l17" class="line" id="l17">     17</a> Control-a: beginning-of-line
-<a href="#l18" class="line" id="l18">     18</a> 
-<a href="#l19" class="line" id="l19">     19</a> $endif
-</pre>
-</div>
-</body>
-</html>
+$include /etc/inputrc
+set editing-mode vi
+$if mode=vi
+
+set show-mode-in-prompt on
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+
+set keymap vi-command
+# these are for vi-command mode
+Control-l: clear-screen
+Control-a: beginning-of-line
+
+set keymap vi-insert
+# these are for vi-insert mode
+Control-l: clear-screen
+Control-a: beginning-of-line
+
+$endif
