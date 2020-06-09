@@ -51,6 +51,10 @@ set number
 
 highlight VertSplit cterm=NONE
 
+" netrw settings
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+
 " file opening completion
 set wildmenu
 set wildmode=longest,list,full
@@ -67,6 +71,9 @@ autocmd BufWritePre * %s/\s\+$//e
 " mark 80 character limit
 set cc=81
 hi ColorColumn ctermbg=236
+
+" Make Y work the way you'd expect
+map Y y$
 
 " enable ctrl+delete like other editors
 nnoremap <BS> bcw

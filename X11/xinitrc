@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # add displays
 autorandr -c &
@@ -27,7 +27,7 @@ export SSH_AUTH_SOCK &
 xss-lock -- i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png &
 
 # set screen lock timeout
-xset s 1200 &
+xset s off &
 
 # start music daemon
 mpd &

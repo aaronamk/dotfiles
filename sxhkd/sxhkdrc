@@ -3,9 +3,11 @@ super + r
 	autorandr -c; \
 	load_polybar.sh; \
 	pkill -USR1 -x sxhkd; \
-	xmodmap /home/ak/.config/Xmodmap/config; \
 	xset r rate 300 35; \
-	xrdb -load $XDG_CONFIG_HOME/Xresources
+	xrdb -load $XDG_CONFIG_HOME/Xresources; \
+	xmodmap /home/ak/.config/Xmodmap/config; \
+	pkill xcape; \
+	xcape -e 'Control_L=Escape;Hyper_R=Tab'
 
 # arrow keys
 super + {h,j,k,l}
@@ -29,7 +31,7 @@ mod3 + Return
 mod3 + semicolon
 	$TERMINAL -e $EDITOR
 
-# launcher (rofi)
+# launch launcher (rofi)
 {mod3 + shift + Return,alt + Tab}
 	rofi -show {_,window}
 
@@ -37,7 +39,7 @@ mod3 + semicolon
 mod3 + e
 	$TERMINAL -e vifm
 
-# open files
+# fuzzy find file
 mod3 + {_,shift} + slash
 	$TERMINAL -e {fzf_open.sh,fzf_open_meta.sh}
 
