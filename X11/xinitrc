@@ -32,8 +32,5 @@ xset s off &
 # start music daemon
 mpd &
 
-# start polybar
-load_polybar.sh &
-
 # start wm
-exec bspwm
+exec dwm

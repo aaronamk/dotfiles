@@ -1,21 +1,12 @@
 # reload
 super + r
 	autorandr -c; \
-	load_polybar.sh; \
 	pkill -USR1 -x sxhkd; \
 	xset r rate 300 35; \
 	xrdb -load $XDG_CONFIG_HOME/Xresources; \
 	xmodmap /home/ak/.config/Xmodmap/config; \
 	pkill xcape; \
 	xcape -e 'Control_L=Escape;Hyper_R=Tab'
-
-# arrow keys
-super + {h,j,k,l}
-	xdotool key --clearmodifiers {'Left','Down','Up','Right'}
-
-# close window
-mod3 + q
-	wmctrl -c :ACTIVE:
 
 # switch desktop (fallback, slightly slower)
 #mod3 + {0-9}
@@ -52,10 +43,6 @@ mod3 + m
 	pkill ncmpcpp; \
 	mpc rescan; \
 	$TERMINAL -n "ncmpcpp" -e ncmpcpp
-
-# toggle bar
-super + b
-	polybar-msg cmd toggle
 
 # lock screen
 super + Escape
@@ -98,37 +85,3 @@ super + {Down,Up}
 # redshift
 super + shift + {Down,Up}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
-
-################################################################################
-#################################### bspwm #####################################
-################################################################################
-
-# switch / move window
-mod3 + {_,shift + ,ctrl + }{h,j,k,l}
-	bspc node -{f,s,n} {west,south,north,east} --follow
-
-# resize window
-mod3 + alt + {h,j,k,l}
-	bspc node -{f,s} {}
-
-# focus a desktop
-mod3 + {_,shift + }{0-9}
-	bspc {desktop -f,node -d} {0-9}
-
-# switch desktops
-mod3 + {_,shift + ,super + }{comma,period}
-	bspc {desktop --focus,node --to-desktop,desktop -s} {prev,next} --follow
-
-# rename desktop
-
-# switch monitors
-mod3 + {_, shift + ,super + }{bracketleft,bracketright}
-	bspc {monitor -f,node -m,desktop -m} {prev,next} --follow
-
-# add a desktop
-mod3 + {BackSpace,n}
-	bspc {desktop -r,monitor -a "$(rofi -dmenu "name: ")"}
-
-# toggle fullscreen
-mod3 + f
-	bspc desktop -l next
