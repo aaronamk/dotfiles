@@ -1,12 +1,6 @@
 # reload
 super + r
-	autorandr -c; \
-	pkill -USR1 -x sxhkd; \
-	xset r rate 300 35; \
-	xrdb -load $XDG_CONFIG_HOME/Xresources; \
-	xmodmap /home/ak/.config/Xmodmap/config; \
-	pkill xcape; \
-	xcape -e 'Control_L=Escape;Hyper_R=Tab'
+	reload.sh
 
 # switch desktop (fallback, slightly slower)
 #mod3 + {0-9}
@@ -23,8 +17,8 @@ mod3 + semicolon
 	$TERMINAL -e $EDITOR
 
 # launch launcher (rofi)
-{mod3 + shift + Return,alt + Tab}
-	rofi -show {_,window}
+mod3 + shift + Return
+	rofi -show
 
 # explore directories
 mod3 + e
@@ -50,7 +44,7 @@ super + Escape
 
 # screenshot
 Print
-	$(import $XDG_PICTURES_DIR/screenshot_tmp.png && mv $XDG_PICTURES_DIR/screenshot_tmp.png $XDG_PICTURES_DIR/$(rofi -dmenu -p 'Screenshot' -filter "$(date +'%m-%d-%y_%I:%M:%S_%P'.png)"))
+	screenshot.sh
 
 # rename workspace
 super + F2

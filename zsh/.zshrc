@@ -4,35 +4,6 @@ export KEYTIMEOUT=1
 bindkey '^K' history-substring-search-up
 bindkey '^J' history-substring-search-down
 
-# git
-autoload -Uz compinit && compinit
-autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
-setopt prompt_subst
-RPROMPT=\$vcs_info_msg_0_
-# PROMPT=\$vcs_info_msg_0_'%# '
-zstyle ':vcs_info:git:*' formats '%b'
-
-# enable colors and set prompt
-autoload -U colors && colors
-PS1="%B%{$fg[blue]%}%~%{$reset_color%}$ "
-
-HISTSIZE=1000
-SAVEHIST=1000
-HISTFILE=~/.cache/zsh/history
-
-# tab complete
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)
-# fuzzy completion
-zstyle ':completion:*' completer _complete _match _approximate
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
 # Change cursor shape for different vi modes.
 function zle-keymap-select {
 	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
@@ -52,6 +23,12 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
+# History
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.cache/zsh/history
+
+# Set window title to current directory
 DISABLE_AUTO_TITLE="true"
 
 case $TERM in
@@ -69,6 +46,33 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git)
 
 ZSH_THEME="gruvbox"
+
+# enable colors and set prompt
+autoload -U colors && colors
+PS1="%B%{$fg[blue]%}%~%{$reset_color%}$ "
+
+# git
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+RPROMPT=\$vcs_info_msg_0_
+# PROMPT=\$vcs_info_msg_0_'%# '
+zstyle ':vcs_info:git:*' formats '%b'
+
+# tab complete
+zstyle :compinstall filename '/home/ak/.config/zsh/.zshrc'
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
+
+# fuzzy completion
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
 
 # aliases
 alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"

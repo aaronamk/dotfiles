@@ -1,20 +1,6 @@
 #!/bin/sh
 
-# add displays
-autorandr -c &
-
-# load Xresources database
-xrdb -load $XDG_CONFIG_HOME/Xresources &
-
-# remap caps and tab
-xmodmap $XDG_CONFIG_HOME/Xmodmap/config &
-xcape -e 'Control_L=Escape;Hyper_R=Tab' &
-
-# set key repeat
-xset r rate 300 35 &
-
-# start hotkey daemon
-sxhkd &
+reload.sh
 
 # remove cursor when typing
 xbanish &
