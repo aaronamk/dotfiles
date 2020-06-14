@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 bspc config pointer_modifier       mod3
 bspc config split_ratio            0.5
@@ -27,4 +27,5 @@ xsetroot -cursor_name left_ptr
 # rules:
 bspc rule -a Zathura state=tiled
 bspc rule -a st-256color:session_options state=floating
+bspc rule -a st-256color:save state=floating
 bspc rule -a st-256color:ncmpcpp state=fullscreen

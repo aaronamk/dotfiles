@@ -24,7 +24,7 @@ foreground = ${colors.white}
 line-size = 1
 line-color = #f00
 
-font-0=Source Code Pro Semibold:size=10;2
+font-0=Hack:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
@@ -52,7 +52,7 @@ tray-position = right
 tray-detached = true
 tray-offset-y = -16
 
-font-0=Source Code Pro Semibold:size=10;2
+font-0=Hack:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
