@@ -2,6 +2,9 @@
 
 reload.sh
 
+# load bar
+load_polybar.sh &
+
 # remove cursor when typing
 xbanish &
 

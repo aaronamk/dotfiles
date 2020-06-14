@@ -1,6 +1,8 @@
 # reload
 super + r
 	reload.sh
+	load_polybar.sh
+
 
 # arrow keys
 super + {h,j,k,l}
