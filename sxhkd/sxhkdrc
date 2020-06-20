@@ -70,11 +70,13 @@ super + Scroll_Lock
 super + shift + q
 	$TERMINAL -n "session_options" -e session_options.sh
 
-# volume
+# audio
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,volume @DEFAULT_SINK@ +2%}
-super + {Left,Right}
+super + {h,l}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
+super + shift + {h,l}
+	{pactl set-sink-mute @DEFAULT_SINK@ toggle,$TERMINAL -e pulsemixer}
 
 # mpd
 {Pause,super + comma,super + period}
@@ -87,7 +89,7 @@ super + {p,Prior,Next}
 # brightness
 XF86MonBrightness{Down,Up}
 	set_brightness.sh {-,+}
-super + {Down,Up}
+super + {j,k}
 	set_brightness.sh {-,+}
 
 # redshift

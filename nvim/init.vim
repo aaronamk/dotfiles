@@ -49,6 +49,10 @@ set clipboard=unnamedplus
 syntax on
 set number
 
+" undo
+set undodir=$XDG_CACHE_HOME/nvim/undodir
+set undofile
+
 highlight VertSplit cterm=NONE
 
 " netrw settings
@@ -81,6 +85,10 @@ nnoremap <BS> bcw
 " find/replace
 nnoremap <Leader>/ :%s//g<Left><Left>
 vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
+
+" TA Grading help
+nnoremap <Leader>n /\ ___<Return>lllR
+nnoremap <Leader>N /\ ___<Return>NlllR
 
 " screen splitting hotkeys to mirror window manager
 set splitbelow splitright
