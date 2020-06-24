@@ -4,13 +4,13 @@ super + r
 	load_polybar.sh
 
 
-# arrow keys
-super + {h,j,k,l}
-	xdotool key --clearmodifiers {'Left','Down','Up','Right'}
+# simulate arrow keys
+@mod1 + {h,j,k,l}
+	xdotool key --clearmodifiers {Left,Down,Up,Right}
 
 # close window
 mod3 + q
-	wmctrl -c :ACTIVE:
+	xdo close
 
 # switch desktop (fallback, slightly slower)
 #mod3 + {0-9}
@@ -44,8 +44,8 @@ mod3 + {_,shift} + backslash
 
 # launch music player
 mod3 + m
-	pkill ncmpcpp; \
-	mpc rescan; \
+	pkill ncmpcpp;\
+	mpc rescan;\
 	$TERMINAL -n "ncmpcpp" -e ncmpcpp
 
 # toggle bar
@@ -101,12 +101,16 @@ super + shift + {Down,Up}
 ################################################################################
 
 # switch / move window
-mod3 + {_,shift + ,ctrl + }{h,j,k,l}
-	bspc node -{f,s,n} {west,south,north,east} --follow
+mod3 + {_,shift + ,ctrl + }{h,j,k}
+	bspc node -{f,s,n} {west,next.local,prev.local} --follow
 
 # resize window
 mod3 + alt + {h,j,k,l}
 	bspc node -{f,s} {}
+
+# switch monitors
+mod3 + {_, shift +,super +} l
+	bspc {monitor -f,node -m,desktop -m} next --follow
 
 # focus a desktop
 mod3 + {_,shift + }{0-9}
@@ -118,10 +122,6 @@ mod3 + {_,shift + ,super + }{comma,period}
 
 # rename desktop
 
-# switch monitors
-mod1 + {_, shift +,super +} Tab
-	bspc {monitor -f,node -m,desktop -m} next --follow
-
 # add a desktop
 mod3 + {BackSpace,n}
 	bspc {desktop -r,monitor -a "$(rofi -dmenu "name: ")"}
@@ -129,3 +129,7 @@ mod3 + {BackSpace,n}
 # toggle fullscreen
 mod3 + f
 	bspc desktop -l next
+
+# tiled
+mod3 + t
+	bspc node -t tiled
