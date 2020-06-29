@@ -60,10 +60,6 @@ super + Escape
 Print
 	screenshot.sh
 
-# rename workspace
-super + F2
-	rename_ws.sh
-
 # session functions
 super + Scroll_Lock
 	systemctl suspend
@@ -72,7 +68,8 @@ super + shift + q
 
 # audio
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,volume @DEFAULT_SINK@ +2%}
+	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,
+	                                           volume @DEFAULT_SINK@ +2%}
 super + {h,l}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 super + shift + {h,l}
@@ -97,12 +94,16 @@ super + shift + {Down,Up}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
 
 ################################################################################
-#################################### bspwm #####################################
+###### bspwm
 ################################################################################
 
 # switch / move window
-mod3 + {_,shift + ,ctrl + }{h,j,k}
-	bspc node -{f,s,n} {west,next.local,prev.local} --follow
+mod3 + {_,shift + }{h,j,k}
+	bspc node -{f,s} {biggest.local#@/1,next,prev}.local --follow
+
+# focus master
+mod3 + space
+	bspc node -n biggest.local#@/1.local --follow
 
 # resize window
 mod3 + alt + {h,j,k,l}
@@ -114,17 +115,19 @@ mod3 + {_, shift +,super +} l
 
 # focus a desktop
 mod3 + {_,shift + }{0-9}
-	bspc {desktop -f,node -d} {0-9}
+	bspc {desktop -f,node -d} focused:^{0-9}.local
 
 # switch desktops
 mod3 + {_,shift + ,super + }{comma,period}
-	bspc {desktop --focus,node --to-desktop,desktop -s} {prev,next} --follow
+	bspc {desktop -f,node -d,desktop -s} {prev,next}.local --follow
 
 # rename desktop
+mod3 + shift + n
+	$TERMINAL -n "rename_desktop" -e bsp_rename_desktop.sh
 
 # add a desktop
 mod3 + {BackSpace,n}
-	bspc {desktop -r,monitor -a "$(rofi -dmenu "name: ")"}
+	bspc {desktop -r,monitor -a "tmp"; bspc desktop -f focused:^1.local; bspc desktop -f prev.local}
 
 # toggle fullscreen
 mod3 + f

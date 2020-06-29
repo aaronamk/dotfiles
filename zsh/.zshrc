@@ -87,11 +87,8 @@ alias vi="nvim"
 alias vim="nvim"
 alias g="git"
 alias py="python"
-alias r="ranger"
-alias shutdown="sudo shutdown -h now"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias update-mirrors="reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
-alias rc="configs.sh"
 
 # Other
 
@@ -103,16 +100,10 @@ alias -g ...='../..'
 alias -g ....='../../..'
 alias -g .....='../../../..'
 
-# configs
+# global configs
 alias grubrc="sudoedit /etc/default/grub"
 alias tlprc="sudoedit /etc/tlp.conf"
 alias libinputrc="cd /etc/X11/xorg.conf.d"
-alias fontrc="nvim .config/fontconfig/fonts.conf"
-alias vrc="nvim .config/nvim/init.vim"
-alias zrc="nvim ~/.config/zsh/.zshrc"
-alias i3rc="nvim ~/.config/i3/config"
-alias sxhkdrc="nvim ~/.config/sxhkd/sxhkdrc"
-alias strc="nvim ~/.config/suckless/st/config.h"
 
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null

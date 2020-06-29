@@ -28,6 +28,7 @@ xsetroot -cursor_name left_ptr
 
 # rules:
 bspc rule -a Zathura state=tiled
-bspc rule -a st-256color:session_options state=floating
-bspc rule -a st-256color:save state=floating
-bspc rule -a st-256color:ncmpcpp state=fullscreen
+bspc rule -a st:session_options state=floating
+bspc rule -a st:rename_desktop state=floating
+bspc rule -a st:save state=floating
+bspc rule -a st:ncmpcpp state=fullscreen
