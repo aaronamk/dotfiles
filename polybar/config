@@ -56,9 +56,9 @@ font-0=Hack:size=10;2
 font-1=Font Awesome 5 Free Solid:size=10;2
 font-2=Noto Sans:size=10;2
 
-modules-left = bspwm mpd spotify
+modules-left = bspwm
 modules-center = title
-modules-right = network audio BAT1 memory date
+modules-right = mpd audio network BAT1 memory date
 separator = "%{F#aaaaaa} ┃ %{F-}"
 
 [module/network]
@@ -80,7 +80,7 @@ type = internal/mpd
 host = 127.0.0.1
 port = 6600
 ; format-online = <toggle> <label-song>
-label-song = %title% • %artist%
+label-song =  %title% • %artist%
 
 [module/spotify]
 type = custom/script
