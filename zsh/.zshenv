@@ -9,6 +9,8 @@ export FILE="vifm"
 # Settings
 export PASSWORD_STORE_GENERATED_LENGTH=16
 export FZF_DEFAULT_OPTS="--reverse --bind change:top"
+export CM_LAUNCHER=fzf
+export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"
 export MOZ_USE_XINPUT2="1"
 

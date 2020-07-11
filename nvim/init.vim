@@ -110,5 +110,5 @@ nnoremap <silent> <CR> :noh<CR><CR>
 map <c-space> :call CurtineIncSw()<CR>
 
 " TA Grading help
-nnoremap <Leader>n /\ ___<Return>lllR
-nnoremap <Leader>N /\ ___<Return>NlllR
+nnoremap <Leader>n /\ ____<Return>lllR
+nnoremap <Leader>N /\ ____<Return>NlllR

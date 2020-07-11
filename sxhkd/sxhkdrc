@@ -1,7 +1,7 @@
 # reload
 super + r
 	reload.sh
-	load_polybar.sh
+	load-polybar.sh
 
 
 # simulate arrow keys
@@ -36,7 +36,7 @@ mod3 + e
 
 # fuzzy find file
 mod3 + {_,shift} + slash
-	$TERMINAL -e {fzf_open.sh,fzf_open_meta.sh}
+	$TERMINAL -e {fzf-open.sh,fzf-open-meta.sh}
 
 # launch browser
 mod3 + {_,shift} + backslash
@@ -44,9 +44,11 @@ mod3 + {_,shift} + backslash
 
 # launch music player
 mod3 + m
-	pkill ncmpcpp;\
-	mpc rescan;\
-	$TERMINAL -n "ncmpcpp" -e ncmpcpp
+	pkill ncmpcpp; \
+	$TERMINAL -n "music_browser" -e ncmpcpp
+
+super + p
+	$TERMINAL -n "clipboard" -e clipmenu
 
 # toggle bar
 super + b
@@ -64,24 +66,22 @@ Print
 super + Scroll_Lock
 	systemctl suspend
 super + shift + q
-	$TERMINAL -n "session_options" -e session_options.sh
+	$TERMINAL -n "session_options" -e session-options.sh
 
 # audio
 XF86Audio{Mute,LowerVolume,RaiseVolume}
-	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,
+	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
 super + {h,l}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
-super + shift + {h,l}
-	{pactl set-sink-mute @DEFAULT_SINK@ toggle,$TERMINAL -e pulsemixer}
+super + shift + h
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
+super + shift + l
+	$TERMINAL -n "audio_mixer" -e pulsemixer
 
 # mpd
 {Pause,super + comma,super + period}
 	mpc {toggle,prev,next}
-
-# spotify
-super + {p,Prior,Next}
-	spotify_ctrl.sh {p,Left,Right}
 
 # brightness
 XF86MonBrightness{Down,Up}
@@ -123,7 +123,7 @@ mod3 + {_,shift + ,super + }{comma,period}
 
 # rename desktop
 mod3 + shift + n
-	$TERMINAL -n "rename_desktop" -e bsp_rename_desktop.sh
+	$TERMINAL -n "rename_desktop" -e bsp-rename-desktop.sh
 
 # add a desktop
 mod3 + {BackSpace,n}
@@ -132,6 +132,8 @@ mod3 + {BackSpace,n}
 # toggle fullscreen
 mod3 + f
 	bspc desktop -l next
+mod3 + shift + f
+	bspc node -t fullscreen
 
 # tiled
 mod3 + t
