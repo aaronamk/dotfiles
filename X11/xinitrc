@@ -2,9 +2,6 @@
 
 reload.sh
 
-# load bar
-load-polybar.sh &
-
 # start authentication agent
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
 export SSH_AUTH_SOCK &
@@ -17,6 +14,9 @@ export SSH_AUTH_SOCK &
 
 # start music daemon
 mpd &
+
+# fix audio over displayport delay problem
+mpv --pause $SCRIPTS/silent.mp3 &
 
 # start clipboard daemon
 clipmenud &
