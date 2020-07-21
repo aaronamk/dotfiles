@@ -11,6 +11,8 @@ call plug#begin('/home/ak/.local/share/nvim/plugged')
 Plug 'morhetz/gruvbox'                     " color scheme
 Plug 'rrethy/vim-hexokinase'               " highlight colors in that color
 Plug 'dense-analysis/ale'                  " linting
+Plug 'tpope/vim-repeat'                    " . repeating for plugins
+Plug 'tpope/vim-surround'                  " delimiter keywords
 Plug 'jiangmiao/auto-pairs'                " delimiter auto pairing
 Plug 'airblade/vim-gitgutter'              " git change indicators
 Plug 'donRaphaco/neotex', { 'for': 'tex'}  " tex compiler
@@ -70,6 +72,8 @@ set wildmode=longest,list,full
 set autoread
 au FocusGained * :checktime
 
+set updatetime=100
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""" Individual settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -82,9 +86,10 @@ let g:netrw_dirhistmax=0 " disable annoying hist file
 autocmd BufRead *.txt set spell
 autocmd BufRead *.txt set lbr
 
-" fix latex problem
-autocmd BufRead,BufNewFile *.tex set filetype=tex
-let g:neotex_enabled=2  " enable latex compiling
+" latex
+let g:neotex_enabled=2 " enable latex compiling
+let g:tex_flavor = 'latex' " fix latex problem
+"autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""" Keybindings
