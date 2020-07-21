@@ -1,62 +1,36 @@
 set viminfo+=n~/.config/nvim/viminfo
 
-let mapleader=" "
-
-let g:neotex_enabled=2
-"let g:deoplete#enable_at_startup=1
 "let g:ale_complion_enabled=1
-let g:gruvbox_contrast_dark="hard"
-let g:gruvbox_italic=1
 
-" plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" Plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('/home/ak/.local/share/nvim/plugged')
 
-"Plug 'vifm/vifm.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'dense-analysis/ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'donRaphaco/neotex', { 'for': 'tex'}
-Plug 'ericcurtin/CurtineIncSw.vim'
-Plug 'rrethy/vim-hexokinase'
-Plug 'morhetz/gruvbox'
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'vifm/vifm.vim'                       " vifm integration
+Plug 'morhetz/gruvbox'                     " color scheme
+Plug 'rrethy/vim-hexokinase'               " highlight colors in that color
+Plug 'dense-analysis/ale'                  " linting
+Plug 'jiangmiao/auto-pairs'                " delimiter auto pairing
+Plug 'airblade/vim-gitgutter'              " git change indicators
+Plug 'donRaphaco/neotex', { 'for': 'tex'}  " tex compiler
+Plug 'ericcurtin/CurtineIncSw.vim'         " header/source switching
 
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Theming
+"""""" Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" theming
+let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_italic=1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 autocmd vimenter * colorscheme gruvbox
 set termguicolors
 let g:Hexokinase_highlighters=['backgroundfull'] " highlight colors
-highlight VertSplit cterm=NONE " remove ugly split indicator
+highlight VertSplit cterm=NONE                   " remove ugly split indicator
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" General
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-filetype plugin on " detect file type
-set path+=**
-set nocompatible
-set title
-set mouse=a
-set clipboard=unnamedplus
-syntax on
-set number
-
-" undo
-set undodir=$XDG_CACHE_HOME/nvim/undodir
-set undofile
-
-" completion
-set wildmenu
-set wildmode=longest,list,full
-
-" auto update file when changed from something else
-set autoread
-au FocusGained * :checktime
-
-" Whitespace
+" whitespace
 set tabstop=4
 set shiftwidth=4
 set list
@@ -67,8 +41,34 @@ autocmd BufWritePre * %s/\s\+$//e " Delete trailing whitespace
 set cc=81
 hi ColorColumn ctermbg=236
 
-" highlight current line
-set cursorline
+syntax on
+set number
+set cursorline " highlight current line
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""" General
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set leader key
+let mapleader=" "
+
+filetype plugin on " detect file type
+set path+=**
+set nocompatible
+set title
+set mouse=a
+set clipboard=unnamedplus
+
+" undo
+set undodir=$XDG_CACHE_HOME/nvim/undodir
+set undofile
+
+" file completion
+set wildmenu
+set wildmode=longest,list,full
+
+" auto update file when changed somewhere else
+set autoread
+au FocusGained * :checktime
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""" Individual settings
@@ -84,9 +84,10 @@ autocmd BufRead *.txt set lbr
 
 " fix latex problem
 autocmd BufRead,BufNewFile *.tex set filetype=tex
+let g:neotex_enabled=2  " enable latex compiling
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""" Keybindings
+"""""" Keybindings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Make Y work the way you'd expect
 map Y y$
@@ -98,7 +99,7 @@ nnoremap <BS> bcw
 nnoremap <Leader>/ :%s//g<Left><Left>
 vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
-" screen splits hotkeys
+" screen split hotkeys
 set splitbelow splitright
 map <c-h> <c-w>h
 map <c-j> <c-w>j
