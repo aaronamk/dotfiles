@@ -16,7 +16,7 @@ export SSH_AUTH_SOCK &
 mpd &
 
 # fix audio over displayport delay problem
-mpv --pause $SCRIPTS/silent.mp3 &
+#mpv --pause $SCRIPTS/silent.mp3 &
 
 # start clipboard daemon
 clipmenud &

@@ -1,7 +1,6 @@
 # reload
 super + r
 	reload.sh
-	load-polybar.sh
 
 # simulate arrow keys
 @mod1 + {h,j,k,l}
@@ -23,7 +22,7 @@ mod3 + semicolon
 
 # launch launcher
 mod3 + shift + Return
-	$TERMINAL -e launch.sh
+	$TERMINAL -n "launch" -e fzf-launch.sh
 
 # explore directories
 mod3 + e
@@ -42,12 +41,9 @@ mod3 + m
 	pkill ncmpcpp; \
 	$TERMINAL -n "music_browser" -e ncmpcpp
 
+# select from clipboard history
 super + p
 	$TERMINAL -n "clipboard" -e clipmenu
-
-# lock screen
-super + Escape
-	i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png
 
 # screenshot
 Print
@@ -57,7 +53,7 @@ Print
 super + Scroll_Lock
 	systemctl suspend
 super + shift + q
-	$TERMINAL -n "session_options" -e session-options.sh
+	$TERMINAL -n "session_options" -e fzf-session-options.sh
 
 # audio
 XF86Audio{Mute,LowerVolume,RaiseVolume}
@@ -81,5 +77,5 @@ super + {j,k}
 	set-brightness.sh {-,+}
 
 # redshift
-super + shift + {Down,Up}
+super + shift + {j,k}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}

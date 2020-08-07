@@ -1,6 +1,7 @@
 [Default Applications]
 inode/directory=vifm.desktop;
 inode/x-empty=nvim.desktop;
+application/octet-stream=nvim.desktop;
 text/plain=nvim.desktop;
 text/x-shellscript=nvim.desktop;
 text/x-c++=nvim.desktop;
@@ -11,6 +12,7 @@ text/x-chdr=nvim.desktop;
 text/x-csrc=nvim.desktop;
 text/x-java=nvim.desktop;
 text/x-python=nvim.desktop;
+text/x-script.python=nvim.desktop;
 text/x-makefile=nvim.desktop;
 text/x-pascal=nvim.desktop;
 text/x-tex=nvim.desktop;

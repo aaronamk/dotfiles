@@ -53,9 +53,11 @@ set cursorline " highlight current line
 " set leader key
 let mapleader=" "
 
+set autoindent
+filetype plugin indent on
+
 filetype plugin on " detect file type
 set path+=**
-set nocompatible
 set title
 set mouse=a
 set clipboard=unnamedplus
@@ -97,7 +99,7 @@ let g:tex_flavor = 'latex' " fix latex problem
 " Make Y work the way you'd expect
 map Y y$
 
-" enable ctrl+delete like other editors
+" enable deleting a word like other editors
 nnoremap <BS> bcw
 
 " find/replace
