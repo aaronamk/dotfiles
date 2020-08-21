@@ -1,6 +1,6 @@
 set viminfo+=n~/.config/nvim/viminfo
 
-"let g:ale_complion_enabled=1
+"let g:ale_completion_enabled=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""" Plugins
@@ -40,7 +40,7 @@ set listchars=tab:>-
 autocmd BufWritePre * %s/\s\+$//e " Delete trailing whitespace
 
 " mark 80 character limit
-set cc=81
+set cc=81,121
 hi ColorColumn ctermbg=236
 
 syntax on
@@ -51,10 +51,13 @@ set cursorline " highlight current line
 """""" General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set leader key
+"map " " nop
 let mapleader=" "
 
 set autoindent
 filetype plugin indent on
+
+set scrolloff=10
 
 filetype plugin on " detect file type
 set path+=**
@@ -102,17 +105,18 @@ map Y y$
 " enable deleting a word like other editors
 nnoremap <BS> bcw
 
+" quickly write a file
+nnoremap <Leader>w :w<CR>
+
 " find/replace
 nnoremap <Leader>/ :%s//g<Left><Left>
 vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
 " screen split hotkeys
 set splitbelow splitright
-map <c-h> <c-w>h
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-l> <c-w>l
-nnoremap <silent> <CR> :noh<CR><CR>
+map <c-j> <c-w>w
+map <c-k> <c-w>W
+nnoremap <Leader> <CR> :noh<CR>
 
 " switch between header and source
 map <c-space> :call CurtineIncSw()<CR>

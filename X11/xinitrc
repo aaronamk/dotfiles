@@ -3,8 +3,8 @@
 reload.sh
 
 # start authentication agent
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
-export SSH_AUTH_SOCK &
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
+#export SSH_AUTH_SOCK &
 
 # start lock screen daemon
 #xss-lock -- i3lock -n -u -c 1c69b1 -i $XDG_PICTURES_DIR/backgrounds/blue_screen.png &

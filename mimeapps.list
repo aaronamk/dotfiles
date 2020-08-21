@@ -8,6 +8,7 @@ text/x-c++=nvim.desktop;
 text/x-c++hdr=nvim.desktop;
 text/x-c++src=nvim.desktop;
 text/x-c=nvim.desktop;
+text/x-diff=nvim.desktop;
 text/x-chdr=nvim.desktop;
 text/x-csrc=nvim.desktop;
 text/x-java=nvim.desktop;
@@ -43,5 +44,6 @@ x-scheme-handler/zoommtg=Zoom.desktop;
 x-scheme-handler/zoomphonecall=Zoom.desktop;
 x-scheme-handler/zoomus=Zoom.desktop;
 
-[Added Associations]
 application/x-gzip=org.gnome.FileRoller.desktop;
+application/zip=org.gnome.FileRoller.desktop;
+application/gzip=org.gnome.FileRoller.desktop;

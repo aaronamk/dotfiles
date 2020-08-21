@@ -13,6 +13,7 @@ export CM_LAUNCHER=fzf
 export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"
 export MOZ_USE_XINPUT2="1"
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 # ~/ cleaning
 export XDG_CONFIG_HOME=$HOME/.config
