@@ -2,7 +2,7 @@
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="st"
+export TERMINAL="sakura"
 export BROWSER="firefox"
 export FILE="vifm"
 

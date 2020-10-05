@@ -14,7 +14,7 @@ super + r
 
 # launch terminal
 mod3 + Return
-	$TERMINAL
+	$TERMINAL -t "terminal"
 
 # launch editor
 mod3 + semicolon
@@ -22,7 +22,7 @@ mod3 + semicolon
 
 # launch launcher
 mod3 + shift + Return
-	$TERMINAL -n "launch" -e fzf-launch.sh
+	$TERMINAL -t "launch" -e fzf-launch.sh
 
 # explore directories
 mod3 + e
@@ -38,12 +38,12 @@ mod3 + {_,shift} + backslash
 
 # launch music player
 mod3 + m
-	pkill ncmpcpp; \
-	$TERMINAL -n "music_browser" -e ncmpcpp
+	$TERMINAL -c 130 -r 70 -t "music_browser" -e ncmpcpp
+	#$TERMINAL -g 130x90 -t "music_browser" -e ncmpcpp # st
 
 # select from clipboard history
 super + p
-	$TERMINAL -n "clipboard" -e clipmenu
+	$TERMINAL -t "clipboard" -e clipmenu
 
 # screenshot
 Print
@@ -53,7 +53,8 @@ Print
 super + Scroll_Lock
 	systemctl suspend
 super + shift + q
-	$TERMINAL -n "session_options" -e fzf-session-options.sh
+	$TERMINAL -c 30 -r 15 -t "session_options" -e fzf-session-options.sh
+#	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh # st
 
 # audio
 XF86Audio{Mute,LowerVolume,RaiseVolume}
@@ -64,7 +65,8 @@ super + {h,l}
 super + shift + h
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 super + shift + l
-	$TERMINAL -n "audio_mixer" -e pulsemixer
+	$TERMINAL -c 130 -r 30 -t "audio_mixer" -e pulsemixer
+#	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer # st
 
 # mpd
 {Pause,super + comma,super + period}

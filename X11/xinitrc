@@ -14,12 +14,20 @@ reload.sh
 
 # start music daemon
 mpd &
+mpc consume on
 
 # fix audio over displayport delay problem
 #mpv --pause $SCRIPTS/silent.mp3 &
 
+#set audio levels
+pactl set-sink-volume @DEFAULT_SINK@ 50%
+pactl set-source-volume @DEFAULT_SOURCE@ 50%
+
 # start clipboard daemon
 clipmenud &
+
+# run bar
+#run-bar.sh &
 
 # start wm
 exec dwm

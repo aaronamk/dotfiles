@@ -4,6 +4,10 @@ export KEYTIMEOUT=1
 bindkey '^K' history-substring-search-up
 bindkey '^J' history-substring-search-down
 
+# make delete key work
+bindkey    "^[[3~"          delete-char
+bindkey    "^[3;5~"         delete-char
+
 # Change cursor shape for different vi modes.
 function zle-keymap-select {
 	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
@@ -47,18 +51,23 @@ plugins=(git)
 
 ZSH_THEME="gruvbox"
 
-# enable colors and set prompt
+# enable colors
 autoload -U colors && colors
-PS1="%B%{$fg[blue]%}%~%{$reset_color%}$ "
 
-# git
-autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
+# set prompt
+PROMPT="%B%F{10}%n%F{15}@%F{14}%m%f:%F{4}%~%F{15}$ "
+
+# git prompt
 setopt prompt_subst
-RPROMPT=\$vcs_info_msg_0_
-# PROMPT=\$vcs_info_msg_0_'%# '
-zstyle ':vcs_info:git:*' formats '%b'
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr '*'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:git*' formats '%B%F{15} %F{9}%u%F{15}%b%F{10}%c%f%a'
+precmd() { vcs_info }
+
+RPROMPT='${vcs_info_msg_0_}'
 
 # tab complete
 zstyle :compinstall filename '/home/ak/.config/zsh/.zshrc'
@@ -89,6 +98,7 @@ alias g="git"
 alias py="python"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias update-mirrors="reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
+alias yacc="byacc" # I did this so that something would install right
 
 # Other
 
@@ -107,3 +117,5 @@ alias libinputrc="cd /etc/X11/xorg.conf.d"
 
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null
+source /usr/share/zsh/plugins/zsh-autopair/autopair.zsh
+source /usr/share/doc/find-the-command/ftc.zsh
