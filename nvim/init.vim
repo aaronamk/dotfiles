@@ -32,6 +32,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 autocmd vimenter * colorscheme gruvbox
 set termguicolors
 let g:Hexokinase_highlighters=['backgroundfull'] " highlight colors
+let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla,'
 highlight VertSplit cterm=NONE                   " remove ugly split indicator
 
 " whitespace

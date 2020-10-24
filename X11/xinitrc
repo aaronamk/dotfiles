@@ -14,6 +14,7 @@ reload.sh
 
 # start music daemon
 mpd &
+mpDris2 &
 mpc consume on
 
 # fix audio over displayport delay problem
