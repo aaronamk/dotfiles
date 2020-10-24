@@ -36,14 +36,9 @@ mod3 + {_,shift} + slash
 mod3 + {_,shift} + backslash
 	$BROWSER {_,-private-window}
 
-# launch music player
-mod3 + m
-	$TERMINAL -c 130 -r 70 -t "music_browser" -e ncmpcpp
-	#$TERMINAL -g 130x90 -t "music_browser" -e ncmpcpp # st
-
 # select from clipboard history
 super + p
-	$TERMINAL -t "clipboard" -e clipmenu
+	$TERMINAL -c 130 -r 60 -t "clipboard" -e clipmenu
 
 # screenshot
 Print
@@ -57,6 +52,9 @@ super + shift + q
 #	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh # st
 
 # audio
+super + shift + l
+	$TERMINAL -c 130 -r 30 -t "audio_mixer" -e pulsemixer
+#	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer # st
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
@@ -64,19 +62,23 @@ super + {h,l}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
 super + shift + h
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
-super + shift + l
-	$TERMINAL -c 130 -r 30 -t "audio_mixer" -e pulsemixer
-#	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer # st
 
-# mpd
+# media
+mod3 + m
+	$TERMINAL -c 130 -r 60 -t "music_browser" -e ncmpcpp
+	#$TERMINAL -g 130x90 -t "music_browser" -e ncmpcpp # st
 {Pause,super + comma,super + period}
-	mpc {toggle,prev,next}
+	playerctl --player=playerctld {play-pause,previous,next}
+{super + shift + comma,super + shift + period}
+	playerctl --player=playerctld position 5{-,+}
+shift + Pause
+	mpc toggle
 
 # brightness
 XF86MonBrightness{Down,Up}
-	set-brightness.sh {-,+}
+	brightness-ctrl.sh {-,+}
 super + {j,k}
-	set-brightness.sh {-,+}
+	brightness-ctrl.sh {-,+}
 
 # redshift
 super + shift + {j,k}
