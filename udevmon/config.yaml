@@ -1,0 +1,17 @@
+- JOB: "intercept -g $DEVNODE | dual-function-keys -c /home/ak/.config/udevmon/akko-kb.yaml | uinput -d $DEVNODE"
+  DEVICE:
+    NAME: "Ducky Zero 3108T"
+    EVENTS:
+      EV_KEY: [KEY_TAB, KEY_CAPSLOCK]
+
+- JOB: "intercept -g $DEVNODE | dual-function-keys -c /home/ak/.config/udevmon/thinkpad-kb.yaml | uinput -d $DEVNODE"
+  DEVICE:
+    NAME: "AT Translated Set 2 keyboard"
+    EVENTS:
+      EV_KEY: [KEY_CAPSLOCK]
+
+- JOB: "intercept -g $DEVNODE | dual-function-keys -c /home/ak/.config/udevmon/thinkpad-tpoint.yaml | uinput -d $DEVNODE"
+  DEVICE:
+    NAME: "TPPS/2 IBM TrackPoint"
+    EVENTS:
+      EV_KEY: [BTN_RIGHT]

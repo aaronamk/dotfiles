@@ -1,43 +1,43 @@
-# reload
-super + r
-	reload.sh
+# reload xorg processes
+alt + r
+	reload-xorg-processes.sh
 
 # simulate arrow keys
-@mod1 + {h,j,k,l}
-	xdotool key --clearmodifiers {Left,Down,Up,Right}
+#@alt + {h,j,k,l}
+#	xdotool key --clearmodifiers {Left,Down,Up,Right}
 
 # switch desktop (fallback, slightly slower)
-#mod3 + {0-9}
+#super + {0-9}
 #	xdotool set_desktop {0-9}
-#mod3 + {comma,period}
+#super + {comma,period}
 #	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1,+ 1})"
 
 # launch terminal
-mod3 + Return
+super + Return
 	$TERMINAL -t "terminal"
 
 # launch editor
-mod3 + semicolon
+super + semicolon
 	$TERMINAL -e $EDITOR
 
 # launch launcher
-mod3 + shift + Return
+super + shift + Return
 	$TERMINAL -t "launch" -e fzf-launch.sh
 
 # explore directories
-mod3 + e
+super + e
 	$TERMINAL -e vifm
 
 # fuzzy find file
-mod3 + {_,shift} + slash
+super + {_,shift} + slash
 	$TERMINAL -e {fzf-open.sh,fzf-open-meta.sh}
 
 # launch browser
-mod3 + {_,shift} + backslash
+super + {_,shift} + backslash
 	$BROWSER {_,-private-window}
 
 # select from clipboard history
-super + p
+alt + p
 	$TERMINAL -c 130 -r 60 -t "clipboard" -e clipmenu
 
 # screenshot
@@ -45,31 +45,31 @@ Print
 	screenshot.sh
 
 # session functions
-super + Scroll_Lock
+alt + Scroll_Lock
 	systemctl suspend
-super + shift + q
+alt + shift + q
 	$TERMINAL -c 30 -r 15 -t "session_options" -e fzf-session-options.sh
 #	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh # st
 
 # audio
-super + shift + l
+alt + shift + l
 	$TERMINAL -c 130 -r 30 -t "audio_mixer" -e pulsemixer
 #	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer # st
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
-super + {h,l}
+alt + {h,l}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
-super + shift + h
+alt + shift + h
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # media
-mod3 + m
+super + m
 	$TERMINAL -c 130 -r 60 -t "music_browser" -e ncmpcpp
 	#$TERMINAL -g 130x90 -t "music_browser" -e ncmpcpp # st
-{Pause,super + comma,super + period}
+{Pause,alt + comma,alt + period}
 	playerctl --player=playerctld {play-pause,previous,next}
-{super + shift + comma,super + shift + period}
+{alt + shift + comma,alt + shift + period}
 	playerctl --player=playerctld position 5{-,+}
 shift + Pause
 	mpc toggle
@@ -77,9 +77,9 @@ shift + Pause
 # brightness
 XF86MonBrightness{Down,Up}
 	brightness-ctrl.sh {-,+}
-super + {j,k}
+alt + {j,k}
 	brightness-ctrl.sh {-,+}
 
 # redshift
-super + shift + {j,k}
+alt + shift + {j,k}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}

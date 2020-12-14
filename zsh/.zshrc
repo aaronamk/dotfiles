@@ -55,7 +55,7 @@ ZSH_THEME="gruvbox"
 autoload -U colors && colors
 
 # set prompt
-PROMPT="%B%F{10}%n%F{15}@%F{14}%m%f:%F{4}%~%F{15}$ "
+PROMPT="%B%F{10}%n%F{15}@%F{14}%m%f:%F{4}%~%F{15}$ %f"
 
 # git prompt
 setopt prompt_subst

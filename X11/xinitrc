@@ -1,6 +1,7 @@
 #!/bin/sh
 
-reload.sh
+startup.sh
+reload-xorg-processes.sh
 
 # start authentication agent
 #eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
@@ -11,18 +12,6 @@ reload.sh
 
 # set screen lock timeout
 #xset s off &
-
-# start music daemon
-mpd &
-mpDris2 & # add support for MPRIS
-#mpc consume on
-
-# fix audio over displayport delay problem
-#mpv --pause $SCRIPTS/silent.mp3 &
-
-#set audio levels
-pactl set-sink-volume @DEFAULT_SINK@ 50%
-pactl set-source-volume @DEFAULT_SOURCE@ 50%
 
 # start clipboard daemon
 clipmenud &
