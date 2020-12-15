@@ -1,40 +1,36 @@
 set viminfo+=n~/.config/nvim/viminfo
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
-
-Plug 'neovim/nvim-lspconfig'                " LSP
-Plug 'nvim-lua/completion-nvim'             " LSP completion
-Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
-Plug 'farmergreg/vim-lastplace'             " restore last cursor position
-Plug 'tpope/vim-repeat'                     " . repeating for plugins
-Plug 'tpope/vim-surround'                   " delimiter bindings
-Plug 'tpope/vim-fugitive'                   " git integration
-Plug 'airblade/vim-gitgutter'               " git change indicators
-Plug 'junegunn/fzf.vim'                     " fzf integration
-Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
-Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
-Plug 'itchyny/lightline.vim'                " set status line
-Plug 'morhetz/gruvbox'                      " color scheme
-Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
-Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
-Plug 'donRaphaco/neotex', { 'for': 'tex'}   " tex compiler
-"Plug 'vifm/vifm.vim'                        " vifm integration
-"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " don't need this?
-"Plug 'dense-analysis/ale'                   " linting
-
+  Plug 'neovim/nvim-lspconfig'                " LSP
+  Plug 'nvim-lua/completion-nvim'             " LSP completion
+  Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
+  Plug 'farmergreg/vim-lastplace'             " restore last cursor position
+  Plug 'tpope/vim-repeat'                     " . repeating for plugins
+  Plug 'tpope/vim-surround'                   " delimiter bindings
+  Plug 'tpope/vim-fugitive'                   " git integration
+  Plug 'airblade/vim-gitgutter'               " git change indicators
+  Plug 'junegunn/fzf.vim'                     " fzf integration
+  Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
+  Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
+  Plug 'itchyny/lightline.vim'                " set status line
+  Plug 'morhetz/gruvbox'                      " color scheme
+  Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
+  Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
+  Plug 'donRaphaco/neotex', { 'for': 'tex'}   " tex compiler
+  "Plug 'vifm/vifm.vim'                        " vifm integration
+  "Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " don't need this?
+  "Plug 'dense-analysis/ale'                   " linting
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" General
+" General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set leader key
 "map " " nop
 let mapleader=" "
 
-autocmd BufEnter *.cpp :Gcd " set root directory
+" set root directory
+autocmd BufEnter *.*pp :Gcd " throws an error if not in git repo
 
 set autoindent
 filetype plugin indent on
@@ -73,6 +69,7 @@ set updatetime=100
 " settings for delimiter matching
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
+let delimitMate_excluded_regions = ""
 
 set completeopt=menuone,noinsert
 
@@ -86,7 +83,7 @@ augroup LuaHighlight
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Individual settings
+" Individual settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 lua <<EOF
 -- highlighting
@@ -123,26 +120,35 @@ let g:tex_flavor = 'latex' " fix latex problem
 "autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Keybindings
+" Keybindings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Make Y work the way you'd expect
 map Y y$
 
-" enable deleting a word like other editors
-nnoremap <BS> bcw
+" vim surround visual mode (use c instead of s)
+vmap s S
 
 " quickly write a file
-nnoremap <Leader>w :write<CR>
+nnoremap <Leader>w :update<CR>
 " quickly reload a file
 nnoremap <Leader>e :edit<CR>
 
-" completion keys
+" find/replace
+nnoremap <Leader>/ :%s//g<Left><Left>
+vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
+
+" use tab to cycle through search results
+set wildcharm=<c-z>
+cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
+cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
+
+" completion TODO: function should be simplified or removed
 function! SmartTab()
-    let col = col('.') - 1
-    if !col
-        return "\<Tab>"
-    endif
-    return "\<c-x>\<c-o>"
+  let col = col('.') - 1
+  if !col
+    return "\<Tab>"
+  endif
+  return "\<c-x>\<c-o>"
 endfunction
 inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : SmartTab()
 inoremap <expr> <CR> pumvisible() ? "\<c-y>" : "\<CR>"
@@ -163,10 +169,6 @@ nnoremap <c-space> :call CurtineIncSw()<CR>
 " fzf
 nnoremap <c-_> :GFiles<CR>
 
-" find/replace
-nnoremap <Leader>/ :%s//g<Left><Left>
-vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
-
 " screen split hotkeys
 set splitbelow splitright
 nnoremap <c-j> <c-w>w
@@ -175,12 +177,8 @@ nnoremap <c-k> <c-w>W
 " clear search
 nnoremap <Leader><Esc> :noh<CR>
 
-" TA Grading help
-nnoremap <Leader>n /\ ____<Return>lllR
-nnoremap <Leader>N /\ ____<Return>NlllR
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""" Appearance
+" Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " theming
 let g:gruvbox_contrast_dark="hard"
