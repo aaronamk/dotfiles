@@ -53,6 +53,7 @@ ZSH_THEME="gruvbox"
 
 # enable colors
 autoload -U colors && colors
+. "/usr/share/LS_COLORS/dircolors.sh"
 
 # set prompt
 PROMPT="%B%F{10}%n%F{15}@%F{14}%m%f:%F{4}%~%F{15}$ %f"
