@@ -22,9 +22,9 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   "Plug 'dense-analysis/ale'                   " linting
 call plug#end()
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
 " General
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " set leader key
 "map " " nop
 let mapleader=" "
@@ -82,9 +82,9 @@ augroup LuaHighlight
   autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
 augroup END
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
 " Individual settings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 lua <<EOF
 -- highlighting
 require'nvim-treesitter.configs'.setup {
@@ -119,9 +119,9 @@ let g:neotex_enabled=2 " enable latex compiling
 let g:tex_flavor = 'latex' " fix latex problem
 "autocmd BufRead,BufNewFile *.tex set filetype=tex
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
 " Keybindings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Make Y work the way you'd expect
 map Y y$
 
@@ -177,9 +177,9 @@ nnoremap <c-k> <c-w>W
 " clear search
 nnoremap <Leader><Esc> :noh<CR>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ------------------------------------------------------------------------------
 " Appearance
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " theming
 let g:gruvbox_contrast_dark="hard"
 let g:gruvbox_italic=1
