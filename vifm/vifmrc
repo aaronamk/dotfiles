@@ -162,8 +162,8 @@ mark p ~/Projects
 mark g ~/Projects/Parryt
 mark S ~/Desktop/College
 
-" Unsorted defaults
 " ------------------------------------------------------------------------------
+" Unsorted defaults
 
 " :com[mand][!] command_name action
 " The following macros can be used in a command
