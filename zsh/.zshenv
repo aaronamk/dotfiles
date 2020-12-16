@@ -14,30 +14,29 @@ export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"
 export MOZ_USE_XINPUT2="1"
 export _JAVA_AWT_WM_NONREPARENTING=1
+# mine
+export DATE_FMT="%m/%d/%Y %I:%M:%S %P"
 
-# ~/ cleaning
-export XDG_CONFIG_HOME=$HOME/.config
-export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
-
-export XDG_DATA_HOME=$HOME/.local/share
-export PASSWORD_STORE_DIR=$XDG_DATA_HOME/password-store
-export GNUPGHOME=$XDG_DATA_HOME/gnupg
-
-export XDG_CACHE_HOME=$HOME/.cache
-export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
-
-export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
-
-# Add scripts path
-export SCRIPTS=$HOME/.local/bin
-export PATH="$SCRIPTS:$(ls -d $SCRIPTS/*/ | tr -s '\n' ':' | sed 's/\x2F:/:/g')$PATH"
-
-export COMPILED=$HOME/.local/compiled
-
-# XDG dirs
+# Locations
 export XDG_DESKTOP_DIR="$HOME/Desktop"
 export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CACHE_HOME=$HOME/.cache
+# mine
+export COMPILED=$HOME/.local/compiled
+export SCRIPTS=$HOME/.local/bin
+
+# ~/ cleaning
+export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+export PASSWORD_STORE_DIR=$XDG_DATA_HOME/password-store
+export GNUPGHOME=$XDG_DATA_HOME/gnupg
+export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
+export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
+
+# Add scripts to path
+export PATH="$SCRIPTS:$(ls -d $SCRIPTS/*/ | tr -s '\n' ':' | sed 's/\x2F:/:/g')$PATH"
