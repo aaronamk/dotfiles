@@ -86,15 +86,17 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
 # aliases
 alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
+alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
+alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="ls --color=auto --group-directories-first"
 alias grep="grep --color=auto"
 alias s="sudo "
 alias se="sudoedit"
 alias p="pacman"
-alias dmenu="rofi -dmenu"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
+alias vifm="vifm-previewer.sh"
 alias g="git"
 alias py="python"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
