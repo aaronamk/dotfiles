@@ -16,5 +16,7 @@ reload-xorg-processes.sh
 # start clipboard daemon
 clipmenud &
 
+run-bar.sh &
+
 # start wm
 exec dwm

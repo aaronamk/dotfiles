@@ -1,4 +1,5 @@
-set viminfo+=n~/.config/nvim/viminfo
+" Vim config file
+" Author: aaronamk
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'neovim/nvim-lspconfig'                " LSP
@@ -26,23 +27,21 @@ call plug#end()
 " General
 
 " set leader key
-"map " " nop
+noremap <space> <nop>
 let mapleader=" "
 
 " set root directory
 autocmd BufEnter *.*pp :Gcd " throws an error if not in git repo
 
+filetype plugin indent on " detect file type
 set autoindent
-filetype plugin indent on
-
 set scrolloff=10
-
-filetype plugin on " detect file type
-set path+=**
 set title
 set mouse=a
 set clipboard=unnamedplus
 set spell
+set hidden " enable switching buffers without save
+set updatetime=100 " fixes gitgutter update time
 
 " whitespace
 set tabstop=4
@@ -56,31 +55,20 @@ set undodir=$XDG_CACHE_HOME/nvim/undodir
 set undofile
 
 " file completion
+set path+=**
 set wildmenu
 set wildmode=longest,list,full
-
-" auto update file when changed somewhere else
-set autoread
-au FocusGained * :checktime
-
-" fixes gitgutter update time
-set updatetime=100
-
-" settings for delimiter matching
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-let delimitMate_excluded_regions = ""
-
 set completeopt=menuone,noinsert
-
-" use omni completion provided by lsp
-autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 set inccommand=split
 augroup LuaHighlight
   autocmd!
   autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
 augroup END
+
+" auto update file when changed somewhere else
+set autoread
+au FocusGained * :checktime
 
 " ------------------------------------------------------------------------------
 " Individual settings
@@ -102,20 +90,29 @@ require'nvim-treesitter.configs'.setup {
   require'lspconfig'.pyls.setup{}
   require'lspconfig'.bashls.setup{}
 EOF
+" use omni completion provided by lsp
+autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+" treesitter folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
 
+" settings for delimiter matching
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+let delimitMate_excluded_regions = ""
+
 " netrw
-let g:netrw_banner=0     " remove banner
-let g:netrw_liststyle=3  " set to tree view
-let g:netrw_dirhistmax=0 " disable annoying hist file
+let g:netrw_banner = 0     " remove banner
+let g:netrw_liststyle = 3  " set to tree view
+let g:netrw_dirhistmax = 0 " disable annoying hist file
 
 " plaintext file options
 autocmd BufRead *.txt set lbr
 
 " latex
-let g:neotex_enabled=2 " enable latex compiling
+let g:neotex_enabled = 2 " enable latex compiling
 let g:tex_flavor = 'latex' " fix latex problem
 "autocmd BufRead,BufNewFile *.tex set filetype=tex
 
@@ -123,10 +120,16 @@ let g:tex_flavor = 'latex' " fix latex problem
 " Keybindings
 
 " Make Y work the way you'd expect
-map Y y$
+nmap Y y$
 
 " vim surround visual mode (use c instead of s)
 vmap s S
+
+" for easier use of macros
+vmap Q @q
+
+" ctrl-backspace deletes word
+inoremap <c-h> <c-w>
 
 " quickly write a file
 nnoremap <Leader>w :update<CR>
@@ -180,13 +183,12 @@ nnoremap <Leader><Esc> :noh<CR>
 " ------------------------------------------------------------------------------
 " Appearance
 
-" theming
-let g:gruvbox_contrast_dark="hard"
-let g:gruvbox_italic=1
+let g:gruvbox_contrast_dark = "hard"
+let g:gruvbox_italic = 1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 colorscheme gruvbox
 set termguicolors
-let g:Hexokinase_highlighters=['backgroundfull'] " highlight colors
+let g:Hexokinase_highlighters = ['backgroundfull'] " highlight colors
 let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla,'
 highlight VertSplit cterm=NONE                   " remove ugly split indicator
 

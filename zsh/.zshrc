@@ -85,7 +85,7 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
 
 # aliases
-alias startx="startx $XDG_CONFIG_HOME/X11/xinitrc"
+alias startx="sx"
 alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="ls --color=auto --group-directories-first"
