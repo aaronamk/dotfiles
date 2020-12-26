@@ -1,4 +1,5 @@
 #MAPPINGS:
+    # Right click as Meta (doesn't work, need to figure out how to do this)
 #    - KEY: BTN_RIGHT
 #      TAP: BTN_RIGHT
 #      HOLD: KEY_LEFTMETA

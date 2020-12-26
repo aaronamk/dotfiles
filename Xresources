@@ -1,10 +1,7 @@
-! Base16 Gruvbox dark, hard
-! Scheme: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+*font: mono:size=10:antialias=true:autohint=true
 
-! hard contrast:
+! Gruvbox
 *background: #1d2021
-! *background: #282828
-! soft contrast: *background: #32302f
 *foreground: #ebdbb2
 ! Black + DarkGrey
 *color0:  #282828
@@ -34,4 +31,4 @@
 #ifdef background_opacity
 *.background:   [background_opacity]#1d2021
 #endif
-*.cursorColor:  #FFFFFF
+*cursorColor:  #FFFFFF

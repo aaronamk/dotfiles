@@ -17,10 +17,8 @@ Speech                  # Install Offline Speech Files
 # Micro+
 #ActionsServices         # Install Actions Services (Android 10+)
 CalendarGoogle          # Install Google Calendar
-#ExchangeGoogle          # Install Exchange Services
+ExchangeGoogle          # Install Exchange Services
 Gmail                   # Install Gmail
-#GoogleNow               # Install Google Now Launcher (Android 4.4 only) (requires Search)
-#PixelIcons              # Install Pixel Icons (Android 7.1 only)
 #PixelLauncher           # Install Pixel Launcher (Android 5.0+) (requires Search and Wallpapers)
 #Wallpapers              # Install Google Wallpapers (Android 5.0+)
 

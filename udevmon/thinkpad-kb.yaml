@@ -1,8 +1,10 @@
 MAPPINGS:
+    # Tab as super
     - KEY: KEY_TAB
       TAP: KEY_TAB
       HOLD: KEY_LEFTMETA
 
+    # caps as ctrl and esc
     - KEY: KEY_CAPSLOCK
       TAP: KEY_ESC
       HOLD: KEY_LEFTCTRL

@@ -38,7 +38,7 @@ super + {_,shift} + backslash
 
 # select from clipboard history
 alt + p
-	$TERMINAL -c 130 -r 60 -t "clipboard" -e clipmenu
+	$TERMINAL -g 130x60 -t "clipboard" -e clipmenu
 
 # screenshot
 Print
@@ -48,13 +48,11 @@ Print
 alt + Scroll_Lock
 	systemctl suspend
 alt + shift + q
-	$TERMINAL -c 30 -r 15 -t "session_options" -e fzf-session-options.sh
-#	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh # st
+	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh
 
 # audio
 alt + shift + l
-	$TERMINAL -c 130 -r 30 -t "audio_mixer" -e pulsemixer
-#	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer # st
+	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
@@ -65,8 +63,7 @@ alt + shift + h
 
 # media
 super + m
-	$TERMINAL -c 130 -r 60 -t "music_browser" -e ncmpcpp
-	#$TERMINAL -g 130x90 -t "music_browser" -e ncmpcpp # st
+	$TERMINAL -g 130x60 -t "music_browser" -e ncmpcpp
 {Pause,alt + comma,alt + period}
 	playerctl --player=playerctld {play-pause,previous,next}
 {alt + shift + comma,alt + shift + period}

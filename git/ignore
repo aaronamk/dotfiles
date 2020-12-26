@@ -1,5 +1,6 @@
 # language server files
 .ccls-cache/
+.cache/
 compile_commands.json
 
 __pycache__/
