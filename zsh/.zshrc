@@ -25,21 +25,16 @@ zle-line-init() {
 }
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+precmd() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # History
+HISTFILE=$XDG_CACHE_HOME/zsh/history
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.cache/zsh/history
-
-# Set window title to current directory
-DISABLE_AUTO_TITLE="true"
-
-case $TERM in
-	st*)
-		precmd () {print -Pn "\e]0;%~\a"}
-		;;
-esac
+setopt share_history
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+setopt hist_reduce_blanks
 
 CASE_SENSITIVE="false"
 
@@ -48,8 +43,6 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(git)
-
-ZSH_THEME="gruvbox"
 
 # enable colors
 autoload -U colors && colors
@@ -121,4 +114,3 @@ alias libinputrc="cd /etc/X11/xorg.conf.d"
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-autopair/autopair.zsh
-source /usr/share/doc/find-the-command/ftc.zsh

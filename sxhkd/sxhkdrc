@@ -14,7 +14,7 @@ alt + r
 
 # launch terminal
 super + Return
-	$TERMINAL -t "terminal"
+	$TERMINAL
 
 # launch editor
 super + semicolon

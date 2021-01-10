@@ -3,12 +3,13 @@
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'neovim/nvim-lspconfig'                " LSP
-  Plug 'nvim-lua/completion-nvim'             " LSP completion
   Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
   Plug 'farmergreg/vim-lastplace'             " restore last cursor position
   Plug 'tpope/vim-repeat'                     " . repeating for plugins
+  Plug 'wellle/targets.vim'                   " better text objects
   Plug 'tpope/vim-surround'                   " delimiter bindings
   Plug 'tpope/vim-fugitive'                   " git integration
+  Plug 'junegunn/gv.vim'                      " commit history
   Plug 'airblade/vim-gitgutter'               " git change indicators
   Plug 'junegunn/fzf.vim'                     " fzf integration
   Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
@@ -77,7 +78,7 @@ autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 " Individual settings
 
 lua <<EOF
--- highlighting
+-- treesitter highlighting
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
   highlight = {
@@ -148,16 +149,8 @@ set wildcharm=<c-z>
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
-" completion TODO: function should be simplified or removed
-function! SmartTab()
-  let col = col('.') - 1
-  if !col
-    return "\<Tab>"
-  endif
-  return "\<c-x>\<c-o>"
-endfunction
-inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : SmartTab()
-inoremap <expr> <CR> pumvisible() ? "\<c-y>" : "\<CR>"
+inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : "\<c-x>\<c-o>"
+inoremap <expr> <CR>  pumvisible() ? "\<c-y>" : "\<CR>"
 inoremap <expr> <Esc> pumvisible() ? "\<c-e>" : "\<Esc>"
 
 " LSP
