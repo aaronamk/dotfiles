@@ -2,7 +2,7 @@
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="st"
+export TERMINAL="foot"
 export BROWSER="firefox"
 export FILE="vifm"
 
@@ -12,7 +12,8 @@ export FZF_DEFAULT_OPTS="--reverse --bind=tab:down,btab:up,change:top"
 export CM_LAUNCHER=fzf
 export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"
-export MOZ_USE_XINPUT2="1"
+export MOZ_USE_XINPUT2=1
+export MOZ_ENABLE_WAYLAND=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 # mine
 export DATE_FMT="%m/%d/%Y %I:%M:%S %P"
