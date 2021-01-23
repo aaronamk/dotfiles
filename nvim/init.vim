@@ -13,7 +13,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'airblade/vim-gitgutter'               " git change indicators
   Plug 'junegunn/fzf.vim'                     " fzf integration
   Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
-  Plug 'nvim-treesitter/nvim-treesitter', { 'commit': '42ca4a4'}      " better syntax highlighting
+  Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
   Plug 'itchyny/lightline.vim'                " set status line
   Plug 'morhetz/gruvbox'                      " color scheme
   Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline

@@ -24,7 +24,7 @@ super + semicolon
 super + shift + Return
 	$TERMINAL -t "launch" -e fzf-launch.sh
 
-# explore directories
+# launch file explorer
 super + e
 	$TERMINAL -e vifm
 
