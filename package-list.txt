@@ -62,7 +62,6 @@ redshift
 reflector
 ripgrep
 sfml
-sx
 sxhkd
 texlive-bibtexextra
 texlive-formatsextra
