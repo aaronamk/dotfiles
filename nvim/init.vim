@@ -20,7 +20,6 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
   Plug 'donRaphaco/neotex', { 'for': 'tex'}   " tex compiler
   "Plug 'vifm/vifm.vim'                        " vifm integration
-  "Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " don't need this?
   "Plug 'dense-analysis/ale'                   " linting
 call plug#end()
 
