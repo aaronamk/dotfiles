@@ -46,7 +46,7 @@ Print
 
 # session functions
 alt + Scroll_Lock
-	systemctl suspend
+	loginctl suspend
 alt + shift + q
 	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh
 
@@ -62,8 +62,8 @@ alt + shift + h
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # media
-super + m
-	$TERMINAL -g 130x60 -t "music_browser" -e ncmpcpp
+#super + m
+#	$TERMINAL -g 130x50 -t "music_browser" -e ncmpcpp
 {Pause,alt + comma,alt + period}
 	playerctl --player=playerctld {play-pause,previous,next}
 {alt + shift + comma,alt + shift + period}

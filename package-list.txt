@@ -1,4 +1,3 @@
-arandr
 autorandr
 base
 bash-language-server
@@ -43,18 +42,15 @@ mtools
 ncmpcpp
 neofetch
 neovim-git
-networkmanager
 newsboat
 noto-fonts-emoji
 ntp
 os-prober
 pacman-contrib
 patch
-pavucontrol
 picard
 piper
 playerctl
-pulseaudio-bluetooth
 pulsemixer
 python-language-server
 python-pynvim
