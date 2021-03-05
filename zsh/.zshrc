@@ -79,6 +79,7 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
 # aliases
 alias startx="sx"
+alias xdg-open="omni-open"
 alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="ls --color=auto --group-directories-first"

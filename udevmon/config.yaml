@@ -1,3 +1,12 @@
+# determine with sudo uinput -p -d /dev/input/by-id/
+
+# GK61 keyboard
+- JOB: "intercept -g $DEVNODE | dual-function-keys -c /home/ak/.config/udevmon/gk61-kb.yaml | uinput -d $DEVNODE"
+  DEVICE:
+    NAME: "SEMITEK USB-HID Gaming Keyboard"
+    EVENTS:
+      EV_KEY: [KEY_TAB, KEY_CAPSLOCK]
+
 # Ducky keyboard
 - JOB: "intercept -g $DEVNODE | dual-function-keys -c /home/ak/.config/udevmon/akko-kb.yaml | uinput -d $DEVNODE"
   DEVICE:
