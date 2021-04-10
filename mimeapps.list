@@ -43,7 +43,9 @@ x-scheme-handler/tel=Zoom.desktop;
 x-scheme-handler/zoommtg=Zoom.desktop;
 x-scheme-handler/zoomphonecall=Zoom.desktop;
 x-scheme-handler/zoomus=Zoom.desktop;
-
 application/x-gzip=org.gnome.FileRoller.desktop;
 application/zip=org.gnome.FileRoller.desktop;
 application/gzip=org.gnome.FileRoller.desktop;
+
+[Added Associations]
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;

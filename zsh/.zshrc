@@ -58,7 +58,7 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' stagedstr '+'
-zstyle ':vcs_info:git*' formats '%B%F{15} %F{9}%u%F{15}%b%F{10}%c%f%a'
+zstyle ':vcs_info:git*' formats '%B%F{15}%F{9}%u%F{15}%b%F{10}%c%f%a'
 precmd() { vcs_info }
 
 RPROMPT='${vcs_info_msg_0_}'
@@ -79,6 +79,7 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
 # aliases
 alias startx="sx"
+alias xdg-open="omni-open"
 alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="ls --color=auto --group-directories-first"

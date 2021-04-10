@@ -1,7 +1,0 @@
-keycode 66 = Control_L
-clear Lock
-add Control = Control_L
-
-keycode 23 = Hyper_R
-add mod3 = Hyper_R
-keycode any = Tab

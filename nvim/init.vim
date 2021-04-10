@@ -4,6 +4,7 @@
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'neovim/nvim-lspconfig'                " LSP
   Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
+  Plug 'Thyrum/vim-stabs'
   Plug 'farmergreg/vim-lastplace'             " restore last cursor position
   Plug 'tpope/vim-repeat'                     " . repeating for plugins
   Plug 'wellle/targets.vim'                   " better text objects
@@ -13,14 +14,15 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'airblade/vim-gitgutter'               " git change indicators
   Plug 'junegunn/fzf.vim'                     " fzf integration
   Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
-  Plug 'nvim-treesitter/nvim-treesitter', { 'commit': '42ca4a4'}      " better syntax highlighting
+  Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
   Plug 'itchyny/lightline.vim'                " set status line
   Plug 'morhetz/gruvbox'                      " color scheme
   Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
   Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
   Plug 'donRaphaco/neotex', { 'for': 'tex'}   " tex compiler
+  "Plug 'rktjmp/lush.nvim'                     " treesitter color scheme?
+  "Plug 'npxbr/gruvbox.nvim'                   " treesitter color scheme?
   "Plug 'vifm/vifm.vim'                        " vifm integration
-  "Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " don't need this?
   "Plug 'dense-analysis/ale'                   " linting
 call plug#end()
 
@@ -59,7 +61,7 @@ set undofile
 set path+=**
 set wildmenu
 set wildmode=longest,list,full
-set completeopt=menuone,noinsert
+set completeopt=menuone
 
 set inccommand=split
 augroup LuaHighlight
@@ -70,6 +72,7 @@ augroup END
 " auto update file when changed somewhere else
 set autoread
 au FocusGained * :checktime
+set shortmess+=A " avoid swap file warnings
 
 " fix weird resizing bug
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
@@ -82,9 +85,6 @@ lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
   highlight = {
-    enable = true,
-  },
-  indent = {
     enable = true,
   },
 }
@@ -130,7 +130,7 @@ nmap Y y$
 vmap s S
 
 " for easier use of macros
-vmap Q @q
+nmap Q @q
 
 " ctrl-backspace deletes word
 inoremap <c-h> <c-w>

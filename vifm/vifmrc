@@ -3,6 +3,8 @@
 " ------------------------------------------------------------------------------
 " General
 
+let mapleader=" "
+
 " use xdg-open by default
 filetype * omni-open.sh
 
@@ -186,9 +188,10 @@ mark P ~/Pictures
 mark b ~/.local/bin
 mark C ~/.local/compiled
 mark m ~/mnt
-mark p ~/Projects
-mark g ~/Projects/Parryt
-mark S ~/Desktop/College
+mark p ~/Desktop/Projects
+mark g ~/Desktop/Projects/Parryt
+mark S ~/Desktop/School
+mark s ~/Desktop/School
 
 " ------------------------------------------------------------------------------
 " Unsorted defaults

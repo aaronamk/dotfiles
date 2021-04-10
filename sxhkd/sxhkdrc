@@ -2,10 +2,6 @@
 alt + r
 	reload-xorg-processes.sh
 
-# simulate arrow keys
-#@alt + {h,j,k,l}
-#	xdotool key --clearmodifiers {Left,Down,Up,Right}
-
 # switch desktop (fallback, slightly slower)
 #super + {0-9}
 #	xdotool set_desktop {0-9}
@@ -24,7 +20,7 @@ super + semicolon
 super + shift + Return
 	$TERMINAL -t "launch" -e fzf-launch.sh
 
-# explore directories
+# launch file explorer
 super + e
 	$TERMINAL -e vifm
 
@@ -37,36 +33,34 @@ super + {_,shift} + backslash
 	$BROWSER {_,-private-window}
 
 # select from clipboard history
-alt + p
-	$TERMINAL -g 130x60 -t "clipboard" -e clipmenu
+#alt + p
+#	$TERMINAL -g 130x60 -t "clipboard" -e clipmenu
 
 # screenshot
 Print
 	screenshot.sh
 
 # session functions
-alt + Scroll_Lock
-	systemctl suspend
-alt + shift + q
+super + BackSpace
 	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh
 
 # audio
-alt + shift + l
+super + XF86AudioMute
 	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
-alt + {h,l}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}2%
-alt + shift + h
-	pactl set-sink-mute @DEFAULT_SINK@ toggle
+shift + XF86AudioMute
+	audio-ctrl.sh
+XF86Tools
+	pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # media
-super + m
-	$TERMINAL -g 130x60 -t "music_browser" -e ncmpcpp
-{Pause,alt + comma,alt + period}
+{XF86AudioPlay,XF86AudioPrev,XF86AudioNext}
 	playerctl --player=playerctld {play-pause,previous,next}
-{alt + shift + comma,alt + shift + period}
+shift + XF86AudioPlay
+	mpc toggle
+{shift + XF86AudioPrev,shift + XF86AudioNext}
 	playerctl --player=playerctld position 5{-,+}
 shift + Pause
 	mpc toggle
@@ -74,9 +68,12 @@ shift + Pause
 # brightness
 XF86MonBrightness{Down,Up}
 	brightness-ctrl.sh {-,+}
+#redshift
+shift + XF86MonBrightness{Down,Up}
+	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
+
 alt + {j,k}
 	brightness-ctrl.sh {-,+}
-
 # redshift
 alt + shift + {j,k}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
