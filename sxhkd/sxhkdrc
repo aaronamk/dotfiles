@@ -50,6 +50,10 @@ super + XF86AudioMute
 XF86Audio{Mute,LowerVolume,RaiseVolume}
 	pactl set-sink-{mute @DEFAULT_SINK@ toggle,volume @DEFAULT_SINK@ -2%,\
 	                                           volume @DEFAULT_SINK@ +2%}
+shift + XF86AudioMute
+	audio-ctrl.sh
+XF86Tools
+	pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # media
 {XF86AudioPlay,XF86AudioPrev,XF86AudioNext}
