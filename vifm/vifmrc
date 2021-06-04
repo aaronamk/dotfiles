@@ -113,7 +113,7 @@ set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
 colorscheme gruvbox
 
 " custom status
-set statusline="%A %u %g %s %d"
+set statusline="%A %u %g %E %d"
 
 " Remove ../ entry
 set dotdirs=rootparent
@@ -187,7 +187,7 @@ mark M ~/Music
 mark P ~/Pictures
 mark b ~/.local/bin
 mark C ~/.local/compiled
-mark m ~/mnt
+mark m /media
 mark p ~/Desktop/Projects
 mark g ~/Desktop/Projects/Parryt
 mark S ~/Desktop/School

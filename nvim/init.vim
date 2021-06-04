@@ -11,7 +11,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'tpope/vim-surround'                   " delimiter bindings
   Plug 'tpope/vim-fugitive'                   " git integration
   Plug 'junegunn/gv.vim'                      " commit history
-  Plug 'airblade/vim-gitgutter'               " git change indicators
+  Plug 'mhinz/vim-signify'                    " git change indicators
   Plug 'junegunn/fzf.vim'                     " fzf integration
   Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
   Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
@@ -19,7 +19,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'morhetz/gruvbox'                      " color scheme
   Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
   Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
-  Plug 'donRaphaco/neotex', { 'for': 'tex'}   " tex compiler
+  Plug 'lervag/vimtex'                        " latex compiler
   "Plug 'rktjmp/lush.nvim'                     " treesitter color scheme?
   "Plug 'npxbr/gruvbox.nvim'                   " treesitter color scheme?
   "Plug 'vifm/vifm.vim'                        " vifm integration
@@ -102,6 +102,9 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
 
+" git indicator settings
+let g:signify_sign_change = '~'
+
 " settings for delimiter matching
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
@@ -116,9 +119,7 @@ let g:netrw_dirhistmax = 0 " disable annoying hist file
 autocmd BufRead *.txt set lbr
 
 " latex
-let g:neotex_enabled = 2 " enable latex compiling
-let g:tex_flavor = 'latex' " fix latex problem
-"autocmd BufRead,BufNewFile *.tex set filetype=tex
+let g:vimtex_view_general_viewer = 'omni-open.sh'
 
 " ------------------------------------------------------------------------------
 " Keybindings
@@ -236,6 +237,7 @@ hi ColorColumn ctermbg=236
 
 set number
 set cursorline " highlight current line
+set fillchars=eob:\ , " remove ~ markers after buffer
 
 " set blinking cursor
 :set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50

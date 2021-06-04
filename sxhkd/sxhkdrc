@@ -72,7 +72,7 @@ XF86MonBrightness{Down,Up}
 shift + XF86MonBrightness{Down,Up}
 	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
 
-alt + {j,k}
+{KP_Subtract,KP_Add}
 	brightness-ctrl.sh {-,+}
 # redshift
 alt + shift + {j,k}
