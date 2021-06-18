@@ -3,6 +3,10 @@
 # Use the "logo" key as the primary modifier
 mod="Mod4"
 
+# startup
+startup.sh
+kanshi &
+
 # applications
 
 
@@ -150,10 +154,11 @@ done
 
 # Set repeat rate-e
 riverctl set-repeat 50 300
+riverctl default-layout rivertile
 
 # Set the layout on startup
-riverctl spawn rivertile
-riverctl output-layout rivertile
+riverctl spawn rivertile -view-padding 0 -outer-padding 0 -main-factor 0.5
+riverctl default-layout rivertile
 
 # Set app-ids of views which should float
 riverctl float-filter-add "float"
