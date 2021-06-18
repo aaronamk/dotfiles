@@ -7,6 +7,7 @@ export BROWSER="firefox"
 export FILE="vifm"
 
 # Settings
+export LC_ALL=en_US.UTF-8
 export GTK_THEME=Material-Black-Lime-4.0
 export PASSWORD_STORE_GENERATED_LENGTH=16
 export FZF_DEFAULT_OPTS="--reverse --bind=tab:down,btab:up,change:top"
