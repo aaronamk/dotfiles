@@ -14,7 +14,7 @@ kanshi &
 riverctl map normal $mod Return spawn $TERMINAL
 
 # launch editor
-riverctl map normal $mod Semicolon spawn $TERMINAL -e $EDITOR
+riverctl map normal $mod Semicolon spawn $TERMINAL $EDITOR
 
 # launch launcher
 riverctl map normal $mod+Shift Return spawn $TERMINAL -T "launch" fzf-launch.sh
@@ -54,8 +54,8 @@ riverctl map normal $mod Equal mod-main-factor +0.05
 
 # Mod+Shift+H and Mod+Shift+L to increment/decrement the number of
 # main views in the layout
-riverctl map normal $mod+Shift H mod-main-count +1
-riverctl map normal $mod+Shift L mod-main-count -1
+riverctl map normal $mod I mod-main-count +1
+riverctl map normal $mod D mod-main-count -1
 
 # Mod+Alt+{H,J,K,L} to move views
 riverctl map normal $mod+Mod1 H move left 100
@@ -133,8 +133,6 @@ riverctl map passthrough $mod F11 enter-mode normal
 # not have a modifier
 for mode in normal locked
 do
-    # Eject the optical drive
-    riverctl map $mode None XF86Eject spawn eject -T
 
     # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
     riverctl map $mode None XF86AudioRaiseVolume  spawn pamixer -i 5
@@ -152,9 +150,9 @@ do
     riverctl map $mode None XF86MonBrightnessDown spawn light -U 5
 done
 
-# Set repeat rate-e
+# input settings
 riverctl set-repeat 50 300
-riverctl default-layout rivertile
+riverctl input 1133:49291:Logitech_G502_HERO_Gaming_Mouse accel-profile flat
 
 # Set the layout on startup
 riverctl spawn rivertile -view-padding 0 -outer-padding 0 -main-factor 0.5

@@ -1,0 +1,22 @@
+bar:
+  height: 16
+  location: bottom
+  background: 000000ff
+
+  left:
+    - river:
+        title: {string: { text: "{seat} - {title}" }}
+        content:
+          map:
+            tag: occupied
+            values:
+              false: {empty: {}}
+              true:
+                string:
+                  margin: 5
+                  text: "{id}: {state}"
+
+  right:
+    - clock:
+        content:
+          - string: {text: "{time} | {date}"}
