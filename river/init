@@ -13,20 +13,20 @@ riverctl map normal $mod Return spawn $TERMINAL
 riverctl map normal $mod Semicolon spawn $TERMINAL -e $EDITOR
 
 # launch launcher
-riverctl map normal $mod+Shift Return spawn $TERMINAL -t "launch" -e fzf-launch.sh
+riverctl map normal $mod+Shift Return spawn $TERMINAL -T "launch" fzf-launch.sh
 
 # file manager
-riverctl map normal $mod E spawn $TERMINAL -e vifm
+riverctl map normal $mod E spawn $TERMINAL vifm
 
 # fuzzy find file
-riverctl map normal $mod+Shift Slash spawn $TERMINAL -e fzf-open-meta.sh
-riverctl map normal $mod Slash spawn $TERMINAL -e fzf-open.sh
+riverctl map normal $mod+Shift Slash spawn $TERMINAL fzf-open-meta.sh
+riverctl map normal $mod Slash spawn $TERMINAL fzf-open.sh
 
 # launch browser
 riverctl map normal $mod Backslash spawn firefox
 
 # launch music browser
-riverctl map normal $mod M spawn $TERMINAL -g 130x60 -t "music_browser" -e ncmpcpp
+riverctl map normal $mod M spawn $TERMINAL -g 130x60 -T "music_browser" -e ncmpcpp
 
 # Mod+Q to close the focused view
 riverctl map normal $mod Q close
@@ -148,11 +148,12 @@ do
     riverctl map $mode None XF86MonBrightnessDown spawn light -U 5
 done
 
-# Set repeat rate
+# Set repeat rate-e
 riverctl set-repeat 50 300
 
 # Set the layout on startup
-riverctl layout rivertile left
+riverctl spawn rivertile
+riverctl output-layout rivertile
 
 # Set app-ids of views which should float
 riverctl float-filter-add "float"
