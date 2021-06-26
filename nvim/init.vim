@@ -3,8 +3,8 @@
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'neovim/nvim-lspconfig'                " LSP
+  Plug 'hrsh7th/nvim-compe'                   " auto-completion
   Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
-  Plug 'Thyrum/vim-stabs'
   Plug 'farmergreg/vim-lastplace'             " restore last cursor position
   Plug 'tpope/vim-repeat'                     " . repeating for plugins
   Plug 'wellle/targets.vim'                   " better text objects
@@ -13,6 +13,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'junegunn/gv.vim'                      " commit history
   Plug 'mhinz/vim-signify'                    " git change indicators
   Plug 'junegunn/fzf.vim'                     " fzf integration
+  Plug 'ojroques/nvim-lspfuzzy'               " lsp with fzf
   Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
   Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
   Plug 'itchyny/lightline.vim'                " set status line
@@ -20,10 +21,6 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
   Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
   Plug 'lervag/vimtex'                        " latex compiler
-  "Plug 'rktjmp/lush.nvim'                     " treesitter color scheme?
-  "Plug 'npxbr/gruvbox.nvim'                   " treesitter color scheme?
-  "Plug 'vifm/vifm.vim'                        " vifm integration
-  "Plug 'dense-analysis/ale'                   " linting
 call plug#end()
 
 " ------------------------------------------------------------------------------
@@ -34,17 +31,16 @@ noremap <space> <nop>
 let mapleader=" "
 
 " set root directory
-autocmd BufEnter *.*pp :Gcd " throws an error if not in git repo
+autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
 
 filetype plugin indent on " detect file type
-set autoindent
 set scrolloff=10
 set title
 set mouse=a
 set clipboard=unnamedplus
 set spell
 set hidden " enable switching buffers without save
-set updatetime=100 " fixes gitgutter update time
+set updatetime=100 " fixes git update time
 
 " whitespace
 set tabstop=4
@@ -61,20 +57,18 @@ set undofile
 set path+=**
 set wildmenu
 set wildmode=longest,list,full
-set completeopt=menuone
-
+set completeopt=menuone,noselect
 set inccommand=split
-augroup LuaHighlight
-  autocmd!
-  autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
-augroup END
+
+" highlight yanked text
+au TextYankPost * lua vim.highlight.on_yank {on_visual = false}
 
 " auto update file when changed somewhere else
 set autoread
 au FocusGained * :checktime
 set shortmess+=A " avoid swap file warnings
 
-" fix weird resizing bug
+" fix terminal resizing bug
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 " ------------------------------------------------------------------------------
@@ -84,18 +78,86 @@ lua <<EOF
 -- treesitter highlighting
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
-  highlight = {
-    enable = true,
-  },
+  highlight = {enable = true},
 }
 
 -- LSP
-  require'lspconfig'.ccls.setup{}
-  require'lspconfig'.pyls.setup{}
-  require'lspconfig'.bashls.setup{}
+require'lspconfig'.ccls.setup{}
+require'lspconfig'.pyright.setup{}
+require'lspconfig'.bashls.setup{}
+
+-- fzf LSP
+require('lspfuzzy').setup {}
+
+-- nvim-compe
+vim.o.completeopt = "menuone,noselect"
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 0;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    nvim_lsp = true;
+    snippets_nvim = true;
+  };
+}
+
+local t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local check_back_space = function()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+-- Use (s-)tab to:
+--- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+_G.tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-n>"
+  elseif vim.fn.call("vsnip#available", {1}) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
+  elseif check_back_space() then
+    return t "<Tab>"
+  else
+    return vim.fn['compe#complete']()
+  end
+end
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
+  else
+    -- If <S-Tab> is not working in your terminal, change it to <C-h>
+    return t "<S-Tab>"
+  end
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 EOF
 " use omni completion provided by lsp
-autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
+"autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 " treesitter folding
 set foldmethod=expr
@@ -145,15 +207,6 @@ nnoremap <Leader>e :edit<CR>
 nnoremap <Leader>/ :%s//g<Left><Left>
 vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
-" use tab to cycle through search results
-set wildcharm=<c-z>
-cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
-cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
-
-inoremap <expr> <Tab> pumvisible() ? "\<c-n>" : "\<c-x>\<c-o>"
-inoremap <expr> <CR>  pumvisible() ? "\<c-y>" : "\<CR>"
-inoremap <expr> <Esc> pumvisible() ? "\<c-e>" : "\<Esc>"
-
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
@@ -176,6 +229,7 @@ nnoremap <c-k> <c-w>W
 
 " clear search
 nnoremap <Leader><Esc> :noh<CR>
+nnoremap <Esc> :cclose<CR>
 
 " ------------------------------------------------------------------------------
 " Appearance
@@ -183,8 +237,9 @@ nnoremap <Leader><Esc> :noh<CR>
 let g:gruvbox_contrast_dark = "hard"
 let g:gruvbox_italic = 1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-colorscheme gruvbox
 set termguicolors
+colorscheme gruvbox
+
 let g:Hexokinase_highlighters = ['backgroundfull'] " highlight colors
 let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla,'
 highlight VertSplit cterm=NONE                   " remove ugly split indicator
