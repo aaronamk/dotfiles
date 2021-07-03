@@ -2,25 +2,38 @@
 " Author: aaronamk
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
-  Plug 'neovim/nvim-lspconfig'                " LSP
-  Plug 'hrsh7th/nvim-compe'                   " auto-completion
-  Plug 'Raimondi/delimitMate'                 " delimiter auto pairing
-  Plug 'farmergreg/vim-lastplace'             " restore last cursor position
-  Plug 'tpope/vim-repeat'                     " . repeating for plugins
-  Plug 'wellle/targets.vim'                   " better text objects
-  Plug 'tpope/vim-surround'                   " delimiter bindings
-  Plug 'tpope/vim-fugitive'                   " git integration
-  Plug 'junegunn/gv.vim'                      " commit history
-  Plug 'mhinz/vim-signify'                    " git change indicators
-  Plug 'junegunn/fzf.vim'                     " fzf integration
-  Plug 'ojroques/nvim-lspfuzzy'               " lsp with fzf
-  Plug 'ericcurtin/CurtineIncSw.vim'          " header/source switching
-  Plug 'nvim-treesitter/nvim-treesitter'      " better syntax highlighting
-  Plug 'itchyny/lightline.vim'                " set status line
-  Plug 'morhetz/gruvbox'                      " color scheme
-  Plug 'andis-spr/lightline-gruvbox-dark.vim' " gruvbox for lightline
-  Plug 'rrethy/vim-hexokinase'                " highlight colors in that color
-  Plug 'lervag/vimtex'                        " latex compiler
+  Plug 'neovim/nvim-lspconfig'                       " LSP
+  Plug 'hrsh7th/nvim-compe'                          " auto-completion
+
+  Plug 'nvim-treesitter/nvim-treesitter'             " better syntax highlighting and more
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects' " better text objects with treesitter
+  Plug 'wellle/targets.vim'                          " better text objects
+  Plug 'tpope/vim-commentary'                        " commenting bindings
+  Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting bindings
+
+  Plug 'Raimondi/delimitMate'                        " delimiter auto pairing
+  Plug 'tpope/vim-surround'                          " delimiter bindings
+  Plug 'farmergreg/vim-lastplace'                    " restore last cursor position
+  Plug 'tpope/vim-repeat'                            " . repeating for plugins
+  Plug 'junegunn/fzf.vim'                            " fzf integration
+  Plug 'ojroques/nvim-lspfuzzy'                      " lsp with fzf
+
+  " git
+  Plug 'tpope/vim-fugitive'                          " git integration
+  Plug 'junegunn/gv.vim'                             " commit history
+  Plug 'nvim-lua/plenary.nvim'                       " lua helpers
+  Plug 'lewis6991/gitsigns.nvim'                     " git change indicators
+  " Plug 'mhinz/vim-signify'                           " git change indicators
+
+  " language specific
+  Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
+  Plug 'lervag/vimtex'                               " latex compiler
+
+  " visual
+  Plug 'morhetz/gruvbox'                             " color scheme
+  Plug 'itchyny/lightline.vim'                       " set status line
+  Plug 'andis-spr/lightline-gruvbox-dark.vim'        " gruvbox for lightline
+  Plug 'rrethy/vim-hexokinase'                       " highlight colors in that color
 call plug#end()
 
 " ------------------------------------------------------------------------------
@@ -40,7 +53,6 @@ set mouse=a
 set clipboard=unnamedplus
 set spell
 set hidden " enable switching buffers without save
-set updatetime=100 " fixes git update time
 
 " whitespace
 set tabstop=4
@@ -58,7 +70,7 @@ set path+=**
 set wildmenu
 set wildmode=longest,list,full
 set completeopt=menuone,noselect
-set inccommand=split
+set inccommand=nosplit
 
 " highlight yanked text
 au TextYankPost * lua vim.highlight.on_yank {on_visual = false}
@@ -79,6 +91,53 @@ lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
   highlight = {enable = true},
+  context_commentstring = {enable = true},
+  textobjects = {
+    select = {
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
+
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["aB"] = "@block.outer",
+        ["iB"] = "@block.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = false,
+      goto_next_start = {
+        ["]B"] = "@block.outer",
+        ["]a"] = "@parameter.outer",
+        ["]f"] = "@function.outer",
+        ["]]"] = "@call.outer",
+      },
+      goto_next_end = {
+        ["]A"] = "@parameter.outer",
+        ["]F"] = "@function.outer",
+        ["]["] = "@call.outer",
+      },
+      goto_previous_start = {
+        ["[B"] = "@block.outer",
+        ["[a"] = "@parameter.outer",
+        ["[f"] = "@function.outer",
+        ["[["] = "@call.outer",
+      },
+      goto_previous_end = {
+        ["[A"] = "@parameter.outer",
+        ["[F"] = "@function.outer",
+        ["[]"] = "@call.outer",
+      },
+    },
+  },
 }
 
 -- LSP
@@ -155,6 +214,48 @@ vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+-- git signs
+require('gitsigns').setup {
+  signs = {
+    add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+    change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  },
+  signcolumn = true,
+  numhl = false,
+  linehl = false,
+  keymaps = {
+    -- Default keymap options
+    noremap = true,
+    buffer = true,
+
+    ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
+    ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
+
+    ['n <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['v <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+  },
+  watch_index = {
+    interval = 1000,
+    follow_files = true
+  },
+  current_line_blame = true,
+  current_line_blame_delay = 40,
+  current_line_blame_position = 'eol',
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  word_diff = false,
+  use_decoration_api = true,
+  use_internal_diff = true,  -- If luajit is present
+}
 EOF
 " use omni completion provided by lsp
 "autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -211,6 +312,7 @@ vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
