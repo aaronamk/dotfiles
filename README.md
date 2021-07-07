@@ -11,11 +11,13 @@
 * newsboat
 * neovim (better than vim)
 * pass
-* sakura (scroll for st is too buggy for me, I accept the slowness of sakura)
+* pipewire
+* st
+* sx (startx alternative)
 * sxhkd
 * udevmon (better than xcape + xmodmap)
 * vifm (better than ranger)
 * zathura (better than mupdf)
 * zsh (better than bash)
 * pulsemixer
-* qmk
+* picom
