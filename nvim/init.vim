@@ -11,7 +11,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'tpope/vim-commentary'                        " commenting bindings
   Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting bindings
 
-  Plug 'Raimondi/delimitMate'                        " delimiter auto pairing
+  Plug 'windwp/nvim-autopairs'                        " delimiter auto pairing
   Plug 'tpope/vim-surround'                          " delimiter bindings
   Plug 'farmergreg/vim-lastplace'                    " restore last cursor position
   Plug 'tpope/vim-repeat'                            " . repeating for plugins
@@ -69,8 +69,8 @@ set undofile
 set path+=**
 set wildmenu
 set wildmode=longest,list,full
-set completeopt=menuone,noselect
 set inccommand=nosplit
+set completeopt=menuone,noselect
 
 " highlight yanked text
 au TextYankPost * lua vim.highlight.on_yank {on_visual = false}
@@ -92,6 +92,8 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",
   highlight = {enable = true},
   context_commentstring = {enable = true},
+  indent = {enable = true},
+  autopairs = {enable = true},
   textobjects = {
     select = {
       enable = true,
@@ -149,6 +151,7 @@ require'lspconfig'.bashls.setup{}
 -- fzf LSP
 require('lspfuzzy').setup {}
 
+-- compe
 require'compe'.setup {
   enabled = true;
   autocomplete = false;
@@ -169,18 +172,29 @@ require'compe'.setup {
   };
 }
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+-- autopairs
+require('nvim-autopairs').setup()
+require("nvim-autopairs.completion.compe").setup({
+  check_ts = true,
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true, -- it will auto insert `(` after select function or method item
+  enable_check_bracket_line = false,
+  ignored_next_char = "[%w%.]",
+})
+local npairs = require'nvim-autopairs'
+local Rule   = require'nvim-autopairs.rule'
 
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
+npairs.add_rules {
+  Rule(' ', ' ')
+    :with_pair(function (opts)
+      local pair = opts.line:sub(opts.col, opts.col + 1)
+      return vim.tbl_contains({ '()', '[]', '{}' }, pair)
+    end),
+  Rule('( ',' )')
+        :with_pair(function() return false end)
+        :with_move(function() return true end)
+        :use_key(")")
+}
 
 -- git signs
 require('gitsigns').setup {
@@ -231,14 +245,6 @@ EOF
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
-
-" git indicator settings
-let g:signify_sign_change = '~'
-
-" settings for delimiter matching
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-let delimitMate_excluded_regions = ""
 
 " netrw
 let g:netrw_banner = 0     " remove banner
@@ -300,7 +306,6 @@ endfunction
 
 inoremap <expr> <Tab>   pumvisible() ? "\<c-n>" : SmartTab()
 inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
-inoremap <expr> <CR>    pumvisible() ? compe#confirm('c-y') : "\<CR>"
 inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
 
 " switch between header and source
