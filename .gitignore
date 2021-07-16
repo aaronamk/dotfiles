@@ -11,7 +11,7 @@ ncmpcpp/error.log
 ncmpcpp/patterns.list
 rclone/
 vifm/vifm-help.txt
-vifm/vifminfo
+vifm/vifminfo*
 zoomus.conf
 zsh/.zcompdump
 vifm/vifminfo.json
