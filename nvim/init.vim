@@ -80,9 +80,6 @@ set autoread
 au FocusGained * :checktime
 set shortmess+=A " avoid swap file warnings
 
-" fix terminal resizing bug
-autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
-
 " ------------------------------------------------------------------------------
 " Individual settings
 
