@@ -36,6 +36,7 @@ export SCRIPTS=$HOME/.local/bin
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+export BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat/config"
 export PASSWORD_STORE_DIR=$XDG_DATA_HOME/password-store
 export GNUPGHOME=$XDG_DATA_HOME/gnupg
 export LESSHISTFILE=$XDG_CACHE_HOME/lesshst

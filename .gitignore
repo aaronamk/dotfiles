@@ -9,6 +9,7 @@ discord/
 gtk-3.0/bookmarks
 ncmpcpp/error.log
 ncmpcpp/patterns.list
+rclone/
 vifm/vifm-help.txt
 vifm/vifminfo
 zoomus.conf
