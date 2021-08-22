@@ -31,8 +31,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 
   " visual
   Plug 'morhetz/gruvbox'                             " color scheme
-  Plug 'itchyny/lightline.vim'                       " set status line
-  Plug 'andis-spr/lightline-gruvbox-dark.vim'        " gruvbox for lightline
+  Plug 'hoob3rt/lualine.nvim'                        " status line
   Plug 'norcalli/nvim-colorizer.lua'                 " highlight colors in that color
 call plug#end()
 
@@ -183,44 +182,6 @@ colorscheme gruvbox
 
 highlight VertSplit cterm=NONE                   " remove ugly split indicator
 
-" lightline
-let g:lightline = {
-  \ 'colorscheme': 'gruvboxdark',
-  \ 'active': {
-  \    'left': [ [ 'mode', 'paste' ],
-  \              [ 'filename', 'readonly', 'percentwin' ] ],
-  \   'right': [ [ 'gitbranch' ] ]
-  \ },
-  \ 'component_function': {
-  \   'filename': 'LightlineFilename',
-  \   'gitbranch': 'LightlineFugitive',
-  \ },
-  \ 'mode_map': {
-  \   'n' : '',
-  \   'i' : 'I',
-  \   'R' : 'R',
-  \   'v' : 'V',
-  \   'V' : 'VL',
-  \   "\<C-v>": 'VB',
-  \   'c' : 'C',
-  \   's' : 'S',
-  \   'S' : 'SL',
-  \   "\<C-s>": 'SB',
-  \ 't': 'T',
-  \ },
-  \ }
-
-function! LightlineFilename()
-  let filename = expand('%:f') !=# '' ? expand('%:f') : '[NEW]'
-  let modified = &modified ? '*' : ''
-  return filename . modified
-endfunction
-
-function! LightlineFugitive()
-  let mark = ' '
-  let branch = FugitiveHead()
-  return branch !=# '' ? mark . branch : ''
-endfunction
 
 set noshowcmd
 set noshowmode
@@ -388,6 +349,18 @@ require('gitsigns').setup {
   word_diff = false,
   use_decoration_api = true,
   use_internal_diff = true,  -- If luajit is present
+}
+
+-- lualine
+require'lualine'.setup {
+  options = {lower = true, theme = 'gruvbox', section_separators = '', component_separators = ''},
+  sections = {
+    lualine_a = {{'filename', file_status = true, path = 1}},
+    lualine_b = {'progress'},
+    lualine_c = {{'diagnostics', sources = {'nvim_lsp'}, symbols = {error = '❌', warn = '!', info = 'i', hint = 'h'}}},
+    lualine_x = {}, lualine_y = {},
+    lualine_z = {'branch'}
+    }
 }
 
 -- nvim-colorizer
