@@ -3,7 +3,7 @@
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'neovim/nvim-lspconfig'                       " LSP
-  Plug 'hrsh7th/nvim-compe'                          " auto-completion
+  Plug 'hrsh7th/nvim-compe'                          " completion helper
 
   Plug 'nvim-treesitter/nvim-treesitter'             " better syntax highlighting and more
   Plug 'nvim-treesitter/nvim-treesitter-textobjects' " better text objects with treesitter
@@ -23,10 +23,9 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'junegunn/gv.vim'                             " commit history
   Plug 'nvim-lua/plenary.nvim'                       " lua helpers
   Plug 'lewis6991/gitsigns.nvim'                     " git change indicators
-  " Plug 'mhinz/vim-signify'                           " git change indicators
 
   " language specific
-  Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
+  "Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
   Plug 'lervag/vimtex'                               " latex compiler
 
   " visual
@@ -156,8 +155,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
 inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
 
 " switch between header and source
-"nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
-nnoremap <c-space> :call CurtineIncSw()<CR>
+nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
+"nnoremap <c-space> :call CurtineIncSw()<CR>
 
 " fzf
 nnoremap <c-_> :GFiles<CR>
@@ -256,7 +255,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- LSP
-require'lspconfig'.ccls.setup{}
+require'lspconfig'.clangd.setup{}
 require'lspconfig'.pyright.setup{}
 require'lspconfig'.bashls.setup{}
 require'lspconfig'.bashls.setup{}
@@ -341,19 +340,17 @@ require('gitsigns').setup {
     follow_files = true
   },
   current_line_blame = true,
-  current_line_blame_delay = 40,
-  current_line_blame_position = 'eol',
+  current_line_blame_opts = { delay = 40, position = 'eol' },
   sign_priority = 6,
   update_debounce = 100,
   status_formatter = nil, -- Use default
   word_diff = false,
-  use_decoration_api = true,
   use_internal_diff = true,  -- If luajit is present
 }
 
 -- lualine
 require'lualine'.setup {
-  options = {lower = true, theme = 'gruvbox', section_separators = '', component_separators = ''},
+  options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
   sections = {
     lualine_a = {{'filename', file_status = true, path = 1}},
     lualine_b = {'progress'},
