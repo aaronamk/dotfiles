@@ -193,10 +193,10 @@ set cursorline " highlight current line
 set fillchars=eob:\ , " remove ~ markers after buffer
 
 " lsp diagnostics
-sign define LspDiagnosticsSignError text= texthl=LspDiagnosticsSignError linehl= numhl=LspDiagnosticsSignError
-sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
-sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
-sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
+sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
+sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=GruvboxYellowBold
+sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlue
+sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurple
 
 " set blinking cursor
 :set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
@@ -316,11 +316,11 @@ npairs.add_rules {
 -- git signs
 require('gitsigns').setup {
   signs = {
-    add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-    change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    add          = {hl = 'GruvboxGreenSign',  text = ' ┃', numhl='GitSignsAddNr',    linehl='GitSignsAddLn'},
+    change       = {hl = 'GruvboxOrangeSign', text = '▪ ', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GruvboxOrangeSign', text = ' ▁', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GruvboxOrangeSign', text = ' ▔', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GruvboxOrangeSign', text = '▪▁', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
   },
   signcolumn = true,
   numhl = false,
