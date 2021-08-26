@@ -129,7 +129,7 @@ vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nnoremap <silent> ]l <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
@@ -181,7 +181,6 @@ colorscheme gruvbox
 
 highlight VertSplit cterm=NONE                   " remove ugly split indicator
 
-
 set noshowcmd
 set noshowmode
 
@@ -192,6 +191,12 @@ hi ColorColumn ctermbg=236
 set number
 set cursorline " highlight current line
 set fillchars=eob:\ , " remove ~ markers after buffer
+
+" lsp diagnostics
+sign define LspDiagnosticsSignError text= texthl=LspDiagnosticsSignError linehl= numhl=LspDiagnosticsSignError
+sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
+sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
+sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
 
 " set blinking cursor
 :set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50

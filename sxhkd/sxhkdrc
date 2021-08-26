@@ -68,12 +68,6 @@ shift + Pause
 # brightness
 XF86MonBrightness{Down,Up}
 	brightness-ctrl.sh {-,+}
-#redshift
-shift + XF86MonBrightness{Down,Up}
-	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
 
 {KP_Subtract,KP_Add}
 	brightness-ctrl.sh {-,+}
-# redshift
-alt + shift + {j,k}
-	{brightnessctl set 1; redshift -P -O 2500 -b 0.9,redshift -x}
