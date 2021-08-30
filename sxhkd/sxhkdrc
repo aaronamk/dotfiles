@@ -8,42 +8,6 @@ alt + r
 #super + {comma,period}
 #	xdotool set_desktop "$(expr $(xdotool get_desktop) {- 1,+ 1})"
 
-# launch terminal
-super + Return
-	$TERMINAL
-
-# launch editor
-super + semicolon
-	$TERMINAL -e $EDITOR
-
-# launch launcher
-super + shift + Return
-	$TERMINAL -t "launch" -e fzf-launch.sh
-
-# launch file explorer
-super + e
-	$TERMINAL -e vifm
-
-# fuzzy find file
-super + {_,shift} + slash
-	$TERMINAL -e {fzf-open.sh,fzf-open-meta.sh}
-
-# launch browser
-super + {_,shift} + backslash
-	$BROWSER {_,-private-window}
-
-# select from clipboard history
-#alt + p
-#	$TERMINAL -g 130x60 -t "clipboard" -e clipmenu
-
-# screenshot
-Print
-	screenshot.sh
-
-# session functions
-super + BackSpace
-	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh
-
 # audio
 super + XF86AudioMute
 	$TERMINAL -g 130x30 -t "audio_mixer" -e pulsemixer
@@ -71,3 +35,39 @@ XF86MonBrightness{Down,Up}
 
 {KP_Subtract,KP_Add}
 	brightness-ctrl.sh {-,+}
+
+# launch terminal
+super + Return
+	$TERMINAL
+
+# launch editor
+super + semicolon
+	$TERMINAL -e $EDITOR
+
+# launch file explorer
+super + e
+	$TERMINAL -e vifm
+
+# session functions
+super + BackSpace
+	$TERMINAL -g 30x15 -t "session_options" -e fzf-session-options.sh
+
+# launch launcher
+super + shift + Return
+	$TERMINAL -t "launch" -e fzf-launch.sh
+
+# fuzzy find file
+super + {_,shift} + slash
+	$TERMINAL -e {fzf-open.sh,fzf-open-meta.sh}
+
+# select from clipboard history
+#alt + p
+#	$TERMINAL -g 130x60 -t "clipboard" -e clipmenu
+
+# launch browser
+super + {_,shift} + backslash
+	$BROWSER {_,-private-window}
+
+# screenshot
+Print
+	screenshot.sh
