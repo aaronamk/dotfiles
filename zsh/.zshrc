@@ -29,9 +29,9 @@ precmd() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # History
 HISTFILE=$XDG_CACHE_HOME/zsh/history
-HISTSIZE=1000
-SAVEHIST=1000
-setopt share_history
+HISTSIZE=5000
+SAVEHIST=5000
+setopt inc_append_history
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 setopt hist_reduce_blanks
@@ -90,6 +90,7 @@ alias p="pacman"
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
+alias vimdiff="nvim -d"
 alias vifm="vifm-previewer.sh"
 alias g="git"
 alias py="python"
