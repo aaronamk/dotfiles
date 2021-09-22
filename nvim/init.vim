@@ -44,7 +44,10 @@ let mapleader=" "
 " set root directory
 autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
 
-filetype plugin indent on " detect file type
+" detect file type
+autocmd BufEnter * if &filetype == "" | setlocal ft=text | endif
+filetype plugin indent on
+
 set scrolloff=10
 set title
 set mouse=a
@@ -95,10 +98,6 @@ set foldlevelstart=99
 let g:netrw_banner = 0     " remove banner
 let g:netrw_liststyle = 3  " set to tree view
 let g:netrw_dirhistmax = 0 " disable annoying hist file
-
-" plaintext file options
-autocmd BufRead *.txt set lbr
-autocmd BufRead *.txt set spell
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
