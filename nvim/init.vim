@@ -187,20 +187,21 @@ highlight ColorColumn ctermbg=236
 highlight VertSplit cterm=NONE
 
 " Set highlight groups
-highlight Identifier        guifg=Gruvboxfg0
-highlight Delimiter         guifg=Gruvboxfg0
-highlight Type              ctermfg=214 guifg=#fabd2f cterm=none gui=none
+highlight Identifier        ctermfg=229 guifg=#fbf1c7
+highlight Delimiter         ctermfg=229 guifg=#fbf1c7
+highlight Type              ctermfg=214 guifg=#fabd2f cterm=NONE gui=NONE
 highlight Operator          ctermfg=208 guifg=#fe8019
 highlight Keyword           ctermfg=167 guifg=#fb4934
 highlight Function          ctermfg=109 guifg=#83a598
 highlight TSFuncBuiltin     ctermfg=175 guifg=#83a598
 highlight TSConstBuiltin    ctermfg=175 guifg=#d3869b
-highlight TSVariableBuiltin guifg=Gruvboxfg0 cterm=bold,italic gui=bold,italic
-highlight TSConstructor     guifg=Gruvboxfg0
+highlight TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
+highlight TSConstructor     ctermfg=229 guifg=#fbf1c7
 highlight TSTextReference   ctermfg=175 guifg=#83a598
 
-set number
 set cursorline " highlight current line
+highlight CursorLineNR      ctermfg=229 guifg=#fbf1c7
+set number " add line numbers
 set fillchars=eob:\ , " remove ~ markers after buffer
 
 set noshowcmd
