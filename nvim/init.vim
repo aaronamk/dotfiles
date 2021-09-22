@@ -49,7 +49,6 @@ set scrolloff=10
 set title
 set mouse=a
 set clipboard=unnamedplus
-set spell
 set hidden " enable switching buffers without save
 
 " whitespace
@@ -99,6 +98,7 @@ let g:netrw_dirhistmax = 0 " disable annoying hist file
 
 " plaintext file options
 autocmd BufRead *.txt set lbr
+autocmd BufRead *.txt set spell
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
@@ -179,24 +179,38 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
 colorscheme gruvbox
 
-highlight VertSplit cterm=NONE                   " remove ugly split indicator
-
-set noshowcmd
-set noshowmode
-
 " mark 80 character limit
 set cc=81,121
-hi ColorColumn ctermbg=236
+highlight ColorColumn ctermbg=236
+
+" remove ugly split indicator
+highlight VertSplit cterm=NONE
+
+" Set highlight groups
+highlight Identifier        guifg=Gruvboxfg0
+highlight Delimiter         guifg=Gruvboxfg0
+highlight Type              ctermfg=214 guifg=#fabd2f cterm=none gui=none
+highlight Operator          ctermfg=208 guifg=#fe8019
+highlight Keyword           ctermfg=167 guifg=#fb4934
+highlight Function          ctermfg=109 guifg=#83a598
+highlight TSFuncBuiltin     ctermfg=175 guifg=#83a598
+highlight TSConstBuiltin    ctermfg=175 guifg=#d3869b
+highlight TSVariableBuiltin guifg=Gruvboxfg0 cterm=bold,italic gui=bold,italic
+highlight TSConstructor     guifg=Gruvboxfg0
+highlight TSTextReference   ctermfg=175 guifg=#83a598
 
 set number
 set cursorline " highlight current line
 set fillchars=eob:\ , " remove ~ markers after buffer
 
+set noshowcmd
+set noshowmode
+
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
 sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=GruvboxYellowBold
-sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlue
-sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurple
+sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlueBold
+sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
 
 " set blinking cursor
 :set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
