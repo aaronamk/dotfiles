@@ -10,7 +10,6 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting
   Plug 'windwp/nvim-autopairs'                       " delimiter auto pairing
   Plug 'tpope/vim-surround'                          " delimiter bindings
-  Plug 'farmergreg/vim-lastplace'                    " restore cursor position
   Plug 'tpope/vim-repeat'                            " . repeating for plugins
 
   " LSP/navigation
@@ -41,12 +40,26 @@ call plug#end()
 noremap <space> <nop>
 let mapleader=" "
 
+" auto update file when changed somewhere else
+set autoread
+au FocusGained * :checktime
+set shortmess+=A " avoid swap file warnings
+
+" save/restore cursor position and folds
+au BufWinLeave *.* mkview
+au BufWinEnter *.* silent loadview
+set viewoptions=cursor,folds
+
 " set root directory
 autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
 
 " detect file type
 autocmd BufEnter * if &filetype == "" | setlocal ft=text | endif
 filetype plugin indent on
+
+" save undo history
+set undodir=$XDG_CACHE_HOME/nvim/undodir
+set undofile
 
 set scrolloff=10
 set scroll=10
@@ -63,10 +76,6 @@ set list
 set listchars=tab:>-
 autocmd BufWritePre * %s/\s\+$//e " Delete trailing whitespace
 
-" undo
-set undodir=$XDG_CACHE_HOME/nvim/undodir
-set undofile
-
 " file completion
 set path+=**
 set wildmenu
@@ -77,21 +86,10 @@ set completeopt=menu,noselect
 " highlight yanked text
 au TextYankPost * lua vim.highlight.on_yank {on_visual = false}
 
-" auto update file when changed somewhere else
-set autoread
-au FocusGained * :checktime
-set shortmess+=A " avoid swap file warnings
-
 " fix terminal resizing bug
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
-" ------------------------------------------------------------------------------
-" Individual settings
-
-" use omni completion provided by lsp
-"autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-" treesitter folding
+" folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
@@ -100,6 +98,12 @@ set foldlevelstart=99
 let g:netrw_banner = 0     " remove banner
 let g:netrw_liststyle = 3  " set to tree view
 let g:netrw_dirhistmax = 0 " disable annoying hist file
+
+" ------------------------------------------------------------------------------
+" Plugin settings
+
+" use omni completion provided by lsp
+"autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
@@ -373,9 +377,7 @@ require('gitsigns').setup {
 }
 
 -- fzf-lua
-require('fzf-lua').setup {
-  default_previewer   = "bat",
-}
+require('fzf-lua').setup { default_previewer = "bat" }
 
 -- lualine
 require'lualine'.setup {
