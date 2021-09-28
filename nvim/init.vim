@@ -2,33 +2,33 @@
 " Author: aaronamk
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
-  Plug 'neovim/nvim-lspconfig'                       " LSP
-  Plug 'hrsh7th/nvim-compe'                          " completion helper
-
-  Plug 'nvim-treesitter/nvim-treesitter'             " better syntax highlighting and more
-  Plug 'nvim-treesitter/nvim-treesitter-textobjects' " better text objects with treesitter
+  " streamlined editing
+  Plug 'nvim-treesitter/nvim-treesitter'             " smart syntax parser
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects' " treesitter text objects
   Plug 'wellle/targets.vim'                          " better text objects
   Plug 'tpope/vim-commentary'                        " commenting bindings
-  Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting bindings
-
-  Plug 'windwp/nvim-autopairs'                        " delimiter auto pairing
+  Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting
+  Plug 'windwp/nvim-autopairs'                       " delimiter auto pairing
   Plug 'tpope/vim-surround'                          " delimiter bindings
-  Plug 'farmergreg/vim-lastplace'                    " restore last cursor position
+  Plug 'farmergreg/vim-lastplace'                    " restore cursor position
   Plug 'tpope/vim-repeat'                            " . repeating for plugins
-  Plug 'junegunn/fzf.vim'                            " fzf integration
-  Plug 'ojroques/nvim-lspfuzzy'                      " lsp with fzf
+
+  " LSP/navigation
+  Plug 'neovim/nvim-lspconfig'                       " LSP configuration
+  Plug 'hrsh7th/nvim-compe'                          " completion helper
+  Plug 'vijaymarupudi/nvim-fzf'                      " lua fzf implementation
+  Plug 'ibhagwan/fzf-lua'                            " lua fzf bindings
 
   " git
   Plug 'tpope/vim-fugitive'                          " git integration
-  Plug 'junegunn/gv.vim'                             " commit history
   Plug 'nvim-lua/plenary.nvim'                       " lua helpers
   Plug 'lewis6991/gitsigns.nvim'                     " git change indicators
 
   " language specific
-  "Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
   Plug 'lervag/vimtex'                               " latex compiler
+  "Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
 
-  " visual
+  " appearance
   Plug 'morhetz/gruvbox'                             " color scheme
   Plug 'hoob3rt/lualine.nvim'                        " status line
   Plug 'norcalli/nvim-colorizer.lua'                 " highlight colors in that color
@@ -141,7 +141,9 @@ nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
 "nnoremap <c-space> :call CurtineIncSw()<CR>
 
 " fzf
-nnoremap <c-_> :Files<CR>
+nnoremap <c-_> :FzfLua files<CR>
+nnoremap z= :FzfLua spell_suggest<CR>
+nnoremap g/ :FzfLua builtin<CR>
 
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
@@ -152,7 +154,7 @@ nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gr :FzfLua lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
@@ -285,9 +287,6 @@ require'lspconfig'.pyright.setup{}
 require'lspconfig'.bashls.setup{}
 require'lspconfig'.bashls.setup{}
 
--- fzf LSP
-require('lspfuzzy').setup {}
-
 -- compe
 require'compe'.setup {
   enabled = true;
@@ -371,6 +370,11 @@ require('gitsigns').setup {
   status_formatter = nil, -- Use default
   word_diff = false,
   use_internal_diff = true,  -- If luajit is present
+}
+
+-- fzf-lua
+require('fzf-lua').setup {
+  default_previewer   = "bat",
 }
 
 -- lualine
