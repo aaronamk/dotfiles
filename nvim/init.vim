@@ -49,6 +49,8 @@ autocmd BufEnter * if &filetype == "" | setlocal ft=text | endif
 filetype plugin indent on
 
 set scrolloff=10
+set scroll=10
+autocmd VimResized * :set scroll=10
 set title
 set mouse=a
 set clipboard=unnamedplus
@@ -126,6 +128,21 @@ nnoremap <Leader>e :edit<CR>
 nnoremap <Leader>/ :%s//g<Left><Left>
 vnoremap <Leader>/ "fy:%s//g<Left><Left><c-r>f/
 
+" screen split hotkeys
+set splitbelow splitright
+nnoremap <c-j> <c-w>w
+nnoremap <c-k> <c-w>W
+
+" clear search
+nnoremap <Esc> :noh<CR>
+
+" switch between header and source
+nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
+"nnoremap <c-space> :call CurtineIncSw()<CR>
+
+" fzf
+nnoremap <c-_> :Files<CR>
+
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
@@ -153,22 +170,6 @@ inoremap <expr> <Tab>   pumvisible() ? "\<c-n>" : SmartTab()
 inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
 inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
 
-" switch between header and source
-nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
-"nnoremap <c-space> :call CurtineIncSw()<CR>
-
-" fzf
-nnoremap <c-_> :GFiles<CR>
-
-" screen split hotkeys
-set splitbelow splitright
-nnoremap <c-j> <c-w>w
-nnoremap <c-k> <c-w>W
-
-" clear search
-nnoremap <Leader><Esc> :noh<CR>
-nnoremap <Esc> :cclose<CR>
-
 " ------------------------------------------------------------------------------
 " Appearance
 
@@ -185,7 +186,22 @@ highlight ColorColumn ctermbg=236
 " remove ugly split indicator
 highlight VertSplit cterm=NONE
 
+" set blinking cursor
+:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+  \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+set number " add line numbers
+set fillchars=eob:\ , " remove ~ markers after buffer
+
+set noshowcmd
+set noshowmode
+
 " Set highlight groups
+set cursorline " highlight current line
+highlight CursorLineNR      ctermfg=229 guifg=#fbf1c7 guibg=#282828
+highlight CursorLine                                  guibg=#282828
+highlight ColorColumn                                 guibg=#282828
 highlight Identifier        ctermfg=229 guifg=#fbf1c7
 highlight Delimiter         ctermfg=229 guifg=#fbf1c7
 highlight Type              ctermfg=214 guifg=#fabd2f cterm=NONE gui=NONE
@@ -198,25 +214,15 @@ highlight TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold
 highlight TSConstructor     ctermfg=229 guifg=#fbf1c7
 highlight TSTextReference   ctermfg=175 guifg=#83a598
 
-set cursorline " highlight current line
-highlight CursorLineNR      ctermfg=229 guifg=#fbf1c7
-set number " add line numbers
-set fillchars=eob:\ , " remove ~ markers after buffer
-
-set noshowcmd
-set noshowmode
-
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
 sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=GruvboxYellowBold
 sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlueBold
 sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
 
-" set blinking cursor
-:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-  \,sm:block-blinkwait175-blinkoff150-blinkon175
 
+" ------------------------------------------------------------------------------
+" Lua
 
 lua <<EOF
 -- treesitter highlighting
