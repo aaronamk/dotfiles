@@ -3,39 +3,36 @@
 
 call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   " streamlined editing
-  Plug 'nvim-treesitter/nvim-treesitter'             " smart syntax parser
-  Plug 'nvim-treesitter/nvim-treesitter-textobjects' " treesitter text objects
-  Plug 'wellle/targets.vim'                          " better text objects
-  Plug 'tpope/vim-commentary'                        " commenting bindings
-  Plug 'JoosepAlviste/nvim-ts-context-commentstring' " treesitter commenting
-  Plug 'windwp/nvim-autopairs'                       " delimiter auto pairing
-  Plug 'tpope/vim-surround'                          " delimiter bindings
-  Plug 'tpope/vim-repeat'                            " . repeating for plugins
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " smart syntax parser
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects'          " treesitter text objects
+  Plug 'wellle/targets.vim'                                   " better text objects
+  Plug 'tpope/vim-commentary'                                 " commenting bindings
+  Plug 'windwp/nvim-autopairs'                                " delimiter auto pairing
+  Plug 'tpope/vim-surround'                                   " delimiter bindings
+  Plug 'tpope/vim-repeat'                                     " . repeating for plugins
+  Plug 'lervag/vimtex'                                        " latex compiler
+  "Plug 'ericcurtin/CurtineIncSw.vim'                          " header/source switching
 
   " LSP/navigation
-  Plug 'neovim/nvim-lspconfig'                       " LSP configuration
-  Plug 'hrsh7th/nvim-compe'                          " completion helper
-  Plug 'vijaymarupudi/nvim-fzf'                      " lua fzf implementation
-  Plug 'ibhagwan/fzf-lua'                            " lua fzf bindings
+  Plug 'neovim/nvim-lspconfig'                                " LSP configuration
+  Plug 'hrsh7th/nvim-compe'                                   " completion helper
+  Plug 'vijaymarupudi/nvim-fzf'                               " lua fzf implementation
+  Plug 'ibhagwan/fzf-lua'                                     " lua fzf bindings
 
   " git
-  Plug 'tpope/vim-fugitive'                          " git integration
-  Plug 'nvim-lua/plenary.nvim'                       " lua helpers
-  Plug 'lewis6991/gitsigns.nvim'                     " git change indicators
-
-  " language specific
-  Plug 'lervag/vimtex'                               " latex compiler
-  "Plug 'ericcurtin/CurtineIncSw.vim'                 " header/source switching
+  Plug 'tpope/vim-fugitive'                                   " git integration
+  Plug 'nvim-lua/plenary.nvim'                                " lua helpers
+  Plug 'lewis6991/gitsigns.nvim'                              " git change indicators
 
   " appearance
-  Plug 'morhetz/gruvbox'                             " color scheme
-  Plug 'hoob3rt/lualine.nvim'                        " status line
-  Plug 'norcalli/nvim-colorizer.lua'                 " highlight colors in that color
+  Plug 'morhetz/gruvbox'                                      " color scheme
+  Plug 'hoob3rt/lualine.nvim'                                 " status line
+  Plug 'norcalli/nvim-colorizer.lua'                          " highlight colors
 call plug#end()
 
-" ------------------------------------------------------------------------------
-" General
 
+" General
+" ------------------------------------------------------------------------------
 " fix terminal resizing bug
 "autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
@@ -75,7 +72,6 @@ set tabstop=4
 set shiftwidth=4
 set list
 set listchars=tab:>-,trail:·
-"autocmd BufWritePre * :%s/\s\+$//e " Delete trailing whitespace
 
 " file completion
 set path+=**
@@ -98,18 +94,18 @@ let g:netrw_banner = 0     " remove banner
 let g:netrw_liststyle = 3  " set to tree view
 let g:netrw_dirhistmax = 0 " disable annoying hist file
 
-" ------------------------------------------------------------------------------
-" Plugin settings
 
+" Plugin settings
+" ------------------------------------------------------------------------------
 " use omni completion provided by lsp
 "autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
 
-" ------------------------------------------------------------------------------
-" Keybindings
 
+" Keybindings
+" ------------------------------------------------------------------------------
 " set leader key
 noremap <space> <nop>
 let mapleader=" "
@@ -130,6 +126,9 @@ inoremap <c-h> <c-w>
 nnoremap <Leader>w :update<CR>
 " quickly reload a file
 nnoremap <Leader>e :edit<CR>
+
+" remove trailing spaces
+nnoremap <Leader><space> :%s/\s\+$//e<CR>
 
 " find/replace
 nnoremap <Leader>/ :%s//g<Left><Left>
@@ -179,9 +178,9 @@ inoremap <expr> <Tab>   pumvisible() ? "\<c-n>" : SmartTab()
 inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
 inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
 
-" ------------------------------------------------------------------------------
-" Appearance
 
+" Appearance
+" ------------------------------------------------------------------------------
 let g:gruvbox_contrast_dark = "hard"
 let g:gruvbox_italic = 1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -230,9 +229,8 @@ sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlu
 sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
 
 
-" ------------------------------------------------------------------------------
 " Lua
-
+" ------------------------------------------------------------------------------
 lua <<EOF
 -- treesitter highlighting
 require'nvim-treesitter.configs'.setup {
