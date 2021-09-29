@@ -36,19 +36,23 @@ call plug#end()
 " ------------------------------------------------------------------------------
 " General
 
-" set leader key
-noremap <space> <nop>
-let mapleader=" "
+" fix terminal resizing bug
+"autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
-" auto update file when changed somewhere else
+" update file when changed somewhere else
 set autoread
-au FocusGained * :checktime
+autocmd FocusGained * :checktime
 set shortmess+=A " avoid swap file warnings
+set hidden " enable switching buffers without save
 
-" save/restore cursor position and folds
-au BufWinLeave *.* mkview
-au BufWinEnter *.* silent loadview
+" save cursor position and folds
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent! loadview
 set viewoptions=cursor,folds
+
+" save undo history
+set undodir=$XDG_CACHE_HOME/nvim/undodir
+set undofile
 
 " set root directory
 autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
@@ -57,24 +61,21 @@ autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
 autocmd BufEnter * if &filetype == "" | setlocal ft=text | endif
 filetype plugin indent on
 
-" save undo history
-set undodir=$XDG_CACHE_HOME/nvim/undodir
-set undofile
-
+" scrolling
 set scrolloff=10
 set scroll=10
 autocmd VimResized * :set scroll=10
-set title
-set mouse=a
-set clipboard=unnamedplus
-set hidden " enable switching buffers without save
+autocmd WinEnter * :set scroll=10
+
+set title " set window title
+set mouse=a " enable mouse
 
 " whitespace
 set tabstop=4
 set shiftwidth=4
 set list
-set listchars=tab:>-
-autocmd BufWritePre * %s/\s\+$//e " Delete trailing whitespace
+set listchars=tab:>-,trail:·
+"autocmd BufWritePre * :%s/\s\+$//e " Delete trailing whitespace
 
 " file completion
 set path+=**
@@ -83,11 +84,9 @@ set wildmode=longest,list,full
 set inccommand=nosplit
 set completeopt=menu,noselect
 
-" highlight yanked text
-au TextYankPost * lua vim.highlight.on_yank {on_visual = false}
-
-" fix terminal resizing bug
-autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
+" clipboard
+set clipboard=unnamedplus
+autocmd TextYankPost * lua vim.highlight.on_yank { on_visual = false }
 
 " folding
 set foldmethod=expr
@@ -110,6 +109,10 @@ let g:vimtex_view_general_viewer = 'omni-open.sh'
 
 " ------------------------------------------------------------------------------
 " Keybindings
+
+" set leader key
+noremap <space> <nop>
+let mapleader=" "
 
 " Make Y work the way you'd expect
 nmap Y y$
@@ -285,11 +288,13 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+
 -- LSP
 require'lspconfig'.clangd.setup{}
 require'lspconfig'.pyright.setup{}
 require'lspconfig'.bashls.setup{}
 require'lspconfig'.bashls.setup{}
+
 
 -- compe
 require'compe'.setup {
@@ -311,6 +316,7 @@ require'compe'.setup {
     nvim_lsp = true;
   };
 }
+
 
 -- autopairs
 require('nvim-autopairs').setup()
@@ -336,6 +342,7 @@ npairs.add_rules {
         :use_key(")")
 }
 
+
 -- git signs
 require('gitsigns').setup {
   signs = {
@@ -345,27 +352,11 @@ require('gitsigns').setup {
     topdelete    = {hl = 'GruvboxOrangeSign', text = ' ▔', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
     changedelete = {hl = 'GruvboxOrangeSign', text = '▪▁', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
   },
+
   signcolumn = true,
   numhl = false,
   linehl = false,
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-    buffer = true,
-
-    ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
-    ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
-
-    ['n <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-
-    -- Text objects
-    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-  },
-  watch_index = {
-    interval = 1000,
-    follow_files = true
+  watch_index = { interval = 1000, follow_files = true
   },
   current_line_blame = true,
   current_line_blame_opts = { delay = 40, position = 'eol' },
@@ -374,10 +365,29 @@ require('gitsigns').setup {
   status_formatter = nil, -- Use default
   word_diff = false,
   use_internal_diff = true,  -- If luajit is present
+
+  keymaps = {
+    -- Default keymap options
+    noremap = true,
+    buffer = true,
+
+    ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
+    ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
+
+    ['n gh'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+    ['n <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['v <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+  },
 }
+
 
 -- fzf-lua
 require('fzf-lua').setup { default_previewer = "bat" }
+
 
 -- lualine
 require'lualine'.setup {
@@ -390,6 +400,7 @@ require'lualine'.setup {
     lualine_z = {'branch'}
     }
 }
+
 
 -- nvim-colorizer
 require('colorizer').setup({'*'},{names = false;})
