@@ -125,7 +125,7 @@ inoremap <c-h> <c-w>
 " quickly write a file
 nnoremap <Leader>w :update<CR>
 " quickly reload a file
-nnoremap <Leader>e :edit<CR>
+nnoremap <Leader>e :mkview<CR>:edit<CR>
 
 " remove trailing spaces
 nnoremap <Leader><space> :%s/\s\+$//e<CR>
@@ -187,40 +187,40 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
 colorscheme gruvbox
 
-" mark 80 character limit
-set cc=81,121
-highlight ColorColumn ctermbg=236
-
-" remove ugly split indicator
-highlight VertSplit cterm=NONE
-
-" set blinking cursor
-:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-  \,sm:block-blinkwait175-blinkoff150-blinkon175
-
 set number " add line numbers
 set fillchars=eob:\ , " remove ~ markers after buffer
 
 set noshowcmd
 set noshowmode
 
+" set blinking cursor
+:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+  \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+" mark 80 character limit
+set cc=81,121
+" highlight current line
+set cursorline
+
+" remove ugly split indicator
+highlight VertSplit cterm=NONE
+
 " Set highlight groups
-set cursorline " highlight current line
-highlight CursorLineNR      ctermfg=229 guifg=#fbf1c7 guibg=#282828
-highlight CursorLine                                  guibg=#282828
-highlight ColorColumn                                 guibg=#282828
-highlight Identifier        ctermfg=229 guifg=#fbf1c7
-highlight Delimiter         ctermfg=229 guifg=#fbf1c7
-highlight Type              ctermfg=214 guifg=#fabd2f cterm=NONE gui=NONE
-highlight Operator          ctermfg=208 guifg=#fe8019
-highlight Keyword           ctermfg=167 guifg=#fb4934
-highlight Function          ctermfg=109 guifg=#83a598
-highlight TSFuncBuiltin     ctermfg=175 guifg=#83a598
-highlight TSConstBuiltin    ctermfg=175 guifg=#d3869b
-highlight TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
-highlight TSConstructor     ctermfg=229 guifg=#fbf1c7
-highlight TSTextReference   ctermfg=175 guifg=#83a598
+highlight      CursorLineNR      guifg=#fbf1c7 guibg=#282828
+highlight      CursorLine                                  guibg=#282828
+highlight      ColorColumn                                 guibg=#282828
+highlight link Identifier        GruvboxFg0
+highlight link Delimiter         GruvboxFg0
+highlight link Type              GruvboxYellow
+highlight link Operator          GruvboxOrange
+highlight link Keyword           GruvboxRed
+highlight link Function          GruvboxBlue
+highlight link TSFuncBuiltin     GruvboxBlue
+highlight link TSTextReference   GruvboxBlue
+highlight link TSConstructor     GruvboxFg0
+highlight link TSConstBuiltin    GruvboxPurple
+highlight      TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
 
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
