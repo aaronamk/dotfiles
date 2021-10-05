@@ -27,6 +27,7 @@ call plug#begin('$XDG_DATA_HOME/nvim/plugged')
   " appearance
   Plug 'morhetz/gruvbox'                                      " color scheme
   Plug 'hoob3rt/lualine.nvim'                                 " status line
+  Plug 'nvim-treesitter/nvim-treesitter-refactor'             " highlight references
   Plug 'norcalli/nvim-colorizer.lua'                          " highlight colors
 call plug#end()
 
@@ -41,6 +42,7 @@ set autoread
 autocmd FocusGained * :checktime
 set shortmess+=A " avoid swap file warnings
 set hidden " enable switching buffers without save
+set updatetime=0
 
 " save cursor position and folds
 autocmd BufWinLeave *.* mkview
@@ -207,20 +209,26 @@ set cursorline
 highlight VertSplit cterm=NONE
 
 " Set highlight groups
-highlight      CursorLineNR      guifg=#fbf1c7 guibg=#282828
-highlight      CursorLine                                  guibg=#282828
-highlight      ColorColumn                                 guibg=#282828
-highlight link Identifier        GruvboxFg0
-highlight link Delimiter         GruvboxFg0
-highlight link Type              GruvboxYellow
-highlight link Operator          GruvboxOrange
-highlight link Keyword           GruvboxRed
-highlight link Function          GruvboxBlue
-highlight link TSFuncBuiltin     GruvboxBlue
-highlight link TSTextReference   GruvboxBlue
-highlight link TSConstructor     GruvboxFg0
-highlight link TSConstBuiltin    GruvboxPurple
-highlight      TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
+highlight       CursorLineNR guifg=#fbf1c7 guibg=#282828
+highlight       CursorLine                 guibg=#282828
+highlight       ColorColumn                guibg=#282828
+highlight link  Identifier        GruvboxFg0
+highlight link  Delimiter         GruvboxFg0
+highlight link  Type              GruvboxYellow
+highlight link  Operator          GruvboxOrange
+highlight link  Keyword           GruvboxRed
+highlight link  Function          GruvboxBlue
+highlight link  TSFuncBuiltin     GruvboxBlue
+highlight link  TSTextReference   GruvboxBlue
+highlight link  TSConstructor     GruvboxFg0
+highlight link  TSConstBuiltin    GruvboxPurple
+highlight clear Search
+highlight       Search            gui=reverse
+highlight clear IncSearch
+highlight       IncSearch         gui=reverse
+highlight       TSDefinitionUsage guibg=#3c3836
+highlight       TSDefinition      guibg=#3c3836
+highlight       TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
 
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
@@ -283,6 +291,9 @@ require'nvim-treesitter.configs'.setup {
         ["[]"] = "@call.outer",
       },
     },
+  },
+  refactor = {
+    highlight_definitions = { enable = true },
   },
 }
 
