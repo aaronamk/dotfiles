@@ -45,7 +45,7 @@ set hidden " enable switching buffers without save
 set updatetime=0
 
 " save cursor position and folds
-autocmd BufWinLeave *.* mkview
+autocmd BufWinLeave *.* silent! mkview
 autocmd BufWinEnter *.* silent! loadview
 set viewoptions=cursor,folds
 
@@ -57,7 +57,7 @@ set undofile
 autocmd BufEnter * :silent! Gcd " Ignores error if not in git repo
 
 " detect file type
-autocmd BufEnter * if &filetype == "" | setlocal ft=text | endif
+autocmd VimEnter * if &filetype == "" | setlocal ft=text | endif
 filetype plugin indent on
 
 " scrolling
@@ -158,10 +158,10 @@ nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nnoremap <silent> ]l <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gr :FzfLua lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
@@ -212,8 +212,9 @@ highlight VertSplit cterm=NONE
 highlight       CursorLineNR guifg=#fbf1c7 guibg=#282828
 highlight       CursorLine                 guibg=#282828
 highlight       ColorColumn                guibg=#282828
-highlight link  Identifier        GruvboxFg0
 highlight link  Delimiter         GruvboxFg0
+highlight clear Identifier
+highlight link  Identifier        GruvboxFg0
 highlight link  Type              GruvboxYellow
 highlight link  Operator          GruvboxOrange
 highlight link  Keyword           GruvboxRed
@@ -384,8 +385,9 @@ require('gitsigns').setup {
     ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
 
     ['n gh'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ['n <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v <leader>h'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+    ['n zh'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['v zh'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+    ['n zH'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
 
     -- Text objects
     ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
@@ -395,7 +397,7 @@ require('gitsigns').setup {
 
 
 -- fzf-lua
-require('fzf-lua').setup { default_previewer = "bat" }
+require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
 
 
 -- lualine
