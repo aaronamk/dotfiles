@@ -35,7 +35,7 @@ call plug#end()
 " General
 " ------------------------------------------------------------------------------
 " fix terminal resizing bug
-"autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
+autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
 " update file when changed somewhere else
 set autoread
@@ -179,6 +179,8 @@ endfunction
 inoremap <expr> <Tab>   pumvisible() ? "\<c-n>" : SmartTab()
 inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
 inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
+
+"if (:set modifiable?) == "nomodifiable" | nnoremap <silent> <Esc> :q<CR> | endif
 
 
 " Appearance
