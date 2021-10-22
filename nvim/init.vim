@@ -112,6 +112,10 @@ let g:vimtex_view_general_viewer = 'omni-open.sh'
 noremap <space> <nop>
 let mapleader=" "
 
+" for some reason need these, events don't work for jumps
+nnoremap <c-o> <c-o>:loadview<cr>:<bs>
+nnoremap <c-i> <c-i>:loadview<cr>:<bs>
+
 " Make Y work the way you'd expect
 nmap Y y$
 
@@ -142,7 +146,7 @@ nnoremap <c-j> <c-w>w
 nnoremap <c-k> <c-w>W
 
 " clear search
-nnoremap <Esc> :noh<CR>
+nnoremap <Esc> :noh<CR>:<bs>
 
 " switch between header and source
 nnoremap <c-space> :ClangdSwitchSourceHeader<CR>

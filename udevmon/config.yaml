@@ -1,6 +1,6 @@
 # determine the name with sudo uinput -p -d /dev/input/by-id/...
 
-- JOB: "intercept -g $DEVNODE | hkd-relayer | uinput -d $DEVNODE"
+- JOB: "intercept -g $DEVNODE | hk-relay-plugin | uinput -d $DEVNODE"
   DEVICE:
     NAME: "SEMITEK USB-HID Gaming Keyboard"
     EVENTS:
