@@ -6,12 +6,12 @@ use 'wbthomason/packer.nvim'
 --------------------------------------------------------------------------------
 -- smart syntax parser
 use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+-- treesitter text objects
+use 'nvim-treesitter/nvim-treesitter-textobjects'
 -- better text objects
 use 'wellle/targets.vim'
 -- commenting bindings
 use 'tpope/vim-commentary'
--- treesitter commenting
-use 'JoosepAlviste/nvim-ts-context-commentstring'
 -- delimiter auto pairing
 use 'windwp/nvim-autopairs'
 -- delimiter bindings
@@ -47,7 +47,8 @@ use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 use 'morhetz/gruvbox'
 -- status line
 use 'hoob3rt/lualine.nvim'
+-- highlight references
+use 'nvim-treesitter/nvim-treesitter-refactor'
 -- highlight colors in that color
 use 'norcalli/nvim-colorizer.lua'
-
 end)

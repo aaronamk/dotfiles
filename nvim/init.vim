@@ -1,36 +1,238 @@
+lua <<EOF
+require('packer').startup(function()
+-- Packer can manage itself
+use 'wbthomason/packer.nvim'
+
+-- streamlined editing
+--------------------------------------------------------------------------------
+-- smart syntax parser
+use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+-- treesitter text objects
+use 'nvim-treesitter/nvim-treesitter-textobjects'
+-- better text objects
+use 'wellle/targets.vim'
+-- commenting bindings
+use 'tpope/vim-commentary'
+-- delimiter auto pairing
+use 'windwp/nvim-autopairs'
+-- delimiter bindings
+use 'tpope/vim-surround'
+-- . repeating for plugins
+use 'tpope/vim-repeat'
+-- latex compiler
+use 'lervag/vimtex'
+-- header/source switching
+--use { 'ericcurtin/CurtineIncSw.vim'
+
+-- LSP/navigation
+--------------------------------------------------------------------------------
+-- LSP configuration
+use 'neovim/nvim-lspconfig'
+-- completion helper
+use 'hrsh7th/nvim-compe'
+-- lua fzf implementation
+use 'vijaymarupudi/nvim-fzf'
+-- lua fzf bindings
+use 'ibhagwan/fzf-lua'
+
+-- git
+--------------------------------------------------------------------------------
+-- git integration
+use 'tpope/vim-fugitive'
+-- git change indicators
+use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+
+-- appearance
+--------------------------------------------------------------------------------
+-- color scheme
+use 'morhetz/gruvbox'
+-- status line
+use 'hoob3rt/lualine.nvim'
+-- highlight references
+use 'nvim-treesitter/nvim-treesitter-refactor'
+-- highlight colors in that color
+use 'norcalli/nvim-colorizer.lua'
+end)
+
+
+-- treesitter highlighting
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {enable = true},
+  context_commentstring = {enable = true},
+  autopairs = {enable = true},
+  textobjects = {
+    select = {
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
+
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["aB"] = "@block.outer",
+        ["iB"] = "@block.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = false,
+      goto_next_start = {
+        ["]B"] = "@block.outer",
+        ["]a"] = "@parameter.outer",
+        ["]f"] = "@function.outer",
+        ["]]"] = "@call.outer",
+      },
+      goto_next_end = {
+        ["]A"] = "@parameter.outer",
+        ["]F"] = "@function.outer",
+        ["]["] = "@call.outer",
+      },
+      goto_previous_start = {
+        ["[B"] = "@block.outer",
+        ["[a"] = "@parameter.outer",
+        ["[f"] = "@function.outer",
+        ["[["] = "@call.outer",
+      },
+      goto_previous_end = {
+        ["[A"] = "@parameter.outer",
+        ["[F"] = "@function.outer",
+        ["[]"] = "@call.outer",
+      },
+    },
+  },
+  refactor = {
+    highlight_definitions = { enable = true },
+  },
+}
+
+
+-- LSP
+require'lspconfig'.clangd.setup{}
+require'lspconfig'.pyright.setup{}
+require'lspconfig'.bashls.setup{}
+require'lspconfig'.bashls.setup{}
+
+
+-- compe
+require'compe'.setup {
+  enabled = true;
+  autocomplete = false;
+  debug = false;
+  min_length = 1;
+  preselect = 'always';
+  throttle_time = 0;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    nvim_lsp = true;
+  };
+}
+
+
+-- autopairs
+require('nvim-autopairs').setup()
+require("nvim-autopairs.completion.compe").setup({
+  check_ts = true,
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true, -- it will auto insert `(` after select function or method item
+  enable_check_bracket_line = false,
+  ignored_next_char = "[%w%.]",
+})
+local npairs = require'nvim-autopairs'
+local Rule   = require'nvim-autopairs.rule'
+
+npairs.add_rules {
+  Rule(' ', ' ')
+    :with_pair(function (opts)
+      local pair = opts.line:sub(opts.col, opts.col + 1)
+      return vim.tbl_contains({ '()', '[]', '{}' }, pair)
+    end),
+  Rule('( ',' )')
+        :with_pair(function() return false end)
+        :with_move(function() return true end)
+        :use_key(")")
+}
+
+
+-- git signs
+require('gitsigns').setup {
+  signs = {
+    add          = {hl = 'GruvboxGreenSign',  text = ' ┃', numhl='GitSignsAddNr',    linehl='GitSignsAddLn'},
+    change       = {hl = 'GruvboxOrangeSign', text = '▪ ', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GruvboxOrangeSign', text = ' ▁', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GruvboxOrangeSign', text = ' ▔', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GruvboxOrangeSign', text = '▪▁', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  },
+
+  signcolumn = true,
+  numhl = false,
+  linehl = false,
+  watch_index = { interval = 1000, follow_files = true
+  },
+  current_line_blame = true,
+  current_line_blame_opts = { delay = 40, position = 'eol' },
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  word_diff = false,
+  use_internal_diff = true,  -- If luajit is present
+
+  keymaps = {
+    -- Default keymap options
+    noremap = true,
+    buffer = true,
+
+    ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
+    ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
+
+    ['n gh'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+    ['n zh'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['v zh'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+    ['n zH'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+  },
+}
+
+
+-- fzf-lua
+require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
+
+
+-- lualine
+require'lualine'.setup {
+  options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
+  sections = {
+    lualine_a = {{'filename', file_status = true, path = 1}},
+    lualine_b = {'progress'},
+    lualine_c = {{'diagnostics', sources = {'nvim_lsp'}, symbols = {error = '❌', warn = '!', info = 'i', hint = 'h'}}},
+    lualine_x = {}, lualine_y = {},
+    lualine_z = {'branch'}
+    }
+}
+
+
+-- nvim-colorizer
+vim.cmd("set termguicolors")
+require('colorizer').setup({'*'},{names = false;})
+EOF
 " Vim config file
 " Author: aaronamk
-
-call plug#begin('$XDG_DATA_HOME/nvim/plugged')
-  " streamlined editing
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " smart syntax parser
-  Plug 'nvim-treesitter/nvim-treesitter-textobjects'          " treesitter text objects
-  Plug 'wellle/targets.vim'                                   " better text objects
-  Plug 'tpope/vim-commentary'                                 " commenting bindings
-  Plug 'windwp/nvim-autopairs'                                " delimiter auto pairing
-  Plug 'tpope/vim-surround'                                   " delimiter bindings
-  Plug 'tpope/vim-repeat'                                     " . repeating for plugins
-  Plug 'lervag/vimtex'                                        " latex compiler
-  "Plug 'ericcurtin/CurtineIncSw.vim'                          " header/source switching
-
-  " LSP/navigation
-  Plug 'neovim/nvim-lspconfig'                                " LSP configuration
-  Plug 'hrsh7th/nvim-compe'                                   " completion helper
-  Plug 'vijaymarupudi/nvim-fzf'                               " lua fzf implementation
-  Plug 'ibhagwan/fzf-lua'                                     " lua fzf bindings
-
-  " git
-  Plug 'tpope/vim-fugitive'                                   " git integration
-  Plug 'nvim-lua/plenary.nvim'                                " lua helpers
-  Plug 'lewis6991/gitsigns.nvim'                              " git change indicators
-
-  " appearance
-  Plug 'morhetz/gruvbox'                                      " color scheme
-  Plug 'hoob3rt/lualine.nvim'                                 " status line
-  Plug 'nvim-treesitter/nvim-treesitter-refactor'             " highlight references
-  Plug 'norcalli/nvim-colorizer.lua'                          " highlight colors
-call plug#end()
-
 
 " General
 " ------------------------------------------------------------------------------
@@ -215,27 +417,27 @@ set cursorline
 highlight VertSplit cterm=NONE
 
 " Set highlight groups
-highlight       CursorLineNR guifg=#fbf1c7 guibg=#282828
-highlight       CursorLine                 guibg=#282828
-highlight       ColorColumn                guibg=#282828
-highlight link  Delimiter         GruvboxFg0
-highlight clear Identifier
-highlight link  Identifier        GruvboxFg0
-highlight link  Type              GruvboxYellow
-highlight link  Operator          GruvboxOrange
-highlight link  Keyword           GruvboxRed
-highlight link  Function          GruvboxBlue
-highlight link  TSFuncBuiltin     GruvboxBlue
-highlight link  TSTextReference   GruvboxBlue
-highlight link  TSConstructor     GruvboxFg0
-highlight link  TSConstBuiltin    GruvboxPurple
-highlight clear Search
-highlight       Search            gui=reverse
-highlight clear IncSearch
-highlight       IncSearch         gui=reverse
-highlight       TSDefinitionUsage guibg=#3c3836
-highlight       TSDefinition      guibg=#3c3836
-highlight       TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
+autocmd VimEnter * highlight       CursorLineNR guifg=#fbf1c7 guibg=#282828
+autocmd VimEnter * highlight       CursorLine                 guibg=#282828
+autocmd VimEnter * highlight       ColorColumn                guibg=#282828
+autocmd VimEnter * highlight link  Delimiter         GruvboxFg0
+autocmd VimEnter * highlight clear Identifier
+autocmd VimEnter * highlight link  Identifier        GruvboxFg0
+autocmd VimEnter * highlight link  Type              GruvboxYellow
+autocmd VimEnter * highlight link  Operator          GruvboxOrange
+autocmd VimEnter * highlight link  Keyword           GruvboxRed
+autocmd VimEnter * highlight link  Function          GruvboxBlue
+autocmd VimEnter * highlight link  TSFuncBuiltin     GruvboxBlue
+autocmd VimEnter * highlight link  TSTextReference   GruvboxBlue
+autocmd VimEnter * highlight link  TSConstructor     GruvboxFg0
+autocmd VimEnter * highlight link  TSConstBuiltin    GruvboxPurple
+autocmd VimEnter * highlight clear Search
+autocmd VimEnter * highlight       Search            gui=reverse
+autocmd VimEnter * highlight clear IncSearch
+autocmd VimEnter * highlight       IncSearch         gui=reverse
+autocmd VimEnter * highlight       TSDefinitionUsage guibg=#3c3836
+autocmd VimEnter * highlight       TSDefinition      guibg=#3c3836
+autocmd VimEnter * highlight       TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
 
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
@@ -244,181 +446,3 @@ sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlu
 sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
 
 
-" Lua
-" ------------------------------------------------------------------------------
-lua <<EOF
--- treesitter highlighting
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
-  highlight = {enable = true},
-  context_commentstring = {enable = true},
-  autopairs = {enable = true},
-  textobjects = {
-    select = {
-      enable = true,
-
-      -- Automatically jump forward to textobj, similar to targets.vim
-      lookahead = true,
-
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["aB"] = "@block.outer",
-        ["iB"] = "@block.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = false,
-      goto_next_start = {
-        ["]B"] = "@block.outer",
-        ["]a"] = "@parameter.outer",
-        ["]f"] = "@function.outer",
-        ["]]"] = "@call.outer",
-      },
-      goto_next_end = {
-        ["]A"] = "@parameter.outer",
-        ["]F"] = "@function.outer",
-        ["]["] = "@call.outer",
-      },
-      goto_previous_start = {
-        ["[B"] = "@block.outer",
-        ["[a"] = "@parameter.outer",
-        ["[f"] = "@function.outer",
-        ["[["] = "@call.outer",
-      },
-      goto_previous_end = {
-        ["[A"] = "@parameter.outer",
-        ["[F"] = "@function.outer",
-        ["[]"] = "@call.outer",
-      },
-    },
-  },
-  refactor = {
-    highlight_definitions = { enable = true },
-  },
-}
-
-
--- LSP
-require'lspconfig'.clangd.setup{}
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.bashls.setup{}
-require'lspconfig'.bashls.setup{}
-
-
--- compe
-require'compe'.setup {
-  enabled = true;
-  autocomplete = false;
-  debug = false;
-  min_length = 1;
-  preselect = 'always';
-  throttle_time = 0;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    nvim_lsp = true;
-  };
-}
-
-
--- autopairs
-require('nvim-autopairs').setup()
-require("nvim-autopairs.completion.compe").setup({
-  check_ts = true,
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` after select function or method item
-  enable_check_bracket_line = false,
-  ignored_next_char = "[%w%.]",
-})
-local npairs = require'nvim-autopairs'
-local Rule   = require'nvim-autopairs.rule'
-
-npairs.add_rules {
-  Rule(' ', ' ')
-    :with_pair(function (opts)
-      local pair = opts.line:sub(opts.col, opts.col + 1)
-      return vim.tbl_contains({ '()', '[]', '{}' }, pair)
-    end),
-  Rule('( ',' )')
-        :with_pair(function() return false end)
-        :with_move(function() return true end)
-        :use_key(")")
-}
-
-
--- git signs
-require('gitsigns').setup {
-  signs = {
-    add          = {hl = 'GruvboxGreenSign',  text = ' ┃', numhl='GitSignsAddNr',    linehl='GitSignsAddLn'},
-    change       = {hl = 'GruvboxOrangeSign', text = '▪ ', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GruvboxOrangeSign', text = ' ▁', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GruvboxOrangeSign', text = ' ▔', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GruvboxOrangeSign', text = '▪▁', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  },
-
-  signcolumn = true,
-  numhl = false,
-  linehl = false,
-  watch_index = { interval = 1000, follow_files = true
-  },
-  current_line_blame = true,
-  current_line_blame_opts = { delay = 40, position = 'eol' },
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  word_diff = false,
-  use_internal_diff = true,  -- If luajit is present
-
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-    buffer = true,
-
-    ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
-    ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
-
-    ['n gh'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ['n zh'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v zh'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n zH'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-
-    -- Text objects
-    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-  },
-}
-
-
--- fzf-lua
-require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
-
-
--- lualine
-require'lualine'.setup {
-  options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
-  sections = {
-    lualine_a = {{'filename', file_status = true, path = 1}},
-    lualine_b = {'progress'},
-    lualine_c = {{'diagnostics', sources = {'nvim_lsp'}, symbols = {error = '❌', warn = '!', info = 'i', hint = 'h'}}},
-    lualine_x = {}, lualine_y = {},
-    lualine_z = {'branch'}
-    }
-}
-
-
--- nvim-colorizer
-require('colorizer').setup({'*'},{names = false;})
-EOF
