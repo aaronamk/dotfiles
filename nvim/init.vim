@@ -1,3 +1,8 @@
+" Vim config file
+" Author: aaronamk
+
+" Plugin settings
+" ------------------------------------------------------------------------------
 lua <<EOF
 require('packer').startup(function()
 -- Packer can manage itself
@@ -139,7 +144,6 @@ require'cmp'.setup {
     autocomplete = false,
     completeopt = 'menu,noinsert'
   },
-
   mapping = {
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -152,7 +156,6 @@ require'cmp'.setup {
         fallback()
       end
     end, { "i", "s" }),
-
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -162,7 +165,6 @@ require'cmp'.setup {
         fallback()
       end
     end, { "i", "s" }),
-
     ["<Esc>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.abort()
@@ -170,62 +172,42 @@ require'cmp'.setup {
         fallback()
       end
     end, { "i", "s" }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
-
   sources = {
     { name = "luasnip" },
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
     { name = "path" }
   },
-
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
     end,
   },
-
   experimental = {
     ghost_text = true
   }
 }
 
 
--- compe
---require'compe'.setup {
---  enabled = true;
---  autocomplete = false;
---  debug = false;
---  min_length = 1;
---  preselect = 'always';
---  throttle_time = 0;
---  source_timeout = 200;
---  incomplete_delay = 400;
---  max_abbr_width = 100;
---  max_kind_width = 100;
---  max_menu_width = 100;
---  documentation = true;
---
---  source = {
---    path = true;
---    nvim_lsp = true;
---  };
---}
-
-
 -- autopairs
-require('nvim-autopairs').setup()
-require("nvim-autopairs.completion.cmp").setup({
+require('nvim-autopairs').setup({
   check_ts = true,
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` after select function or method item
-  enable_check_bracket_line = false,
-  ignored_next_char = "[%w%.]",
 })
-local npairs = require'nvim-autopairs'
-local Rule   = require'nvim-autopairs.rule'
+require("nvim-autopairs.completion.cmp").setup({
+  map_cr = true, --  map <CR> on insert mode
+  map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
+  auto_select = true, -- automatically select the first item
+  insert = false, -- use insert confirm behavior instead of replace
+  map_char = { -- modifies the function or method delimiter by filetypes
+    all = '(',
+    tex = '{'
+  }
+})
 
-npairs.add_rules {
+local Rule = require'nvim-autopairs.rule'
+require'nvim-autopairs'.add_rules {
   Rule(' ', ' ')
     :with_pair(function (opts)
       local pair = opts.line:sub(opts.col, opts.col + 1)
@@ -302,8 +284,10 @@ require'lualine'.setup {
 vim.cmd("set termguicolors")
 require('colorizer').setup({'*'},{names = false;})
 EOF
-" Vim config file
-" Author: aaronamk
+
+" latex
+let g:vimtex_view_general_viewer = 'omni-open.sh'
+
 
 " General
 " ------------------------------------------------------------------------------
@@ -367,15 +351,6 @@ set foldlevelstart=99
 let g:netrw_banner = 0     " remove banner
 let g:netrw_liststyle = 3  " set to tree view
 let g:netrw_dirhistmax = 0 " disable annoying hist file
-
-
-" Plugin settings
-" ------------------------------------------------------------------------------
-" use omni completion provided by lsp
-"autocmd Filetype * setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-" latex
-let g:vimtex_view_general_viewer = 'omni-open.sh'
 
 
 " Keybindings
