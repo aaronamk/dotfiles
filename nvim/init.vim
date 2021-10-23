@@ -7,8 +7,8 @@ use 'wbthomason/packer.nvim'
 --------------------------------------------------------------------------------
 -- smart syntax parser
 use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
--- treesitter text objects
-use 'nvim-treesitter/nvim-treesitter-textobjects'
+use 'nvim-treesitter/nvim-treesitter-textobjects' -- treesitter text objects
+use 'nvim-treesitter/nvim-treesitter-refactor' -- highlight references
 -- better text objects
 use 'wellle/targets.vim'
 -- commenting bindings
@@ -28,11 +28,14 @@ use 'lervag/vimtex'
 --------------------------------------------------------------------------------
 -- LSP configuration
 use 'neovim/nvim-lspconfig'
--- completion helper
-use 'hrsh7th/nvim-compe'
--- lua fzf implementation
+use 'hrsh7th/nvim-cmp'         -- completion helper
+use 'hrsh7th/cmp-nvim-lsp'     -- LSP completion
+use 'hrsh7th/cmp-path'         -- path completion
+use 'hrsh7th/cmp-nvim-lua'     -- internal lua completion
+use 'L3MON4D3/LuaSnip'         -- snippets
+use 'saadparwaiz1/cmp_luasnip' -- snippets cmp integration
+-- lua fzf
 use 'vijaymarupudi/nvim-fzf'
--- lua fzf bindings
 use 'ibhagwan/fzf-lua'
 
 -- git
@@ -47,9 +50,7 @@ use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 -- color scheme
 use 'morhetz/gruvbox'
 -- status line
-use 'hoob3rt/lualine.nvim'
--- highlight references
-use 'nvim-treesitter/nvim-treesitter-refactor'
+use 'nvim-lualine/lualine.nvim'
 -- highlight colors in that color
 use 'norcalli/nvim-colorizer.lua'
 end)
@@ -120,31 +121,101 @@ require'lspconfig'.bashls.setup{}
 require'lspconfig'.bashls.setup{}
 
 
--- compe
-require'compe'.setup {
-  enabled = true;
-  autocomplete = false;
-  debug = false;
-  min_length = 1;
-  preselect = 'always';
-  throttle_time = 0;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
+-- LuaSnip
+require'luasnip'.config.setup{}
 
-  source = {
-    path = true;
-    nvim_lsp = true;
-  };
+
+-- nvim-cmp
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local luasnip = require("luasnip")
+local cmp = require("cmp")
+require'cmp'.setup {
+  
+  completion = {
+    autocomplete = false,
+    completeopt = 'menu,noinsert'
+  },
+
+  mapping = {
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ["<Esc>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.abort()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+  },
+
+  sources = {
+    { name = "luasnip" },
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
+    { name = "path" }
+  },
+
+  snippet = {
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body)
+    end,
+  },
+
+  experimental = {
+    ghost_text = true
+  }
 }
+
+
+-- compe
+--require'compe'.setup {
+--  enabled = true;
+--  autocomplete = false;
+--  debug = false;
+--  min_length = 1;
+--  preselect = 'always';
+--  throttle_time = 0;
+--  source_timeout = 200;
+--  incomplete_delay = 400;
+--  max_abbr_width = 100;
+--  max_kind_width = 100;
+--  max_menu_width = 100;
+--  documentation = true;
+--
+--  source = {
+--    path = true;
+--    nvim_lsp = true;
+--  };
+--}
 
 
 -- autopairs
 require('nvim-autopairs').setup()
-require("nvim-autopairs.completion.compe").setup({
+require("nvim-autopairs.completion.cmp").setup({
   check_ts = true,
   map_cr = true, --  map <CR> on insert mode
   map_complete = true, -- it will auto insert `(` after select function or method item
@@ -282,7 +353,6 @@ set path+=**
 set wildmenu
 set wildmode=longest,list,full
 set inccommand=nosplit
-set completeopt=menu,noselect
 
 " clipboard
 set clipboard=unnamedplus
@@ -313,10 +383,6 @@ let g:vimtex_view_general_viewer = 'omni-open.sh'
 " set leader key
 noremap <space> <nop>
 let mapleader=" "
-
-" for some reason need these, events don't work for jumps
-nnoremap <c-o> <c-o>:loadview<cr>:<bs>
-nnoremap <c-i> <c-i>:loadview<cr>:<bs>
 
 " Make Y work the way you'd expect
 nmap Y y$
@@ -372,19 +438,6 @@ nnoremap <silent> gr :FzfLua lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
-
-" completion to more or less match my shell
-function! SmartTab()
-  let before = strpart(getline('.'), -1, col('.'))
-  if (!match(before, '^\s*$'))
-    return "\<tab>"
-  endif
-  return compe#complete()
-endfunction
-
-inoremap <expr> <Tab>   pumvisible() ? "\<c-n>" : SmartTab()
-inoremap <expr> <S-Tab> pumvisible() ? "\<c-p>" : "<Tab>"
-inoremap <expr> <Esc>   pumvisible() ? compe#close('<c-e>') : "\<Esc>"
 
 "if (:set modifiable?) == "nomodifiable" | nnoremap <silent> <Esc> :q<CR> | endif
 
@@ -444,5 +497,3 @@ sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
 sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=GruvboxYellowBold
 sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlueBold
 sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
-
-
