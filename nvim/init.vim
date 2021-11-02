@@ -53,7 +53,7 @@ use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
 -- appearance
 --------------------------------------------------------------------------------
 -- color scheme
-use 'morhetz/gruvbox'
+use 'tjdevries/colorbuddy.nvim'
 -- status line
 use 'nvim-lualine/lualine.nvim'
 -- highlight colors in that color
@@ -139,7 +139,6 @@ end
 local luasnip = require("luasnip")
 local cmp = require("cmp")
 require'cmp'.setup {
-  
   completion = {
     autocomplete = false,
     completeopt = 'menu,noinsert'
@@ -195,16 +194,9 @@ require'cmp'.setup {
 require('nvim-autopairs').setup({
   check_ts = true,
 })
-require("nvim-autopairs.completion.cmp").setup({
-  map_cr = true, --  map <CR> on insert mode
-  map_complete = true, -- it will auto insert `(` (map_char) after select function or method item
-  auto_select = true, -- automatically select the first item
-  insert = false, -- use insert confirm behavior instead of replace
-  map_char = { -- modifies the function or method delimiter by filetypes
-    all = '(',
-    tex = '{'
-  }
-})
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local cmp = require('cmp')
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
 
 local Rule = require'nvim-autopairs.rule'
 require'nvim-autopairs'.add_rules {
@@ -223,11 +215,11 @@ require'nvim-autopairs'.add_rules {
 -- git signs
 require('gitsigns').setup {
   signs = {
-    add          = {hl = 'GruvboxGreenSign',  text = ' ┃', numhl='GitSignsAddNr',    linehl='GitSignsAddLn'},
-    change       = {hl = 'GruvboxOrangeSign', text = '▪ ', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GruvboxOrangeSign', text = ' ▁', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GruvboxOrangeSign', text = ' ▔', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GruvboxOrangeSign', text = '▪▁', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    add          = {hl = 'GitSignsAdd',    text = ' ▎', numhl='', linehl=''},
+    change       = {hl = 'GitSignsChange', text = '▪ ', numhl='', linehl=''},
+    changedelete = {hl = 'GitSignsChange', text = '▪▁', numhl='', linehl=''},
+    delete       = {hl = 'GitSignsDelete', text = ' ▁', numhl='', linehl=''},
+    topdelete    = {hl = 'GitSignsDelete', text = ' ▔', numhl='', linehl=''},
   },
 
   signcolumn = true,
@@ -283,7 +275,94 @@ require'lualine'.setup {
 -- nvim-colorizer
 vim.cmd("set termguicolors")
 require('colorizer').setup({'*'},{names = false;})
+
+
+-- colorbuddy (gruvbox dark)
+require('colorbuddy').setup()
+local Color, c, Group, g, styles = require('colorbuddy').setup()
+Color.new('bg',           "#1d2021")
+Color.new('bg0',          "#282828")
+Color.new('bg1',          "#3c3836")
+Color.new('bg2',          "#504945")
+Color.new('bg3',          "#665c54")
+Color.new('bg4',          "#7c6f64")
+Color.new('fg',           "#ebdbb2")
+Color.new('fg0',          "#fbf1c7")
+Color.new('fg1',          "#ebdbb2")
+Color.new('fg2',          "#d5c4a1")
+Color.new('fg3',          "#bdae93")
+Color.new('fg4',          "#a89984")
+Color.new('gray',         "#928374")
+Color.new('red',          "#cc241d")
+Color.new('red_bold',     "#fb4934")
+Color.new('orange',       "#d65d0e")
+Color.new('orange_bold',  "#fe8019")
+Color.new('yellow',       "#d79921")
+Color.new('yellow_bold',  "#fabd2f")
+Color.new('green',        "#98971a")
+Color.new('green_bold',   "#b8bb26")
+Color.new('aqua',         "#689d6a")
+Color.new('aqua_bold',    "#8ec07c")
+Color.new('blue',         "#458588")
+Color.new('blue_bold',    "#83a598")
+Color.new('purple',       "#b16286")
+Color.new('purple_bold',  "#d3869b")
+
+-- editor
+Group.new('Normal',            c.fg,     c.bg)
+Group.new('Visual',            c.none,   c.none, styles.reverse)
+Group.new('VisualNC',          c.none,   c.none, styles.reverse)
+Group.new('Cursor',            c.none,   c.none, styles.reverse)
+Group.new('CursorLine',        c.none,   c.bg0)
+Group.new('Whitespace',        c.bg2,    c.none)
+Group.new('ColorColumn',       c.none,   c.bg0)
+Group.new('SignColumn',        c.none,   c.none)
+Group.new('LineNR',            c.gray,   c.none)
+Group.new('CursorLineNR',      c.fg,     c.bg0)
+Group.new('MatchParen',        c.none,   c.bg2)
+Group.new('IncSearch',         c.none,   c.none, styles.reverse)
+Group.new('Search',            c.none,   c.none, styles.reverse)
+Group.new('Pmenu',             c.none,   c.bg1)
+Group.new('PmenuSel',          c.none,   c.none, styles.reverse)
+
+-- code highlighting
+Group.new('Include',           c.aqua_bold,   c.none)
+Group.new('Preproc',           c.aqua_bold,   c.none)
+Group.new('Comment',           c.gray,        c.none, styles.italic)
+Group.new('Todo',              c.fg0,         c.none, styles.bold + styles.italic)
+Group.new('Delimiter',         c.fg,          c.none)
+Group.new('Constant',          c.purple_bold, c.none)
+Group.new('Boolean',           c.purple_bold, c.none)
+Group.new('Number',            c.purple_bold, c.none)
+Group.new('Character',         c.purple_bold, c.none)
+Group.new('String',            c.green_bold,  c.none)
+Group.new('Title',             c.green_bold,  c.none)
+Group.new('Identifier',        c.fg,          c.none)
+Group.new('Type',              c.yellow_bold, c.none)
+Group.new('Operator',          c.orange_bold, c.none)
+Group.new('Exception',         c.red,         c.none)
+Group.new('Keyword',           c.red_bold,    c.none)
+Group.new('Label',             c.red_bold,    c.none)
+Group.new('Conditional',       c.red_bold,    c.none)
+Group.new('Repeat',            c.red_bold,    c.none) -- loops
+Group.new('Function',          c.blue_bold,   c.none)
+Group.new('TSConstructor',     c.fg,          c.none)
+Group.new('TSConstBuiltin',    c.purple_bold, c.none)
+Group.new('TSVariableBuiltin', c.fg0,         c.none, styles.bold + styles.italic)
+Group.new('TSDefinition',      c.none,        c.bg1)
+Group.new('TSDefinitionUsage', c.none,        c.bg1)
+
+-- plugins
+Group.new('GitSignsCurrentLineBlame', g.Whitespace)
+Group.new('GitSignsAdd',              c.green_bold)
+Group.new('GitSignsChange',           c.orange_bold)
+Group.new('GitSignsDelete',           c.orange_bold)
+Group.new('LintError',                c.red_bold)
+Group.new('LintWarning',              c.yellow_bold)
+Group.new('LintInfo',                 c.blue_bold)
+Group.new('LintHint',                 c.purple_bold)
 EOF
+hi Normal guibg=#1d2021
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
@@ -419,12 +498,6 @@ cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
 " Appearance
 " ------------------------------------------------------------------------------
-let g:gruvbox_contrast_dark = "hard"
-let g:gruvbox_italic = 1
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set termguicolors
-colorscheme gruvbox
-
 set number " add line numbers
 set fillchars=eob:\ , " remove ~ markers after buffer
 
@@ -444,31 +517,8 @@ set cursorline
 " remove ugly split indicator
 highlight VertSplit cterm=NONE
 
-" Set highlight groups
-autocmd VimEnter * highlight       CursorLineNR guifg=#fbf1c7 guibg=#282828
-autocmd VimEnter * highlight       CursorLine                 guibg=#282828
-autocmd VimEnter * highlight       ColorColumn                guibg=#282828
-autocmd VimEnter * highlight link  Delimiter         GruvboxFg0
-autocmd VimEnter * highlight clear Identifier
-autocmd VimEnter * highlight link  Identifier        GruvboxFg0
-autocmd VimEnter * highlight link  Type              GruvboxYellow
-autocmd VimEnter * highlight link  Operator          GruvboxOrange
-autocmd VimEnter * highlight link  Keyword           GruvboxRed
-autocmd VimEnter * highlight link  Function          GruvboxBlue
-autocmd VimEnter * highlight link  TSFuncBuiltin     GruvboxBlue
-autocmd VimEnter * highlight link  TSTextReference   GruvboxBlue
-autocmd VimEnter * highlight link  TSConstructor     GruvboxFg0
-autocmd VimEnter * highlight link  TSConstBuiltin    GruvboxPurple
-autocmd VimEnter * highlight clear Search
-autocmd VimEnter * highlight       Search            gui=reverse
-autocmd VimEnter * highlight clear IncSearch
-autocmd VimEnter * highlight       IncSearch         gui=reverse
-autocmd VimEnter * highlight       TSDefinitionUsage guibg=#3c3836
-autocmd VimEnter * highlight       TSDefinition      guibg=#3c3836
-autocmd VimEnter * highlight       TSVariableBuiltin ctermfg=229 guifg=#fbf1c7 cterm=bold,italic gui=bold,italic
-
 " lsp diagnostics
-sign define LspDiagnosticsSignError text= texthl= linehl= numhl=GruvboxRedBold
-sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=GruvboxYellowBold
-sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=GruvboxBlueBold
-sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=GruvboxPurpleBold
+sign define LspDiagnosticsSignError text= texthl= linehl= numhl=LintError
+sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=LintWarning
+sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=LintInfo
+sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=LintHint
