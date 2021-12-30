@@ -8,6 +8,8 @@ require('packer').startup(function()
 -- Packer can manage itself
 use 'wbthomason/packer.nvim'
 
+use("nathom/filetype.nvim") -- faster filetype detection
+
 -- streamlined editing
 --------------------------------------------------------------------------------
 -- smart syntax parser
@@ -15,10 +17,12 @@ use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 use 'nvim-treesitter/nvim-treesitter-textobjects' -- treesitter text objects
 use 'nvim-treesitter/nvim-treesitter-refactor'    -- highlight references
 use 'nvim-treesitter/playground'                  -- treesitter info
+-- code formatter
+use 'Chiel92/vim-autoformat'
 -- better text objects
 use 'wellle/targets.vim'
 -- commenting bindings
-use 'tpope/vim-commentary'
+use 'terrortylor/nvim-comment'
 -- delimiter auto pairing
 use 'windwp/nvim-autopairs'
 -- delimiter bindings
@@ -255,6 +259,18 @@ require('gitsigns').setup {
   },
 }
 
+-- nvim_comment
+require('nvim_comment').setup {
+  opleader = {
+      line = "gc",
+      block = "gb",
+  },
+  mappings = {
+    basic = true,
+    extra = true,
+    extended = true,
+  },
+}
 
 -- fzf-lua
 require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
@@ -311,7 +327,6 @@ Color.new('purple_bold',  "#d3869b")
 
 -- editor
 Group.new('Normal',            c.fg,          c.bg)
-Group.new('SpellBad',          c.none,        c.none, styles.underline)
 Group.new('Visual',            c.none,        c.none, styles.reverse)
 Group.new('VisualNC',          c.none,        c.none, styles.reverse)
 Group.new('Cursor',            c.none,        c.none, styles.reverse)
@@ -379,10 +394,19 @@ Group.new('LintWarning',              c.yellow_bold)
 Group.new('LintInfo',                 c.blue_bold)
 Group.new('LintHint',                 c.purple_bold)
 EOF
-hi Normal guibg=#1d2021
+
+highlight Normal guibg=#1d2021
+highlight SpellBad                                     guisp=#cc241d
+highlight SpellCap                                     guisp=#d79921
+highlight LspDiagnosticsUnderlineError   gui=undercurl guisp=#fb4934
+highlight LspDiagnosticsUnderlineWarning gui=undercurl guisp=#fabd2f
+highlight LspDiagnosticsUnderlineInfo    gui=undercurl guisp=#83a598
+highlight LspDiagnosticsUnderlineHint    gui=undercurl guisp=#d3869b
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
+
+" formatter
 
 
 " General
