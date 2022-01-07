@@ -22,7 +22,7 @@ use 'Chiel92/vim-autoformat'
 -- better text objects
 use 'wellle/targets.vim'
 -- commenting bindings
-use 'terrortylor/nvim-comment'
+use 'numToStr/Comment.nvim'
 -- delimiter auto pairing
 use 'windwp/nvim-autopairs'
 -- delimiter bindings
@@ -260,17 +260,7 @@ require('gitsigns').setup {
 }
 
 -- nvim_comment
-require('nvim_comment').setup {
-  opleader = {
-      line = "gc",
-      block = "gb",
-  },
-  mappings = {
-    basic = true,
-    extra = true,
-    extended = true,
-  },
-}
+require('Comment').setup()
 
 -- fzf-lua
 require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
@@ -282,7 +272,7 @@ require'lualine'.setup {
   sections = {
     lualine_a = {{'filename', file_status = true, path = 1}},
     lualine_b = {'progress'},
-    lualine_c = {{'diagnostics', sources = {'nvim_lsp'}, symbols = {error = '❌', warn = '!', info = 'i', hint = 'h'}}},
+    lualine_c = {{'diagnostics', sources = {'nvim_diagnostic'}, symbols = {error = '❌', warn = '!', info = 'i', hint = 'h'}}},
     lualine_x = {}, lualine_y = {},
     lualine_z = {'branch'}
     }
@@ -440,8 +430,8 @@ filetype plugin indent on
 " scrolling
 set scrolloff=10
 set scroll=10
-autocmd VimResized * :set scroll=10
-autocmd WinEnter * :set scroll=10
+autocmd VimResized * :silent! set scroll=10
+autocmd WinEnter * :silent! set scroll=10
 
 set title " set window title
 set mouse=a " enable mouse
@@ -556,7 +546,7 @@ set cc=81,121
 set cursorline
 
 " remove ugly split indicator
-highlight VertSplit cterm=NONE
+highlight VertSplit gui=NONE
 
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=LintError
