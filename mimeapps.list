@@ -49,3 +49,4 @@ application/gzip=org.gnome.FileRoller.desktop;
 
 [Added Associations]
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
+text/html=firefox.desktop;

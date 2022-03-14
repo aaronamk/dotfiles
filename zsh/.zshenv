@@ -2,7 +2,7 @@
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="foot"
+export TERMINAL="kitty"
 export BROWSER="firefox"
 export FILE="vifm"
 
@@ -12,6 +12,7 @@ export LC_ALL=en_US.UTF-8
 export GTK_THEME=Material-Black-Lime-4.0
 export PASSWORD_STORE_GENERATED_LENGTH=16
 export FZF_DEFAULT_OPTS="--reverse --bind=tab:down,btab:up,change:top"
+export FZF_DEFAULT_COMMAND="rg --files --ignore --hidden --glob=!.git"
 export CM_LAUNCHER=fzf
 export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"

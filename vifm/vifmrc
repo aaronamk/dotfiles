@@ -192,6 +192,7 @@ mark p ~/Desktop/Projects
 mark g ~/Desktop/Projects/Parryt
 mark S ~/Desktop/School
 mark s ~/Desktop/School
+mark w /mnt/windows
 
 " ------------------------------------------------------------------------------
 " Unsorted defaults
