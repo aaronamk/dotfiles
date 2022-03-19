@@ -238,7 +238,7 @@ require('gitsigns').setup {
   update_debounce = 100,
   status_formatter = nil, -- Use default
   word_diff = false,
-  use_internal_diff = true,  -- If luajit is present
+  diff_opts = { internal = true }, -- If luajit is present
 
   keymaps = {
     -- Default keymap options
@@ -512,9 +512,9 @@ nnoremap g/ :FzfLua builtin<CR>
 
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gl <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
-nnoremap <silent> ]l <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> [l <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> gl <cmd>lua vim.diagnostic.show_line_diagnostics()<CR>
+nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -545,8 +545,11 @@ set cc=81,121
 " highlight current line
 set cursorline
 
+" global statusline
+" set laststatus=3
+
 " remove ugly split indicator
-highlight VertSplit gui=NONE
+highlight WinSeparator guibg=NONE
 
 " lsp diagnostics
 sign define LspDiagnosticsSignError text= texthl= linehl= numhl=LintError
