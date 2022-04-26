@@ -68,7 +68,8 @@ end)
 
 -- treesitter highlighting
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
+  ignore_install = { "phpdoc" },
   highlight = {enable = true},
   context_commentstring = {enable = true},
   autopairs = {enable = true},
@@ -435,6 +436,7 @@ autocmd WinEnter * :silent! set scroll=10
 
 set title " set window title
 set mouse=a " enable mouse
+let g:c_syntax_for_h = 1
 
 " whitespace
 set tabstop=4
@@ -541,7 +543,7 @@ set noshowmode
   \,sm:block-blinkwait175-blinkoff150-blinkon175
 
 " mark 80 character limit
-set cc=81,121
+set cc=80,120
 " highlight current line
 set cursorline
 

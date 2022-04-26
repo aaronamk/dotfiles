@@ -32,6 +32,7 @@ export XDG_CACHE_HOME=$HOME/.cache
 # mine
 export COMPILED=$HOME/.local/compiled
 export SCRIPTS=$HOME/.local/bin
+export WINEPREFIX=$HOME/.wine
 
 # ~/ cleaning
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
