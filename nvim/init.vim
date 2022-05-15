@@ -120,20 +120,19 @@ require'nvim-treesitter.configs'.setup {
     },
   },
   refactor = {
-    highlight_definitions = { enable = true },
+    highlight_definitions = { enable = true, clear_on_cursor_move = false },
+    navigation = { enable = true, keymaps = { goto_next_usage = "]r", goto_previous_usage = "[r" } }
   },
 }
 
 
--- LSP
-require'lspconfig'.clangd.setup{}
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.bashls.setup{}
-require'lspconfig'.bashls.setup{}
-
-
 -- LuaSnip
-require'luasnip'.config.setup{}
+local luasnip = require("luasnip")
+luasnip.config.set_config{
+  history = true,
+  updateevents = "TextChanged,TextChangedI",
+  enable_autosnippets = true
+}
 
 
 -- nvim-cmp
@@ -142,9 +141,8 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local luasnip = require("luasnip")
 local cmp = require("cmp")
-require'cmp'.setup {
+cmp.setup {
   completion = {
     autocomplete = false,
     completeopt = 'menu,noinsert'
@@ -195,6 +193,21 @@ require'cmp'.setup {
   }
 }
 
+-- LSP
+vim.diagnostic.config({virtual_text = {prefix = '•'}, severity_sort = true})
+
+local servers = { 'clangd', 'pylsp', 'bashls' }
+
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+for _, lsp in ipairs(servers) do
+  require('lspconfig')[lsp].setup {
+    capabilities = capabilities,
+  }
+end
+
 
 -- autopairs
 require('nvim-autopairs').setup({
@@ -234,9 +247,9 @@ require('gitsigns').setup {
   watch_gitdir = { interval = 1000, follow_files = true
   },
   current_line_blame = true,
-  current_line_blame_opts = { delay = 40, position = 'eol' },
+  current_line_blame_opts = { delay = 50, position = 'eol' },
   sign_priority = 6,
-  update_debounce = 100,
+  update_debounce = 50,
   status_formatter = nil, -- Use default
   word_diff = false,
   diff_opts = { internal = true }, -- If luajit is present
@@ -332,6 +345,7 @@ Group.new('IncSearch',         c.none,        c.none, styles.reverse)
 Group.new('Search',            c.none,        c.none, styles.reverse)
 Group.new('Pmenu',             c.none,        c.bg1)
 Group.new('PmenuSel',          c.none,        c.none, styles.reverse)
+Group.new('Folded',            c.gray,        c.none)
 
 -- code highlighting
 Group.new('Comment',           c.gray,        c.none, styles.italic)
@@ -375,6 +389,16 @@ Group.new('Exception',         c.red,         c.none)
 Group.new('TSDefinition',      c.none,        c.bg1)
 Group.new('TSDefinitionUsage', c.none,        c.bg1)
 
+-- LSP
+Group.new('DiagnosticError',       c.red,    c.none, styles.bold)
+Group.new('DiagnosticWarn',        c.yellow, c.none, styles.bold)
+Group.new('DiagnosticInfo',        c.blue,   c.none, styles.bold)
+Group.new('DiagnosticHint',        c.purple, c.none, styles.bold)
+Group.new('DiagnosticLineNrError', c.red,    c.none, styles.bold)
+Group.new('DiagnosticLineNrWarn',  c.yellow, c.none, styles.bold)
+Group.new('DiagnosticLineNrInfo',  c.blue,   c.none, styles.bold)
+Group.new('DiagnosticLineNrHint',  c.purple, c.none, styles.bold)
+
 -- plugins
 Group.new('GitSignsCurrentLineBlame', g.Whitespace)
 Group.new('GitSignsAdd',              c.green_bold)
@@ -387,12 +411,12 @@ Group.new('LintHint',                 c.purple_bold)
 EOF
 
 highlight Normal guibg=#1d2021
-highlight SpellBad                                     guisp=#cc241d
-highlight SpellCap                                     guisp=#d79921
-highlight LspDiagnosticsUnderlineError   gui=undercurl guisp=#fb4934
-highlight LspDiagnosticsUnderlineWarning gui=undercurl guisp=#fabd2f
-highlight LspDiagnosticsUnderlineInfo    gui=undercurl guisp=#83a598
-highlight LspDiagnosticsUnderlineHint    gui=undercurl guisp=#d3869b
+highlight SpellBad                                 guisp=#fb4934
+highlight SpellCap                                 guisp=#fabd2f
+highlight DiagnosticUnderlineError   gui=undercurl guisp=#fb4934
+highlight DiagnosticUnderlineWarn    gui=undercurl guisp=#fabd2f
+highlight DiagnosticUnderlineInfo    gui=undercurl guisp=#83a598
+highlight DiagnosticUnderlineHint    gui=undercurl guisp=#d3869b
 
 " latex
 let g:vimtex_view_general_viewer = 'omni-open.sh'
@@ -410,7 +434,7 @@ set autoread
 autocmd FocusGained * :checktime
 set shortmess+=A " avoid swap file warnings
 set hidden " enable switching buffers without save
-set updatetime=0
+set updatetime=50
 
 " save cursor position and folds
 autocmd BufWinLeave *.* silent! mkview
@@ -514,13 +538,15 @@ nnoremap g/ :FzfLua builtin<CR>
 
 " LSP
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gl <cmd>lua vim.diagnostic.show_line_diagnostics()<CR>
+nnoremap <silent> gl <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
+nnoremap <silent> zl <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 nnoremap <silent> gr :FzfLua lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
@@ -553,8 +579,8 @@ set cursorline
 " remove ugly split indicator
 highlight WinSeparator guibg=NONE
 
-" lsp diagnostics
-sign define LspDiagnosticsSignError text= texthl= linehl= numhl=LintError
-sign define LspDiagnosticsSignWarning text= texthl= linehl= numhl=LintWarning
-sign define LspDiagnosticsSignInformation text= texthl= linehl= numhl=LintInfo
-sign define LspDiagnosticsSignHint text= texthl= linehl= numhl=LintHint
+" remove lsp diagnostic sign column symbols
+sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
+sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
+sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
+sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
