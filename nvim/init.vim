@@ -1,72 +1,43 @@
-" Vim config file
+" Neovim config file
 " Author: aaronamk
 
-" Plugin settings
-" ------------------------------------------------------------------------------
 lua <<EOF
+-- plugins
+-----------------------------------------------------------------------------------------------------------------------
 require('packer').startup(function()
--- Packer can manage itself
-use 'wbthomason/packer.nvim'
+  -- treesitter
+  use 'nvim-treesitter/nvim-treesitter'             -- smart syntax parser
+  use 'nvim-treesitter/nvim-treesitter-textobjects' -- treesitter text objects
+  use 'nvim-treesitter/nvim-treesitter-refactor'    -- highlight references
+  use 'nvim-treesitter/playground'                  -- treesitter info
 
-use("nathom/filetype.nvim") -- faster filetype detection
+  -- completion
+  use 'neovim/nvim-lspconfig'    -- lsp configurations for servers
+  use 'hrsh7th/nvim-cmp'         -- completion helper
+  use 'hrsh7th/cmp-nvim-lsp'     -- LSP completion
+  use 'hrsh7th/cmp-path'         -- path completion
+  use 'hrsh7th/cmp-nvim-lua'     -- internal lua completion
+  use 'L3MON4D3/LuaSnip'         -- snippets
+  use 'saadparwaiz1/cmp_luasnip' -- snippets cmp integration
+  use 'windwp/nvim-autopairs'    -- delimiter auto pairing
+  use { 'vijaymarupudi/nvim-fzf', requires = { 'ibhagwan/fzf-lua' } } -- fzf
 
--- streamlined editing
---------------------------------------------------------------------------------
--- smart syntax parser
-use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-use 'nvim-treesitter/nvim-treesitter-textobjects' -- treesitter text objects
-use 'nvim-treesitter/nvim-treesitter-refactor'    -- highlight references
-use 'nvim-treesitter/playground'                  -- treesitter info
--- code formatter
-use 'Chiel92/vim-autoformat'
--- better text objects
-use 'wellle/targets.vim'
--- commenting bindings
-use 'numToStr/Comment.nvim'
--- delimiter auto pairing
-use 'windwp/nvim-autopairs'
--- delimiter bindings
-use 'tpope/vim-surround'
--- . repeating for plugins
-use 'tpope/vim-repeat'
--- latex compiler
-use 'lervag/vimtex'
--- header/source switching
---use { 'ericcurtin/CurtineIncSw.vim'
+  -- git
+  use 'tpope/vim-fugitive'      -- git commands
+  use 'lewis6991/gitsigns.nvim' -- git change indicators
 
--- LSP/navigation
---------------------------------------------------------------------------------
--- LSP configuration
-use 'neovim/nvim-lspconfig'
-use 'hrsh7th/nvim-cmp'         -- completion helper
-use 'hrsh7th/cmp-nvim-lsp'     -- LSP completion
-use 'hrsh7th/cmp-path'         -- path completion
-use 'hrsh7th/cmp-nvim-lua'     -- internal lua completion
-use 'L3MON4D3/LuaSnip'         -- snippets
-use 'saadparwaiz1/cmp_luasnip' -- snippets cmp integration
--- lua fzf
-use 'vijaymarupudi/nvim-fzf'
-use 'ibhagwan/fzf-lua'
-
--- git
---------------------------------------------------------------------------------
--- git integration
-use 'tpope/vim-fugitive'
--- git change indicators
-use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-
--- appearance
---------------------------------------------------------------------------------
--- color scheme
-use 'tjdevries/colorbuddy.nvim'
--- status line
-use 'nvim-lualine/lualine.nvim'
--- highlight colors in that color
-use 'norcalli/nvim-colorizer.lua'
+  -- other
+  use 'wbthomason/packer.nvim'      -- plugin manager
+  use 'Chiel92/vim-autoformat'      -- code formatter
+  use 'norcalli/nvim-colorizer.lua' -- highlight colors in that color
+  use 'wellle/targets.vim'          -- smarter text objects
+  use 'machakann/vim-sandwich'      -- delimiter bindings
+  use 'numToStr/Comment.nvim'       -- commenting bindings
+  use 'nvim-lualine/lualine.nvim'   -- status line
 end)
 
 
--- treesitter highlighting
+-- treesitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
   ignore_install = { "phpdoc" },
@@ -76,57 +47,58 @@ require'nvim-treesitter.configs'.setup {
   textobjects = {
     select = {
       enable = true,
-
-      -- Automatically jump forward to textobj, similar to targets.vim
-      lookahead = true,
-
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["aB"] = "@block.outer",
-        ["iB"] = "@block.inner",
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
+      lookahead = true, -- Automatic jumps like in targets.vim
+      keymaps             = { ["aB"] = "@block.outer",
+                              ["iB"] = "@block.inner",
+                              ["aa"] = "@parameter.outer",
+                              ["ia"] = "@parameter.inner",
+                              ["af"] = "@function.outer",
+                              ["if"] = "@function.inner",
+                              ["ac"] = "@class.outer",
+                              ["ic"] = "@class.inner", },
     },
     move = {
       enable = true,
       set_jumps = false,
-      goto_next_start = {
-        ["]B"] = "@block.outer",
-        ["]a"] = "@parameter.outer",
-        ["]f"] = "@function.outer",
-        ["]]"] = "@call.outer",
-      },
-      goto_next_end = {
-        ["]A"] = "@parameter.outer",
-        ["]F"] = "@function.outer",
-        ["]["] = "@call.outer",
-      },
-      goto_previous_start = {
-        ["[B"] = "@block.outer",
-        ["[a"] = "@parameter.outer",
-        ["[f"] = "@function.outer",
-        ["[["] = "@call.outer",
-      },
-      goto_previous_end = {
-        ["[A"] = "@parameter.outer",
-        ["[F"] = "@function.outer",
-        ["[]"] = "@call.outer",
-      },
+      goto_next_start     = { ["]B"] = "@block.outer",
+                              ["]a"] = "@parameter.outer",
+                              ["]f"] = "@function.outer",
+                              ["]]"] = "@call.outer", },
+      goto_next_end       = { ["]A"] = "@parameter.outer",
+                              ["]F"] = "@function.outer",
+                              ["]["] = "@call.outer", },
+      goto_previous_start = { ["[B"] = "@block.outer",
+                              ["[a"] = "@parameter.outer",
+                              ["[f"] = "@function.outer",
+                              ["[["] = "@call.outer", },
+      goto_previous_end   = { ["[A"] = "@parameter.outer",
+                              ["[F"] = "@function.outer",
+                              ["[]"] = "@call.outer", },
     },
   },
   refactor = {
     highlight_definitions = { enable = true, clear_on_cursor_move = false },
-    navigation = { enable = true, keymaps = { goto_next_usage = "]r", goto_previous_usage = "[r" } }
+    navigation = { enable = true, keymaps   = { goto_definition_lsp_fallback = "gd",
+                                                goto_next_usage              = "]r",
+                                                goto_previous_usage          = "[r" } },
+    smart_rename = { enable = true, keymaps = { smart_rename                 = "cd" } }
   },
 }
 
 
--- LuaSnip
+-- lsp
+local servers = { 'clangd', 'jedi_language_server', 'bashls' }
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+for _, lsp in ipairs(servers) do
+  require('lspconfig')[lsp].setup { capabilities = capabilities }
+end
+
+vim.diagnostic.config({virtual_text = {prefix = '•'}, severity_sort = true})
+
+
+-- luasnip
 local luasnip = require("luasnip")
 luasnip.config.set_config{
   history = true,
@@ -143,91 +115,39 @@ end
 
 local cmp = require("cmp")
 cmp.setup {
-  completion = {
-    autocomplete = false,
-    completeopt = 'menu,noinsert'
-  },
+  completion = { autocomplete = false, completeopt = 'menu,noinsert' },
+  sources = { { name = "luasnip" }, { name = "nvim_lsp" }, { name = "nvim_lua" }, { name = "path" } },
+  snippet = { expand = function(args) require("luasnip").lsp_expand(args.body) end },
+  experimental = { ghost_text = true },
   mapping = {
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
+      if cmp.visible() then cmp.select_next_item()
+      elseif has_words_before() then cmp.complete()
+      else fallback()
       end
     end, { "i", "s" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
+      if cmp.visible() then cmp.select_prev_item() else fallback() end
     end, { "i", "s" }),
     ["<Esc>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.abort()
-      else
-        fallback()
-      end
+      if cmp.visible() then cmp.abort() else fallback() end
     end, { "i", "s" }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = {
-    { name = "luasnip" },
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
-    { name = "path" }
-  },
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
-  experimental = {
-    ghost_text = true
+    ["<C-k>"] = cmp.mapping(function() luasnip.jump() end, { "i", "s" }),
+    ["<C-j>"] = cmp.mapping(function() luasnip.jump(-1) end, { "i", "s" }),
   }
 }
 
--- LSP
-vim.diagnostic.config({virtual_text = {prefix = '•'}, severity_sort = true})
-
-local servers = { 'clangd', 'pylsp', 'bashls' }
-
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup {
-    capabilities = capabilities,
-  }
-end
-
 
 -- autopairs
-require('nvim-autopairs').setup({
-  check_ts = true,
-})
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-local cmp = require('cmp')
-cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
+local npairs = require'nvim-autopairs'
+npairs.setup({ check_ts = true })
 
-local Rule = require'nvim-autopairs.rule'
-require'nvim-autopairs'.add_rules {
-  Rule(' ', ' ')
+npairs.add_rules {
+  require'nvim-autopairs.rule'(' ', ' ')
     :with_pair(function (opts)
-      local pair = opts.line:sub(opts.col, opts.col + 1)
-      return vim.tbl_contains({ '()', '[]', '{}' }, pair)
+      return vim.tbl_contains({ '()', '[]', '{}' }, opts.line:sub(opts.col - 1, opts.col))
     end),
-  Rule('( ',' )')
-        :with_pair(function() return false end)
-        :with_move(function() return true end)
-        :use_key(")")
 }
 
 
@@ -258,23 +178,22 @@ require('gitsigns').setup {
     -- Default keymap options
     noremap = true,
     buffer = true,
-
     ['n ]h'] = '<cmd>lua require"gitsigns.actions".next_hunk()<CR>',
     ['n [h'] = '<cmd>lua require"gitsigns.actions".prev_hunk()<CR>',
-
     ['n gh'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ['n zh'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
     ['v zh'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
     ['n zH'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-
     -- Text objects
     ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
     ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
   },
 }
 
+
 -- nvim_comment
 require('Comment').setup()
+
 
 -- fzf-lua
 require('fzf-lua').setup { previewers = { builtin = { delay = 0, }, }, }
@@ -295,137 +214,163 @@ require'lualine'.setup {
 
 -- nvim-colorizer
 vim.cmd("set termguicolors")
-require('colorizer').setup({'*'},{names = false;})
+require('colorizer').setup({'*'}, { names = false; })
 
 
--- colorbuddy (gruvbox dark)
-require('colorbuddy').setup()
-local Color, c, Group, g, styles = require('colorbuddy').setup()
-Color.new('bg',           "#1d2021")
-Color.new('bg0',          "#282828")
-Color.new('bg1',          "#3c3836")
-Color.new('bg2',          "#504945")
-Color.new('bg3',          "#665c54")
-Color.new('bg4',          "#7c6f64")
-Color.new('fg',           "#ebdbb2")
-Color.new('fg0',          "#fbf1c7")
-Color.new('fg1',          "#ebdbb2")
-Color.new('fg2',          "#d5c4a1")
-Color.new('fg3',          "#bdae93")
-Color.new('fg4',          "#a89984")
-Color.new('gray',         "#928374")
-Color.new('red',          "#cc241d")
-Color.new('red_bold',     "#fb4934")
-Color.new('orange',       "#d65d0e")
-Color.new('orange_bold',  "#fe8019")
-Color.new('yellow',       "#d79921")
-Color.new('yellow_bold',  "#fabd2f")
-Color.new('green',        "#98971a")
-Color.new('green_bold',   "#b8bb26")
-Color.new('aqua',         "#689d6a")
-Color.new('aqua_bold',    "#8ec07c")
-Color.new('blue',         "#458588")
-Color.new('blue_bold',    "#83a598")
-Color.new('purple',       "#b16286")
-Color.new('purple_bold',  "#d3869b")
+-- appearance
+-----------------------------------------------------------------------------------------------------------------------
+-- gruvbox dark
+local colors = {
+  none         = "NONE",
+  bg           = "#1d2021",
+  bg0          = "#282828",
+  bg1          = "#3c3836",
+  bg2          = "#504945",
+  bg3          = "#665c54",
+  bg4          = "#7c6f64",
+  fg           = "#ebdbb2",
+  fg0          = "#fbf1c7",
+  fg1          = "#ebdbb2",
+  fg2          = "#d5c4a1",
+  fg3          = "#bdae93",
+  fg4          = "#a89984",
+  gray         = "#928374",
+  red          = "#cc241d",
+  red_bold     = "#fb4934",
+  orange       = "#d65d0e",
+  orange_bold  = "#fe8019",
+  yellow       = "#d79921",
+  yellow_bold  = "#fabd2f",
+  green        = "#98971a",
+  green_bold   = "#b8bb26",
+  aqua         = "#689d6a",
+  aqua_bold    = "#8ec07c",
+  blue         = "#458588",
+  blue_bold    = "#83a598",
+  purple       = "#b16286",
+  purple_bold  = "#d3869b",
+}
 
--- editor
-Group.new('Normal',            c.fg,          c.bg)
-Group.new('Visual',            c.none,        c.none, styles.reverse)
-Group.new('VisualNC',          c.none,        c.none, styles.reverse)
-Group.new('Cursor',            c.none,        c.none, styles.reverse)
-Group.new('CursorLine',        c.none,        c.bg0)
-Group.new('Whitespace',        c.bg2,         c.none)
-Group.new('ColorColumn',       c.none,        c.bg0)
-Group.new('SignColumn',        c.none,        c.none)
-Group.new('LineNR',            c.gray,        c.none)
-Group.new('CursorLineNR',      c.fg,          c.bg0)
-Group.new('MatchParen',        c.none,        c.bg2)
-Group.new('IncSearch',         c.none,        c.none, styles.reverse)
-Group.new('Search',            c.none,        c.none, styles.reverse)
-Group.new('Pmenu',             c.none,        c.bg1)
-Group.new('PmenuSel',          c.none,        c.none, styles.reverse)
-Group.new('Folded',            c.gray,        c.none)
+-- editor highlighing
+vim.api.nvim_set_hl(0, 'Normal',       { fg = colors.fg,   bg = colors.bg })
+vim.api.nvim_set_hl(0, 'Visual',       { fg = colors.none, bg = colors.bg2 })
+vim.api.nvim_set_hl(0, 'VisualNC',     { fg = colors.none, bg = colors.bg2 })
+vim.api.nvim_set_hl(0, 'Cursor',       { fg = colors.none, bg = colors.none, reverse = true })
+vim.api.nvim_set_hl(0, 'CursorLine',   { fg = colors.none, bg = colors.bg0 })
+vim.api.nvim_set_hl(0, 'Whitespace',   { fg = colors.bg2,  bg = colors.none })
+vim.api.nvim_set_hl(0, 'ColorColumn',  { fg = colors.none, bg = colors.bg0 })
+vim.api.nvim_set_hl(0, 'SignColumn',   { fg = colors.none, bg = colors.none })
+vim.api.nvim_set_hl(0, 'LineNR',       { fg = colors.gray, bg = colors.none })
+vim.api.nvim_set_hl(0, 'CursorLineNR', { fg = colors.fg,   bg = colors.bg0 })
+vim.api.nvim_set_hl(0, 'MatchParen',   { fg = colors.none, bg = colors.bg2 })
+vim.api.nvim_set_hl(0, 'IncSearch',    { fg = colors.none, bg = colors.bg2 })
+vim.api.nvim_set_hl(0, 'Search',       { fg = colors.none, bg = colors.bg2 })
+vim.api.nvim_set_hl(0, 'Pmenu',        { fg = colors.none, bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'PmenuSel',     { fg = colors.none, bg = colors.none, reverse = true })
+vim.api.nvim_set_hl(0, 'Folded',       { fg = colors.gray, bg = colors.none })
+vim.api.nvim_set_hl(0, 'SpellBad',     { sp = colors.red_bold })
+vim.api.nvim_set_hl(0, 'SpellCap',     { sp = colors.yellow_bold })
+vim.api.nvim_set_hl(0, 'WinSeparator', {}) -- removes ugly split divider
 
 -- code highlighting
-Group.new('Comment',           c.gray,        c.none, styles.italic)
-Group.new('commentTSConstant', c.fg2,         c.none, styles.bold + styles.italic)
-Group.new('commentTSWarning',  c.fg2,         c.none, styles.bold + styles.italic)
-Group.new('Todo',              c.fg2,         c.none, styles.bold + styles.italic)
-Group.new('Title',             c.green_bold,  c.none)
-Group.new('MarkdownURL',       c.blue_bold,   c.none, styles.underline)
-Group.new('MarkdownLinkText',  c.blue_bold,   c.none)
-Group.new('MarkdownCode',      c.fg,          c.none, styles.bold)
-Group.new('Preproc',           c.aqua_bold,   c.none)
-Group.new('Include',           c.aqua_bold,   c.none)
+vim.api.nvim_set_hl(0, 'Comment',           { fg = colors.gray, italic = true })
+vim.api.nvim_set_hl(0, 'commentTSConstant', { fg = colors.fg2, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'commentTSWarning',  { fg = colors.fg2, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'Todo',              { fg = colors.fg2, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'Title',             { fg = colors.green_bold, })
+vim.api.nvim_set_hl(0, 'MarkdownURL',       { fg = colors.blue_bold, underline = true })
+vim.api.nvim_set_hl(0, 'MarkdownLinkText',  { fg = colors.blue_bold, })
+vim.api.nvim_set_hl(0, 'MarkdownCode',      { fg = colors.fg, bold = true })
+vim.api.nvim_set_hl(0, 'Preproc',           { fg = colors.aqua_bold, })
+vim.api.nvim_set_hl(0, 'Include',           { fg = colors.aqua_bold, })
+vim.api.nvim_set_hl(0, 'Delimiter',         { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'TSConstructor',     { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'Identifier',        { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'Operator',          { fg = colors.orange_bold, })
+vim.api.nvim_set_hl(0, 'Keyword',           { fg = colors.red_bold, })
+vim.api.nvim_set_hl(0, 'Statement',         { fg = colors.red_bold, })
+vim.api.nvim_set_hl(0, 'Conditional',       { fg = colors.red_bold, })
+vim.api.nvim_set_hl(0, 'Repeat',            { fg = colors.red_bold, }) -- loops
+vim.api.nvim_set_hl(0, 'Label',             { fg = colors.red_bold, })
+vim.api.nvim_set_hl(0, 'Type',              { fg = colors.yellow_bold, })
+vim.api.nvim_set_hl(0, 'TSTypeBuiltin',     { fg = colors.yellow_bold, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'Constant',          { fg = colors.purple_bold, })
+vim.api.nvim_set_hl(0, 'TSConstBuiltin',    { fg = colors.purple_bold, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'Boolean',           { fg = colors.purple_bold, })
+vim.api.nvim_set_hl(0, 'Number',            { fg = colors.purple_bold, })
+vim.api.nvim_set_hl(0, 'Character',         { fg = colors.purple_bold, })
+vim.api.nvim_set_hl(0, 'String',            { fg = colors.green_bold, })
+vim.api.nvim_set_hl(0, 'TSStringEscape',    { fg = colors.purple_bold, })
+vim.api.nvim_set_hl(0, 'TSVariable',        { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'TSParameter',       { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'TSProperty',        { fg = colors.fg, })
+vim.api.nvim_set_hl(0, 'TSVariableBuiltin', { fg = colors.fg, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'Function',          { fg = colors.blue_bold, })
+vim.api.nvim_set_hl(0, 'TSFuncBuiltin',     { fg = colors.blue_bold, bold = true, italic = true })
+vim.api.nvim_set_hl(0, 'TSFuncMacro',       { fg = colors.blue_bold, })
+vim.api.nvim_set_hl(0, 'Exception',         { fg = colors.red, })
+vim.api.nvim_set_hl(0, 'TSDefinition',      { fg = colors.none, bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'TSDefinitionUsage', { fg = colors.none, bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'DiffAdd',           { fg = colors.green_bold })
+vim.api.nvim_set_hl(0, 'DiffChange',        { fg = colors.orange_bold })
+vim.api.nvim_set_hl(0, 'DiffDelete',        { fg = colors.red_bold })
+vim.api.nvim_set_hl(0, 'DiffAdded',         { fg = colors.green_bold })
+vim.api.nvim_set_hl(0, 'DiffRemoved',       { fg = colors.red_bold })
 
-Group.new('Delimiter',         c.fg,          c.none)
-Group.new('TSConstructor',     c.fg,          c.none)
-Group.new('Identifier',        c.fg,          c.none)
-Group.new('Operator',          c.orange_bold, c.none)
-Group.new('Keyword',           c.red_bold,    c.none)
-Group.new('Statement',         c.red_bold,    c.none)
-Group.new('Conditional',       c.red_bold,    c.none)
-Group.new('Repeat',            c.red_bold,    c.none) -- loops
-Group.new('Label',             c.red_bold,    c.none)
+-- linting
+vim.api.nvim_set_hl(0, 'LintError',                { fg = colors.red_bold })
+vim.api.nvim_set_hl(0, 'LintWarning',              { fg = colors.yellow_bold })
+vim.api.nvim_set_hl(0, 'LintInfo',                 { fg = colors.blue_bold })
+vim.api.nvim_set_hl(0, 'LintHint',                 { fg = colors.purple_bold })
+vim.api.nvim_set_hl(0, 'DiagnosticError',          { fg = colors.red,         bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticWarn',           { fg = colors.yellow,      bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticInfo',           { fg = colors.blue,        bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticHint',           { fg = colors.purple,      bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticLineNrError',    { fg = colors.red,         bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticLineNrWarn',     { fg = colors.yellow,      bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticLineNrInfo',     { fg = colors.blue,        bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticLineNrHint',     { fg = colors.purple,      bold = true })
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp = colors.red_bold,    undercurl = true })
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn',  { sp = colors.yellow_bold, undercurl = true })
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo',  { sp = colors.blue_bold,   undercurl = true })
+vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint',  { sp = colors.purple_bold, undercurl = true })
 
-Group.new('Type',              c.yellow_bold, c.none)
-Group.new('TSTypeBuiltin',     c.yellow_bold, c.none, styles.bold + styles.italic)
-Group.new('Constant',          c.purple_bold, c.none)
-Group.new('TSConstBuiltin',    c.purple_bold, c.none, styles.bold + styles.italic)
-Group.new('Boolean',           c.purple_bold, c.none)
-Group.new('Number',            c.purple_bold, c.none)
-Group.new('Character',         c.purple_bold, c.none)
-Group.new('String',            c.green_bold,  c.none)
-Group.new('TSStringEscape',    c.purple_bold, c.none)
-Group.new('TSVariable',        c.fg,          c.none)
-Group.new('TSParameter',       c.fg,          c.none)
-Group.new('TSProperty',        c.fg,          c.none)
-Group.new('TSVariableBuiltin', c.fg,          c.none, styles.bold + styles.italic)
-Group.new('Function',          c.blue_bold,   c.none)
-Group.new('TSFuncBuiltin',     c.blue_bold,   c.none, styles.bold + styles.italic)
-Group.new('TSFuncMacro',       c.blue_bold,   c.none)
-Group.new('Exception',         c.red,         c.none)
-Group.new('TSDefinition',      c.none,        c.bg1)
-Group.new('TSDefinitionUsage', c.none,        c.bg1)
-
--- LSP
-Group.new('DiagnosticError',       c.red,    c.none, styles.bold)
-Group.new('DiagnosticWarn',        c.yellow, c.none, styles.bold)
-Group.new('DiagnosticInfo',        c.blue,   c.none, styles.bold)
-Group.new('DiagnosticHint',        c.purple, c.none, styles.bold)
-Group.new('DiagnosticLineNrError', c.red,    c.none, styles.bold)
-Group.new('DiagnosticLineNrWarn',  c.yellow, c.none, styles.bold)
-Group.new('DiagnosticLineNrInfo',  c.blue,   c.none, styles.bold)
-Group.new('DiagnosticLineNrHint',  c.purple, c.none, styles.bold)
-
--- plugins
-Group.new('GitSignsCurrentLineBlame', g.Whitespace)
-Group.new('GitSignsAdd',              c.green_bold)
-Group.new('GitSignsChange',           c.orange_bold)
-Group.new('GitSignsDelete',           c.orange_bold)
-Group.new('LintError',                c.red_bold)
-Group.new('LintWarning',              c.yellow_bold)
-Group.new('LintInfo',                 c.blue_bold)
-Group.new('LintHint',                 c.purple_bold)
+-- git
+vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', { fg = colors.bg3 })
+vim.api.nvim_set_hl(0, 'GitSignsAdd',              { fg = colors.green_bold })
+vim.api.nvim_set_hl(0, 'GitSignsChange',           { fg = colors.orange_bold })
+vim.api.nvim_set_hl(0, 'GitSignsDelete',           { fg = colors.red_bold })
+vim.api.nvim_set_hl(0, 'GitSignsDeleteLn',         { fg = colors.red_bold })
 EOF
 
-highlight Normal guibg=#1d2021
-highlight SpellBad                                 guisp=#fb4934
-highlight SpellCap                                 guisp=#fabd2f
-highlight DiagnosticUnderlineError   gui=undercurl guisp=#fb4934
-highlight DiagnosticUnderlineWarn    gui=undercurl guisp=#fabd2f
-highlight DiagnosticUnderlineInfo    gui=undercurl guisp=#83a598
-highlight DiagnosticUnderlineHint    gui=undercurl guisp=#d3869b
+set number " add line numbers
+set fillchars=eob:\ , " remove ~ markers after buffer
 
-" latex
-let g:vimtex_view_general_viewer = 'omni-open.sh'
+set noshowcmd
+set noshowmode
 
-" formatter
+" set blinking cursor
+:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+  \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+" mark 80 character limit
+set cc=80,120
+" highlight current line
+set cursorline
+
+" global statusline
+" set laststatus=3
+
+" remove diagnostic sign column symbols
+sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
+sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
+sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
+sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
 
 
-" General
-" ------------------------------------------------------------------------------
+" general
+" ---------------------------------------------------------------------------------------------------------------------
 " fix terminal resizing bug
 autocmd VimEnter * :silent exec "!kill -s SIGWINCH $PPID"
 
@@ -442,7 +387,7 @@ autocmd BufWinEnter *.* silent! loadview
 set viewoptions=cursor,folds
 
 " save undo history
-set undodir=$XDG_CACHE_HOME/nvim/undodir
+set undodir=$HOME/.cache/nvim/undodir
 set undofile
 
 " set root directory
@@ -465,6 +410,7 @@ let g:c_syntax_for_h = 1
 " whitespace
 set tabstop=4
 set shiftwidth=4
+set expandtab
 set list
 set listchars=tab:>-,trail:·
 
@@ -486,11 +432,11 @@ set foldlevelstart=99
 " netrw
 let g:netrw_banner = 0     " remove banner
 let g:netrw_liststyle = 3  " set to tree view
-let g:netrw_dirhistmax = 0 " disable annoying hist file
+let g:netrw_dirhistmax = 0 " disable hist file
 
 
-" Keybindings
-" ------------------------------------------------------------------------------
+" keybindings
+" ---------------------------------------------------------------------------------------------------------------------
 " set leader key
 noremap <space> <nop>
 let mapleader=" "
@@ -498,7 +444,16 @@ let mapleader=" "
 " Make Y work the way you'd expect
 nmap Y y$
 
-" vim surround visual mode (use c instead of s)
+" emulate vim surround bindings
+runtime macros/sandwich/keymap/surround.vim
+let g:sandwich#recipes += [
+\ {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+\ {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+\ {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+\ {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
+\ {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
+\ {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
+\]
 vmap s S
 
 " for easier use of macros
@@ -529,58 +484,25 @@ nnoremap <Esc> :noh<CR>:<bs>
 
 " switch between header and source
 nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
-"nnoremap <c-space> :call CurtineIncSw()<CR>
 
 " fzf
 nnoremap <c-_> :FzfLua files<CR>
 nnoremap z= :FzfLua spell_suggest<CR>
 nnoremap g/ :FzfLua builtin<CR>
 
-" LSP
+" lsp
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gl <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
 nnoremap <silent> zl <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremap <silent> <Leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 nnoremap <silent> gr :FzfLua lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
 "if (:set modifiable?) == "nomodifiable" | nnoremap <silent> <Esc> :q<CR> | endif
-
-
-" Appearance
-" ------------------------------------------------------------------------------
-set number " add line numbers
-set fillchars=eob:\ , " remove ~ markers after buffer
-
-set noshowcmd
-set noshowmode
-
-" set blinking cursor
-:set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-  \,sm:block-blinkwait175-blinkoff150-blinkon175
-
-" mark 80 character limit
-set cc=80,120
-" highlight current line
-set cursorline
-
-" global statusline
-" set laststatus=3
-
-" remove ugly split indicator
-highlight WinSeparator guibg=NONE
-
-" remove lsp diagnostic sign column symbols
-sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
-sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
-sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
