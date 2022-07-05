@@ -1,5 +1,7 @@
 " Neovim config file
 " Author: aaronamk
+" Dependencies: git (a decently modern version), fzf, packer.nvim, tree-sitter, LSP clients (clang, jedi, etc.)
+" run :PackerSync to install/update all plugins
 
 lua <<EOF
 -- plugins
