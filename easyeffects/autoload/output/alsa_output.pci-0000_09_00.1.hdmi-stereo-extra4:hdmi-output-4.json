@@ -1,0 +1,6 @@
+{
+    "device": "alsa_output.pci-0000_09_00.1.hdmi-stereo-extra4",
+    "device-description": "Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] Digital Stereo (HDMI 5)",
+    "device-profile": "hdmi-output-4",
+    "preset-name": "Flat"
+}
