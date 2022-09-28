@@ -18,6 +18,7 @@ export CM_HISTLENGTH=8
 export QT_QPA_PLATFORMTHEME="gtk2"
 export MOZ_USE_XINPUT2="1"
 export _JAVA_AWT_WM_NONREPARENTING=1
+export SDL_GAMECONTROLLERCONFIG="03000000c82d000010300000110100001172012304,8BitDo Pro 2,platform:Linux,a:b0,b:b1,x:b3,y:b4,back:b10,start:b11,guide:b12,leftshoulder:b6,rightshoulder:b7,leftstick:b13,rightstick:b14,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b8,righttrigger:b9,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,"
 # mine
 export DATE_FMT="%m/%d/%Y %I:%M:%S %P"
 

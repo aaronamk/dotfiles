@@ -46,6 +46,8 @@ x-scheme-handler/zoomus=Zoom.desktop;
 application/x-gzip=org.gnome.FileRoller.desktop;
 application/zip=org.gnome.FileRoller.desktop;
 application/gzip=org.gnome.FileRoller.desktop;
+x-scheme-handler/discord-455712169795780630=discord-455712169795780630.desktop
+x-scheme-handler/discord-460807638964371468=discord-460807638964371468.desktop
 
 [Added Associations]
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;

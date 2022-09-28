@@ -371,6 +371,9 @@ let g:c_syntax_for_h = 1 " .h files are C, not CPP
 set autoread
 autocmd FocusGained * :checktime
 
+" auto compile latex files
+autocmd BufWritePost *.tex silent !pdflatex %:S
+
 " save cursor position and folds
 autocmd BufWinLeave *.* silent! mkview
 autocmd BufWinEnter *.* silent! loadview
@@ -389,7 +392,6 @@ autocmd WinEnter * :silent! set scroll=10
 " whitespace
 set tabstop=4
 set shiftwidth=4
-set expandtab
 set list
 set listchars=tab:>-,trail:·
 
@@ -450,7 +452,7 @@ nnoremap <c-k> <c-w>W
 nnoremap <Esc> :noh<CR>:<bs>
 
 " switch between header and source
-nnoremap <c-space> :ClangdSwitchSourceHeader<CR>
+nnoremap <Leader><Tab> :ClangdSwitchSourceHeader<CR>
 
 " fzf
 nnoremap <c-_> :FzfLua files<CR>

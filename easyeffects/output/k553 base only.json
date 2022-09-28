@@ -2,7 +2,9 @@
     "output": {
         "blocklist": [],
         "equalizer": {
-            "input-gain": -8.0,
+            "balance": 0.0,
+            "bypass": false,
+            "input-gain": 0.0,
             "left": {
                 "band0": {
                     "frequency": 22.4,
@@ -328,6 +330,8 @@
             "mode": "IIR",
             "num-bands": 32,
             "output-gain": 0.0,
+            "pitch-left": 0.0,
+            "pitch-right": 0.0,
             "right": {
                 "band0": {
                     "frequency": 22.4,
