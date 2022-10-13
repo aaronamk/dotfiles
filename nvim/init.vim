@@ -30,6 +30,7 @@ require('packer').startup(function()
 
   -- other
   use 'wbthomason/packer.nvim'      -- plugin manager
+  use 'lewis6991/impatient.nvim'    -- uses caching to speed up startup time
   use 'Chiel92/vim-autoformat'      -- code formatter
   use 'norcalli/nvim-colorizer.lua' -- highlight colors in that color
   use 'wellle/targets.vim'          -- smarter text objects
@@ -190,6 +191,9 @@ require('gitsigns').setup {
 
 -- nvim_comment
 require('Comment').setup()
+
+-- impatient
+require('impatient')
 
 
 -- fzf-lua
@@ -365,7 +369,7 @@ set diffopt=internal,algorithm:minimal " generate minimal git diffs
 set undofile " save undo history
 set title " set window title
 set mouse=a " enable mouse
-let g:c_syntax_for_h = 1 " .h files are C, not CPP
+let g:c_syntax_for_h = 1 " .h files are C, not C++
 
 " update file when changed somewhere else
 set autoread
