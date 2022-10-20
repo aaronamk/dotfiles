@@ -93,7 +93,7 @@ require'nvim-treesitter.configs'.setup {
 local servers = { 'clangd', 'pyright', 'bashls', 'sumneko_lua' }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 for _, lsp in ipairs(servers) do
   require('lspconfig')[lsp].setup { capabilities = capabilities }
 end
@@ -277,28 +277,29 @@ vim.api.nvim_set_hl(0, 'WinSeparator', {}) -- removes ugly split divider
 
 -- syntax highlighting
 vim.api.nvim_set_hl(0, 'Comment',           { fg = colors.gray, italic = true })
-vim.api.nvim_set_hl(0, 'commentTSConstant', { fg = colors.fg2, bold = true })
-vim.api.nvim_set_hl(0, 'commentTSWarning',  { fg = colors.fg2, bold = true })
+vim.api.nvim_set_hl(0, '@text.note',        { fg = colors.fg2, bold = true })
+vim.api.nvim_set_hl(0, '@text.warning',     { fg = colors.fg2, bold = true })
 vim.api.nvim_set_hl(0, 'Todo',              { fg = colors.fg2, bold = true, italic = true })
 
 vim.api.nvim_set_hl(0, 'Constant',          { fg = colors.purple_bold })
 vim.api.nvim_set_hl(0, 'String',            { fg = colors.green_bold })
 vim.api.nvim_set_hl(0, 'SpecialChar',       { fg = colors.purple_bold })
-vim.api.nvim_set_hl(0, 'TSConstBuiltin',    { fg = colors.purple_bold, bold = true })
+vim.api.nvim_set_hl(0, '@constant.builtin', { fg = colors.purple_bold, bold = true })
 
 vim.api.nvim_set_hl(0, 'Identifier',        { fg = colors.fg })
-vim.api.nvim_set_hl(0, 'TSVariable',        { fg = colors.fg })
-vim.api.nvim_set_hl(0, 'TSProperty',        { italic = true })
-vim.api.nvim_set_hl(0, 'TSField',           { italic = true })
-vim.api.nvim_set_hl(0, 'TSVariableBuiltin', { bold = true })
-vim.api.nvim_set_hl(0, 'TSDefinition',      { bg = colors.bg1 })
-vim.api.nvim_set_hl(0, 'TSDefinitionUsage', { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, '@variable',         { fg = colors.fg })
+vim.api.nvim_set_hl(0, '@property',         { italic = true })
+vim.api.nvim_set_hl(0, '@field',            { italic = true })
+vim.api.nvim_set_hl(0, '@variable.builtin', { bold = true })
+vim.api.nvim_set_hl(0, '@definition',       { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, '@definition.usage', { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, '@namespace',        { fg = colors.aqua_bold })
 
 vim.api.nvim_set_hl(0, 'Function',          { fg = colors.blue_bold })
-vim.api.nvim_set_hl(0, 'TSConstructor',     { fg = colors.blue_bold, bold = true, italic = true })
-vim.api.nvim_set_hl(0, 'TSMethod',          { fg = colors.blue_bold, italic = true })
-vim.api.nvim_set_hl(0, 'TSFuncBuiltin',     { fg = colors.blue_bold, bold = true })
-vim.api.nvim_set_hl(0, 'TSFuncMacro',       { fg = colors.blue_bold })
+vim.api.nvim_set_hl(0, '@constructor',      { fg = colors.blue_bold, bold = true, italic = true })
+vim.api.nvim_set_hl(0, '@method',           { fg = colors.blue_bold, italic = true })
+vim.api.nvim_set_hl(0, '@function.builtin', { fg = colors.blue_bold, bold = true })
+vim.api.nvim_set_hl(0, '@function.macro',   { fg = colors.blue_bold })
 
 vim.api.nvim_set_hl(0, 'Statement',         { fg = colors.red_bold })
 vim.api.nvim_set_hl(0, 'Operator',          { fg = colors.orange_bold })
@@ -308,7 +309,7 @@ vim.api.nvim_set_hl(0, 'PreProc',           { fg = colors.red_bold })
 vim.api.nvim_set_hl(0, 'Include',           { fg = colors.aqua_bold })
 
 vim.api.nvim_set_hl(0, 'Type',              { fg = colors.yellow_bold })
-vim.api.nvim_set_hl(0, 'TSTypeBuiltin',     { fg = colors.yellow_bold, bold = true })
+vim.api.nvim_set_hl(0, '@type.builtin',     { fg = colors.yellow_bold, bold = true })
 
 vim.api.nvim_set_hl(0, 'Delimiter',         { fg = colors.fg })
 vim.api.nvim_set_hl(0, 'MatchParen',        { bg = colors.bg2 })
