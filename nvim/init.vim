@@ -377,7 +377,7 @@ set autoread
 autocmd FocusGained * :checktime
 
 " auto compile latex files
-autocmd BufWritePost *.tex silent !pdflatex %:S
+autocmd BufWritePost *.tex silent !pdflatex -output-directory=%:p:h:S %:p:S
 
 " save cursor position and folds
 autocmd BufWinLeave *.* silent! mkview
