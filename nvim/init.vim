@@ -404,6 +404,7 @@ set listchars=tab:>-,trail:·
 set path+=**
 set wildmenu
 set wildmode=longest,list,full
+set wildoptions=pum
 set inccommand=nosplit
 
 " clipboard
