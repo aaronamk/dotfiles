@@ -157,11 +157,12 @@ npairs.add_rules {
 -- git signs
 require('gitsigns').setup {
   signs = {
-    add          = {hl = 'DiffAdd',    text = ' ▎' },
-    change       = {hl = 'DiffChange', text = '▪ ' },
-    changedelete = {hl = 'DiffChange', text = '▪▁' },
-    delete       = {hl = 'DiffDelete', text = ' ▁' },
-    topdelete    = {hl = 'DiffDelete', text = ' ▔' },
+    add          = { hl = 'DiffAdd',    text = ' ▎' },
+    change       = { hl = 'DiffChange', text = '▪ ' },
+    changedelete = { hl = 'DiffChange', text = '▪▁' },
+    delete       = { hl = 'DiffDelete', text = ' ▁' },
+    topdelete    = { hl = 'DiffDelete', text = ' ▔' },
+    untracked    = { hl = 'DiffAdd',    text = '┆ ' },
   },
   signcolumn = true,
   numhl = false,
