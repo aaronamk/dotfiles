@@ -1,0 +1,7 @@
+bsnes_aspect_ratio = "auto"
+bsnes_chip_hle = "LLE"
+bsnes_crop_overscan = "disabled"
+bsnes_gamma_ramp = "disabled"
+bsnes_region = "auto"
+bsnes_superfx_overclock = "100%"
+bsnes_violate_accuracy = "disabled"

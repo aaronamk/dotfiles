@@ -1,5 +1,0 @@
-rofi.modi:		drun,window
-rofi.monitor:		-1
-rofi.no-lazy-grab:	true
-rofi.theme:			~/.config/rofi/my_dmenu.rasi
-rofi.show-icons:    true

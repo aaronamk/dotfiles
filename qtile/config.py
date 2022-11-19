@@ -30,9 +30,16 @@ from typing import List  # noqa: F401
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
+from libqtile.backend.wayland import InputConfig
+
+wl_input_rules = {
+    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(left_handed=True),
+    "*": InputConfig(pointer_accel=False),
+    "type:keyboard": InputConfig(xkb_options="accel_profile:flat"),
+}
 
 mod = "mod4"
-terminal = os.getenv('TERMINAL')
+terminal = "kitty"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
