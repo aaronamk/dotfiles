@@ -5,7 +5,7 @@ meta="Mod4"
 alt="Mod1"
 
 # startup
-startup.sh
+setsid hkd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-if02-event-mouse &
 kanshi &
 waybar &
 
@@ -85,7 +85,7 @@ riverctl map normal $meta 0 set-focused-tags $all_tags
 riverctl map normal $meta+Shift 0 set-view-tags $all_tags
 
 # Mod+Space to toggle float
-#riverctl map normal $meta Space toggle-float
+riverctl map normal $meta Space toggle-float
 
 # Mod+F to toggle fullscreen
 riverctl map normal $meta F toggle-fullscreen
@@ -108,8 +108,8 @@ riverctl spawn rivertile -view-padding 0 -outer-padding 0 -main-factor 0.5
 riverctl default-layout rivertile
 
 # Set app-ids of views which should float
-riverctl float-filter-add "float"
-riverctl float-filter-add "popup"
+# riverctl float-filter-add "float"
+# riverctl float-filter-add "popup"
 
-# Set opacity and fade effect
-# riverctl opacity 1.0 0.75 0.0 0.1 20
+# keyboard
+riverctl input pointer-1133-49291-Logitech_G502_HERO_Gaming_Mouse accel-profile flat

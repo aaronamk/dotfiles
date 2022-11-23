@@ -2,7 +2,7 @@
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
-export TERMINAL="kitty"
+export TERMINAL="foot"
 export BROWSER="firefox"
 export FILE="vifm"
 
@@ -23,7 +23,10 @@ export SDL_GAMECONTROLLERCONFIG="03000000c82d000010300000110100001172012304,8Bit
 # mine
 export DATE_FMT="%m/%d/%Y %I:%M:%S %P"
 
-# Locations
+# XDG
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_DESKTOP=Hyprland
+export XDG_SESSION_TYPE=wayland
 export XDG_DESKTOP_DIR="$HOME/Desktop"
 export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export XDG_MUSIC_DIR="$HOME/Music"
