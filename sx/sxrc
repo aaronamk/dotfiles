@@ -3,12 +3,5 @@
 startup.sh
 reload-xorg-processes.sh
 
-# start authentication agent
-#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
-#export SSH_AUTH_SOCK &
-
-# start clipboard daemon
-#clipmenud &
-
 # start wm
 exec dwm
