@@ -11,7 +11,6 @@ pkill kanshi
 kanshi &
 pkill yambar
 yambar &
-riverctl spawn "rivertile -view-padding 3 -outer-padding 0 -main-ratio 0.5"
 
 # applications
 # launch music browser
@@ -89,12 +88,18 @@ riverctl map normal $meta+Shift 0 set-view-tags $all_tags
 
 # Mod+F to toggle fullscreen
 riverctl map normal $meta+Control F toggle-fullscreen
+# Mod+F to toggle float
+riverctl map normal $meta+Shift Space toggle-float
 
 # Mod+{Up,Right,Down,Left} to change layout orientation
 riverctl map normal $meta Up layout rivertile top
 riverctl map normal $meta Right layout rivertile right
 riverctl map normal $meta Down layout rivertile bottom
 riverctl map normal $meta Left layout rivertile left
+
+riverctl focus-follows-cursor normal
+riverctl set-cursor-warp on-output-change
+riverctl hide-cursor when-typing enabled
 
 # Mod+S to change to Full layout
 riverctl map normal $meta S layout full
@@ -109,3 +114,11 @@ riverctl input 1133:49291:Logitech_G502_HERO_Gaming_Mouse accel-profile flat
 
 # keyboard
 riverctl input pointer-1133-49291-Logitech_G502_HERO_Gaming_Mouse accel-profile flat
+
+riverctl default-layout rivertile
+rivertile -view-padding 3 -outer-padding 0 -main-ratio 0.5 &
+
+riverctl send-layout-cmd rivertile "main-location left"
+riverctl focus-output next
+riverctl send-layout-cmd rivertile "main-location top"
+riverctl focus-output next

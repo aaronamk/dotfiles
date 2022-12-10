@@ -480,7 +480,7 @@ nnoremap <Esc> :noh<CR>
 nnoremap <Leader><Tab> :ClangdSwitchSourceHeader<CR>
 
 " fzf
-nnoremap <c-_> :FzfLua files<CR>
+nnoremap <c-/> :FzfLua files<CR>
 nnoremap z= :FzfLua spell_suggest<CR>
 nnoremap g/ :FzfLua builtin<CR>
 
