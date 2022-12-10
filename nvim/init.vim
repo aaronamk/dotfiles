@@ -14,15 +14,17 @@ require('packer').startup(function()
   use 'nvim-treesitter/playground'                  -- treesitter info
 
   -- completion
-  use 'neovim/nvim-lspconfig'    -- lsp configurations for servers
-  use 'hrsh7th/nvim-cmp'         -- completion helper
-  use 'hrsh7th/cmp-nvim-lsp'     -- LSP completion
-  use 'hrsh7th/cmp-path'         -- path completion
-  use 'hrsh7th/cmp-nvim-lua'     -- internal lua completion
-  use 'L3MON4D3/LuaSnip'         -- snippets
-  use 'saadparwaiz1/cmp_luasnip' -- snippets cmp integration
-  use 'windwp/nvim-autopairs'    -- delimiter auto pairing
-  use { 'vijaymarupudi/nvim-fzf', requires = { 'ibhagwan/fzf-lua' } } -- fzf
+  use 'neovim/nvim-lspconfig'     -- lsp configurations for servers
+  use 'hrsh7th/nvim-cmp'          -- completion helper
+  use 'hrsh7th/cmp-nvim-lsp'      -- LSP completion
+  use 'hrsh7th/cmp-path'          -- path completion
+  use 'hrsh7th/cmp-nvim-lua'      -- internal lua completion
+  use 'L3MON4D3/LuaSnip'          -- snippets
+  use 'saadparwaiz1/cmp_luasnip'  -- snippets cmp integration
+  use 'smjonas/inc-rename.nvim'   -- preview changes when renaming lsp symbols
+  use 'windwp/nvim-autopairs'     -- delimiter auto pairing
+  use { 'vijaymarupudi/nvim-fzf', -- fzf
+        requires = { 'ibhagwan/fzf-lua' } }
 
   -- git
   use 'tpope/vim-fugitive'      -- git commands
@@ -83,8 +85,7 @@ require'nvim-treesitter.configs'.setup {
     highlight_definitions = { enable = true, clear_on_cursor_move = false },
     navigation = { enable = true, keymaps   = { goto_definition_lsp_fallback = "gd",
                                                 goto_next_usage              = "]r",
-                                                goto_previous_usage          = "[r" } },
-    smart_rename = { enable = true, keymaps = { smart_rename                 = "cd" } }
+                                                goto_previous_usage          = "[r" } }
   },
 }
 
@@ -142,6 +143,13 @@ cmp.setup {
 }
 
 
+-- inc-rename
+require('inc_rename').setup()
+vim.keymap.set("n", "cd", function()
+  return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
+
+
 -- autopairs
 local npairs = require'nvim-autopairs'
 npairs.setup({ check_ts = true })
@@ -195,7 +203,6 @@ require('Comment').setup()
 
 -- impatient
 require('impatient')
-
 
 -- fzf-lua
 require('fzf-lua').setup { previewers = { builtin = { delay = 0 } } }
@@ -275,6 +282,17 @@ vim.api.nvim_set_hl(0, 'SpellBad',     { sp = colors.red_bold,    undercurl = tr
 vim.api.nvim_set_hl(0, 'SpellCap',     { sp = colors.yellow_bold, undercurl = true })
 vim.api.nvim_set_hl(0, 'SignColumn',   {})
 vim.api.nvim_set_hl(0, 'WinSeparator', {}) -- removes ugly split divider
+
+
+-- lualine highlights
+vim.api.nvim_set_hl(0, 'lualine_c_normal',   { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'lualine_c_insert',   { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'lualine_c_visual',   { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'lualine_c_replace',  { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'lualine_c_command',  { bg = colors.bg1 })
+vim.api.nvim_set_hl(0, 'lualine_a_command',  { fg = colors.bg, bg = colors.fg4, bold = true })
+vim.api.nvim_set_hl(0, 'lualine_c_inactive', { bg = colors.bg1 })
+
 
 -- syntax highlighting
 vim.api.nvim_set_hl(0, 'Comment',           { fg = colors.gray, italic = true })
@@ -456,7 +474,7 @@ nnoremap <c-j> <c-w>w
 nnoremap <c-k> <c-w>W
 
 " clear search
-nnoremap <Esc> :noh<CR>:<bs>
+nnoremap <Esc> :noh<CR>
 
 " switch between header and source
 nnoremap <Leader><Tab> :ClangdSwitchSourceHeader<CR>
@@ -474,7 +492,6 @@ nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> gt <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> cd <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <Leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 nnoremap <silent> gr :FzfLua lsp_references<CR>
 

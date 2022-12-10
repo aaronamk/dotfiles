@@ -1,22 +1,54 @@
+hack: &hack Hack Nerd Font:pixelsize=12
+bg_default: &bg_default {stack: [{background: {color: fabd2fff}}]}
 bar:
   height: 16
   location: bottom
-  background: 000000ff
+  font: mono:pixelsize=10
+  spacing: 2
+  margin: 0
+  layer: bottom
+  foreground: eeeeeeff
+  background: 2E3440dd
 
   left:
     - river:
-        title: {string: { text: "{seat} - {title}" }}
+        anchors:
+          - base: &river_base
+              left-margin: 10
+              right-margin: 13 
+              default: {string: {text: , font: *hack}}
+              conditions:
+                id == 1: {string: {text: 1, font: *hack}}  
+                id == 2: {string: {text: 2, font: *hack}}  
+                id == 3: {string: {text: 3, font: *hack}}  
+                id == 4: {string: {text: 4, font: *hack}}  
+                id == 5: {string: {text: 5, font: *hack}}  
+
         content:
           map:
-            tag: occupied
-            values:
-              false: {empty: {}}
-              true:
-                string:
-                  margin: 5
-                  text: "{id}: {state}"
-
-  right:
-    - clock:
-        content:
-          - string: {text: "{time} | {date}"}
+            on-click: 
+              left: sh -c "riverctl set-focused-tags $((1 << ({id} - 1)))"
+              right: sh -c "riverctl toggle-focused-tags $((1 << ({id} -1)))"
+              middle: sh -c "riverctl toggle-view-tags $((1 << ({id} -1)))"
+            conditions:
+              state == urgent:
+                map:
+                  <<: *river_base
+                  deco: {background: {color: D08770ff}}
+              state == focused:
+                map:
+                  <<: *river_base
+                  deco: *bg_default
+              state == visible:
+                map:
+                  conditions:
+                    ~occupied: {map: {<<: *river_base}}
+                    occupied: {map: {<<: *river_base, deco: *bg_default}}
+              state == unfocused:
+                map:
+                  <<: *river_base
+              state == invisible:
+                map:
+                  conditions:
+                    ~occupied: {empty: {}}
+                    occupied: {map: {<<: *river_base, deco: {underline: {size: 0, color: ea6962ff}}}}

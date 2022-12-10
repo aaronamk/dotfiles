@@ -5,9 +5,13 @@ meta="Mod4"
 alt="Mod1"
 
 # startup
+pkill hkd
 setsid hkd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-if02-event-mouse &
+pkill kanshi
 kanshi &
-waybar &
+pkill yambar
+yambar &
+riverctl spawn "rivertile -view-padding 3 -outer-padding 0 -main-ratio 0.5"
 
 # applications
 # launch music browser
@@ -28,12 +32,11 @@ riverctl map normal $meta+Shift K swap previous
 riverctl map normal $meta+Shift L send-to-output next
 riverctl map normal $meta Space zoom
 
-# Mod+H and Mod+L to decrease/increase the main factor by 5%
-# If using rivertile(1) this determines the width of the main stack.
-riverctl map normal $meta Minus mod-main-factor -0.05
-riverctl map normal $meta Equal mod-main-factor +0.05
-
-# Mod+Shift+H and Mod+Shift+L to increment/decrement the number of
+# decrease/increase the main factor by 5%
+riverctl map normal $meta Minus send-layout-cmd rivertile "main-ratio -0.03"
+riverctl map normal $meta Equal send-layout-cmd rivertile "main-ratio +0.03"
+                                ka
+# Mod+Shift+H and Mod+Shift+L topk increment/decrement the number of
 # main views in the layout
 riverctl map normal $meta I mod-main-count +1
 riverctl map normal $meta D mod-main-count -1
@@ -84,11 +87,8 @@ all_tags=$(((1 << 32) - 1))
 riverctl map normal $meta 0 set-focused-tags $all_tags
 riverctl map normal $meta+Shift 0 set-view-tags $all_tags
 
-# Mod+Space to toggle float
-riverctl map normal $meta Space toggle-float
-
 # Mod+F to toggle fullscreen
-riverctl map normal $meta F toggle-fullscreen
+riverctl map normal $meta+Control F toggle-fullscreen
 
 # Mod+{Up,Right,Down,Left} to change layout orientation
 riverctl map normal $meta Up layout rivertile top
@@ -102,10 +102,6 @@ riverctl map normal $meta S layout full
 # input settings
 riverctl set-repeat 35 300
 riverctl input 1133:49291:Logitech_G502_HERO_Gaming_Mouse accel-profile flat
-
-# Set the layout on startup
-riverctl spawn rivertile -view-padding 0 -outer-padding 0 -main-factor 0.5
-riverctl default-layout rivertile
 
 # Set app-ids of views which should float
 # riverctl float-filter-add "float"

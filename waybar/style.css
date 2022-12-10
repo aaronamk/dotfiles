@@ -19,8 +19,13 @@ window#waybar.hidden {
 
 #tags button {
     padding: 0 0px;
+    margin: 0 0px;
+	margin-right:0px;
+	margin-left:0px;
     background-color: transparent;
     color: #ffffff;
+	border: none;
+	border-radius: 0;
 }
 
 #tags button.focused {
@@ -47,7 +52,16 @@ window#waybar.hidden {
 
 #window,
 #tags {
-    margin: 0 4px;
+	padding: 0 0px;
+    margin: 0 0px;
+	margin-right:0px;
+	margin-left:0px;
+}
+#workspace button {
+	padding: 0 0px;
+    margin: 0 0px;
+	margin-right:0px;
+	margin-left:0px;
 }
 
 /* If tags is the leftmost module, omit left margin */

@@ -1,8 +1,8 @@
 profile {
-	output DP-1 mode 2560x1440 position 900,70
-	output HDMI-A-1 mode 1440x900 position 0,0 scale 1 transform 90
+	output DP-1 mode 2560x1440 position 0,230
+	output HDMI-A-1 mode 1920x1200 position 2560,0 scale 1 transform 90
 }
 
 profile {
-	output DP-1 mode 2560x1440 position 0,240
+	output DP-1 mode 2560x1440 position 0,0
 }
