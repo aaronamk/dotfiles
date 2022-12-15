@@ -5,16 +5,9 @@ meta="Mod4"
 alt="Mod1"
 
 # startup
-pkill hkd
-setsid hkd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-if02-event-mouse &
-pkill kanshi
-kanshi &
+startup.sh
 pkill yambar
 yambar &
-
-# applications
-# launch music browser
-riverctl map normal $meta M spawn $TERMINAL -g 130x60 -T "music_browser" -e ncmpcpp
 
 # Mod+Q to close the focused view
 riverctl map normal $meta Q close
@@ -32,8 +25,8 @@ riverctl map normal $meta+Shift L send-to-output next
 riverctl map normal $meta Space zoom
 
 # decrease/increase the main factor by 5%
-riverctl map normal $meta Minus send-layout-cmd rivertile "main-ratio -0.03"
-riverctl map normal $meta Equal send-layout-cmd rivertile "main-ratio +0.03"
+riverctl map normal $meta Minus send-layout-cmd rivercarro "main-ratio -0.03"
+riverctl map normal $meta Equal send-layout-cmd rivercarro "main-ratio +0.03"
                                 ka
 # Mod+Shift+H and Mod+Shift+L topk increment/decrement the number of
 # main views in the layout
@@ -86,16 +79,19 @@ all_tags=$(((1 << 32) - 1))
 riverctl map normal $meta 0 set-focused-tags $all_tags
 riverctl map normal $meta+Shift 0 set-view-tags $all_tags
 
+riverctl map normal $meta Period spawn river-shifttags
+riverctl map normal $meta Comma spawn "river-shifttags --shifts -1"
+
 # Mod+F to toggle fullscreen
 riverctl map normal $meta+Control F toggle-fullscreen
 # Mod+F to toggle float
 riverctl map normal $meta+Shift Space toggle-float
 
 # Mod+{Up,Right,Down,Left} to change layout orientation
-riverctl map normal $meta Up layout rivertile top
-riverctl map normal $meta Right layout rivertile right
-riverctl map normal $meta Down layout rivertile bottom
-riverctl map normal $meta Left layout rivertile left
+riverctl map normal $meta Up layout rivercarro top
+riverctl map normal $meta Right layout rivercarro right
+riverctl map normal $meta Down layout rivercarro bottom
+riverctl map normal $meta Left layout rivercarro left
 
 riverctl focus-follows-cursor normal
 riverctl set-cursor-warp on-output-change
@@ -115,10 +111,15 @@ riverctl input 1133:49291:Logitech_G502_HERO_Gaming_Mouse accel-profile flat
 # keyboard
 riverctl input pointer-1133-49291-Logitech_G502_HERO_Gaming_Mouse accel-profile flat
 
-riverctl default-layout rivertile
-rivertile -view-padding 3 -outer-padding 0 -main-ratio 0.5 &
+riverctl background-color 0x000000
+riverctl border-color-focused 0xfabd2f
+riverctl border-color-unfocused 0x665c54
+riverctl border-color-urgent 0xfb4934
 
-riverctl send-layout-cmd rivertile "main-location left"
+riverctl default-layout rivercarro
+rivercarro -inner-gaps 6 -outer-gaps 0 -main-ratio 0.5 &
+
+riverctl send-layout-cmd rivercarro "main-location left"
 riverctl focus-output next
-riverctl send-layout-cmd rivertile "main-location top"
+riverctl send-layout-cmd rivercarro "main-location top"
 riverctl focus-output next
