@@ -1,15 +1,40 @@
-hack: &hack Hack Nerd Font:pixelsize=12
-bg_default: &bg_default {stack: [{background: {color: fabd2fff}}]}
-fg_default: &fg_default {stack: [{foreground: {color: ebdbb200}}]}
+bg:          &bg          1d2021ff
+bg0:         &bg0         282828ff
+bg1:         &bg1         3c3836ff
+bg2:         &bg2         504945ff
+bg3:         &bg3         665c54ff
+bg4:         &bg4         7c6f64ff
+fg:          &fg          ebdbb2ff
+fg0:         &fg0         fbf1c7ff
+fg1:         &fg1         ebdbb2ff
+fg2:         &fg2         d5c4a1ff
+fg3:         &fg3         bdae93ff
+fg4:         &fg4         a89984ff
+gray:        &gray        928374ff
+red:         &red         cc241dff
+red_bold:    &red_bold    fb4934ff
+orange:      &orange      d65d0eff
+orange_bold: &orange_bold fe8019ff
+yellow:      &yellow      d79921ff
+yellow_bold: &yellow_bold fabd2fff
+green:       &green       98971aff
+green_bold:  &green_bold  b8bb26ff
+aqua:        &aqua        689d6aff
+aqua_bold:   &aqua_bold   8ec07cff
+blue:        &blue        458588ff
+blue_bold:   &blue_bold   83a598ff
+purple:      &purple      b16286ff
+purple_bold: &purple_bold d3869bff
+
 bar:
   height: 16
   location: bottom
-  font: mono:pixelsize=10
-  spacing: 2
+  font: hack:pixelsize=14
+  spacing: 0
   margin: 0
   layer: bottom
-  foreground: ebdbb2ff
-  background: 00000000
+  foreground: *fg
+  background: 000000ff
 
   left:
     - river:
@@ -17,17 +42,17 @@ bar:
           - base: &river_base
               left-margin: 10
               right-margin: 13
-              default: {string: {text: , font: *hack}}
+              default: {string: {text: }}
               conditions:
-                id == 1: {string: {text: 1, font: *hack}}
-                id == 2: {string: {text: 2, font: *hack}}
-                id == 3: {string: {text: 3, font: *hack}}
-                id == 4: {string: {text: 4, font: *hack}}
-                id == 5: {string: {text: 5, font: *hack}}
-                id == 6: {string: {text: 6, font: *hack}}
-                id == 7: {string: {text: 7, font: *hack}}
-                id == 8: {string: {text: 8, font: *hack}}
-                id == 9: {string: {text: 9, font: *hack}}
+                id == 1: {string: {text: 1}}
+                id == 2: {string: {text: 2}}
+                id == 3: {string: {text: 3}}
+                id == 4: {string: {text: 4}}
+                id == 5: {string: {text: 5}}
+                id == 6: {string: {text: 6}}
+                id == 7: {string: {text: 7}}
+                id == 8: {string: {text: 8}}
+                id == 9: {string: {text: 9}}
 
         content:
           map:
@@ -39,16 +64,17 @@ bar:
               state == urgent:
                 map:
                   <<: *river_base
-                  deco: {background: {color: D08770ff}}
+                  deco: {background: {color: *red_bold}}
               state == focused:
                 map:
                   <<: *river_base
-                  deco: *bg_default
+                  deco: {background: {color: *yellow_bold}}
+                  foreground: *bg
               state == visible:
                 map:
                   conditions:
                     ~occupied: {map: {<<: *river_base}}
-                    occupied: {map: {<<: *river_base, deco: *bg_default}}
+                    occupied: {map: {<<: *river_base, deco: {background: {color: *yellow_bold}}}}
               state == unfocused:
                 map:
                   <<: *river_base
@@ -57,3 +83,9 @@ bar:
                   conditions:
                     ~occupied: {empty: {}}
                     occupied: {map: {<<: *river_base, deco: {underline: {size: 0, color: ebdbb200}}}}
+  right:
+    - clock:
+        time-format: "%m/%d/%Y %I:%M:%S %P"
+        content:
+          - string: {text: , font: "Font Awesome 6 Free:style=solid:size=12"}
+          - string: {text: "{time}"}
