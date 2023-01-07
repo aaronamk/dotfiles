@@ -1,6 +1,6 @@
-# What I currently use (anything else is vestigial)
+# What I currently use
 * X11 (sadly)
-* autorandr (so good, check it out)
+* autorandr (it's nice, check it out)
 * fontconfig
 * git
 * gtk
@@ -8,16 +8,16 @@
 * mpd
 * ncmpcpp
 * neofetch (lol)
-* newsboat
-* neovim (better than vim)
+* neovim
 * pass
 * pipewire
-* st
-* sx (startx alternative)
-* sxhkd
-* udevmon (better than xcape + xmodmap)
-* vifm (better than ranger)
-* zathura (better than mupdf)
-* zsh (better than bash)
+* easyeffects
 * pulsemixer
+* st
+* dex (autostarts programs)
+* sx (startx alternative)
+* hkd (my own hotkey daemon)
+* vifm
+* zathura
+* zsh
 * picom

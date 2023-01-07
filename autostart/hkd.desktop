@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Hotkey Daemon
+Exec=hkd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd /dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-if02-event-mouse &
+Terminal=false
+Type=Application

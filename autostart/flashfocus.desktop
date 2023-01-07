@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Flash Focus
-Comment=Flash window on focus gain
-Exec=flashfocus
-Terminal=false
-Type=Application
