@@ -2,7 +2,7 @@ set selection-clipboard clipboard
 set font "monospace normal 10"
 set statusbar-v-padding 0
 set statusbar-h-padding 0
-set statusbar-fg "#fbf1c7"
-set statusbar-bg "#504945"
+set statusbar-fg "#ebdbb2"
+set statusbar-bg "#3c3836"
 set scroll-step 120
 set scroll-hstep 120

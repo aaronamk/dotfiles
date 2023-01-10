@@ -29,7 +29,7 @@ purple_bold: &purple_bold d3869bff
 bar:
   height: 16
   location: bottom
-  font: hack:pixelsize=14
+  font: hack:pixelsize=14:style=bold
   spacing: 0
   margin: 0
   layer: bottom
@@ -38,6 +38,12 @@ bar:
 
   left:
     - river:
+        title:
+          map:
+            tag: focused
+            values:
+              false: {string: {text: " {title}"}}
+              true: {string: {text: " {title}"}}
         anchors:
           - base: &river_base
               left-margin: 8
@@ -76,7 +82,7 @@ bar:
               visible:
                 map:
                   <<: *river_base
-                  deco: {background: {color: *gray}}
+                  deco: {background: {color: *fg4}}
               unfocused:
                 map:
                   <<: *river_base
@@ -117,5 +123,5 @@ bar:
     - clock:
         time-format: "%m/%d/%Y %I:%M:%S %P"
         content:
-          - string: {text: "  {time} ", deco: {background: {color: *gray}}, foreground: *bg}
+          - string: {text: "  {time} ", deco: {background: {color: *fg4}}, foreground: *bg}
 

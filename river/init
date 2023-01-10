@@ -7,7 +7,6 @@ alt="Mod1"
 # startup
 startup.sh
 pkill yambar
-yambar &
 
 # Mod+Q to close the focused view
 riverctl map normal $meta Q close
@@ -120,7 +119,12 @@ pkill rivercarro
 riverctl default-layout rivercarro
 rivercarro -inner-gaps 5 -outer-gaps 0 -main-ratio 0.5 &
 
+yambar &
 riverctl send-layout-cmd rivercarro "main-location left"
+
 riverctl focus-output next
 riverctl send-layout-cmd rivercarro "main-location top"
+sleep 0.01
+yambar &
+
 riverctl focus-output next
