@@ -38,28 +38,22 @@ bar:
 
   left:
     - river:
-        title:
-          map:
-            tag: focused
-            values:
-              false: {string: {text: " {title}"}}
-              true: {string: {text: " {title}"}}
+        title: {string: {text: " {title}"}}
         anchors:
           - base: &river_base
               left-margin: 8
               right-margin: 8
-              tag: id
               default: {string: {text: }}
-              values:
-                1: {string: {text: 1}}
-                2: {string: {text: 2}}
-                3: {string: {text: 3}}
-                4: {string: {text: 4}}
-                5: {string: {text: 5}}
-                6: {string: {text: 6}}
-                7: {string: {text: 7}}
-                8: {string: {text: 8}}
-                9: {string: {text: 9}}
+              conditions:
+                id == 1: {string: {text: 1}}
+                id == 2: {string: {text: 2}}
+                id == 3: {string: {text: 3}}
+                id == 4: {string: {text: 4}}
+                id == 5: {string: {text: 5}}
+                id == 6: {string: {text: 6}}
+                id == 7: {string: {text: 7}}
+                id == 8: {string: {text: 8}}
+                id == 9: {string: {text: 9}}
 
         content:
           map:
@@ -67,33 +61,28 @@ bar:
               left: sh -c "riverctl set-focused-tags $((1 << ({id} - 1)))"
               right: sh -c "riverctl toggle-focused-tags $((1 << ({id} -1)))"
               middle: sh -c "riverctl toggle-view-tags $((1 << ({id} -1)))"
-            tag: state
-            values:
-              urgent:
+            conditions:
+              state == urgent:
                 map:
                   <<: *river_base
                   deco: {background: {color: *red_bold}}
                   foreground: *bg
-              focused:
+              state == focused:
                 map:
                   <<: *river_base
                   deco: {background: {color: *yellow_bold}}
                   foreground: *bg
-              visible:
+              state == visible:
                 map:
                   <<: *river_base
                   deco: {background: {color: *fg4}}
-              unfocused:
+              state == unfocused:
                 map:
                   <<: *river_base
                   deco: {background: {color: *fg3}}
                   foreground: *bg
-              invisible:
-                map:
-                  tag: occupied
-                  values:
-                    false: {empty: {}}
-                    true: {map: {<<: *river_base}}
+              state == invisible && occupied: {map: {<<: *river_base}}
+              state == invisible && ~occupied: {empty: {}}
 
 
   right:
@@ -102,23 +91,31 @@ bar:
         port: 6600
         content:
           map:
-            tag: state
             default:
               string: {text: ""}
-            values:
-              playing:
-                string: {text: " ♬ {pos}/{end} {title} ", deco: {background: {color: *bg2}}, foreground: *fg}
-              paused:
-                string: {text: " ♬ {pos}/{end} {title} ", deco: {background: {color: *bg2}}, foreground: *fg}
+            conditions:
+              state == playing:
+                string: {text: " ♬ {pos}/{end} {title}", deco: {background: {color: *fg4}}, foreground: *bg}
+              state == paused:
+                string: {text: " ♬ {pos}/{end} {title}", deco: {background: {color: *fg4}}, foreground: *bg}
+    - pipewire:
+        content:
+          map:
+            conditions:
+              type == "sink" && ~muted && form_factor == headphones:
+                - string: {text: "  {cubic_volume} ", deco: {background: {color: *fg4}}, foreground: *bg}
+              type == "sink" && ~muted && form_factor == hdmi:
+                - string: {text: "  {cubic_volume} ", deco: {background: {color: *fg4}}, foreground: *bg}
+              type == "sink" && muted:
+                - string: {text: "  {cubic_volume} ", deco: {background: {color: *fg4}}, foreground: *bg}
     - network:
         name: wlp3s0
         content:
           map:
-            tag: state
             default:
               string: {text: " ⚠ {ssid} ", deco: {background: {color: *bg3}}, foreground: *fg}
-            values:
-              up:
+            conditions:
+              state == up:
                 string: {text: "  {ssid} ", deco: {background: {color: *bg3}}, foreground: *fg}
     - clock:
         time-format: "%m/%d/%Y %I:%M:%S %P"

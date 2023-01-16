@@ -397,6 +397,7 @@ set updatetime=50
 set diffopt=internal,algorithm:minimal " generate minimal git diffs
 set undofile " save undo history
 set title " set window title
+set jumpoptions=view
 set mouse=a " enable mouse
 let g:c_syntax_for_h = 1 " .h files are C, not C++
 

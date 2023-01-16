@@ -15,7 +15,8 @@ export FZF_DEFAULT_OPTS="--reverse --bind=tab:down,btab:up,change:top"
 export FZF_DEFAULT_COMMAND="rg --files --ignore --hidden --glob=!.git"
 export CM_LAUNCHER=fzf
 export CM_HISTLENGTH=8
-export QT_QPA_PLATFORMTHEME="gtk2"
+export QT_QPA_PLATFORM="wayland"
+export QT_QPA_PLATFORMTHEME="gtk4"
 export MOZ_USE_XINPUT2=1
 export MOZ_ENABLE_WAYLAND=1
 export _JAVA_AWT_WM_NONREPARENTING=1
