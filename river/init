@@ -124,7 +124,7 @@ riverctl send-layout-cmd rivercarro "main-location left"
 
 riverctl focus-output next
 riverctl send-layout-cmd rivercarro "main-location top"
-sleep 0.02
+sleep 0.03
 yambar &
 
 riverctl focus-output next
