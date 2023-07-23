@@ -3,8 +3,6 @@
 " ------------------------------------------------------------------------------
 " General
 
-let mapleader=" "
-
 " use xdg-open by default
 filetype * omni-open.sh
 
