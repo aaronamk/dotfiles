@@ -60,7 +60,7 @@ for i in $(seq 1 9); do
     tags=$((1 << ($i - 1)))
 
     # Mod+[1-9] to focus tag [0-8]
-    riverctl map normal $meta $i set-focused-tags $tags
+    riverctl map normal $meta $i spawn "riverctl set-focused-tags $tags; riverctl focus-output next; riverctl set-focused-tags $tags; riverctl focus-output next"
 
     # Mod+Shift+[1-9] to tag focused view with tag [0-8]
     riverctl map normal $meta+Shift $i set-view-tags $tags
@@ -74,12 +74,12 @@ done
 
 # Mod+0 to focus all tags
 # Mod+Shift+0 to tag focused view with all tags
-all_tags=$(((1 << 32) - 1))
+all_tags=$(((1 << 9) - 1))
 riverctl map normal $meta 0 set-focused-tags $all_tags
 riverctl map normal $meta+Shift 0 set-view-tags $all_tags
 
-riverctl map normal $meta Period spawn river-shifttags
-riverctl map normal $meta Comma spawn "river-shifttags --shifts -1"
+riverctl map normal $meta Period spawn "river-shifttags; riverctl focus-output next; river-shifttags; riverctl focus-output next"
+riverctl map normal $meta Comma spawn "river-shifttags --shifts -1; riverctl focus-output next;  river-shifttags --shifts -1; riverctl focus-output next"
 
 # Mod+F to toggle fullscreen
 riverctl map normal $meta+Control F toggle-fullscreen
@@ -124,7 +124,7 @@ riverctl send-layout-cmd rivercarro "main-location left"
 
 riverctl focus-output next
 riverctl send-layout-cmd rivercarro "main-location top"
-sleep 0.03
+sleep 0.1
 yambar &
 
 riverctl focus-output next

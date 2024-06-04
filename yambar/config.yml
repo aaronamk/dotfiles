@@ -99,7 +99,7 @@ bar:
               state == playing:
                 string: {text: " ♬ {pos}/{end} {title} ", deco: {background: {color: *bg2}}, foreground: *fg}
               state == paused:
-                string: {text: " ♬ {pos}/{end} {title} ", deco: {background: {color: *bg2}}, foreground: *fg}
+                string: {text: ""}
     - pipewire:
         content:
           map:
@@ -110,15 +110,15 @@ bar:
                 - string: {text: "  {cubic_volume} ", deco: {background: {color: *bg3}}, foreground: *fg}
               type == "sink" && muted:
                 - string: {text: "  {cubic_volume} ", deco: {background: {color: *bg3}}, foreground: *fg}
-    - network:
-        name: wlp3s0
-        content:
-          map:
-            default:
-              string: {text: " ⚠ {ssid} ", deco: {background: {color: *bg4}}, foreground: *fg}
-            conditions:
-              state == up:
-                string: {text: "  {ssid} ", deco: {background: {color: *bg4}}, foreground: *fg}
+    # - network:
+    #     name: wlp3s0
+    #     content:
+    #       map:
+    #         default:
+    #           string: {text: " ⚠ {ssid} ", deco: {background: {color: *bg4}}, foreground: *fg}
+    #         conditions:
+    #           state == up:
+    #             string: {text: "  {ssid} ", deco: {background: {color: *bg4}}, foreground: *fg}
     - clock:
         time-format: "%m/%d/%Y %I:%M:%S %P"
         content:

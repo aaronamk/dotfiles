@@ -24,11 +24,9 @@ zle-line-init() {
 	echo -ne "\e[5 q"
 }
 zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-precmd() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # History
-HISTFILE=$XDG_CACHE_HOME/zsh/history
+HISTFILE=$XDG_STATE_HOME/zsh/history
 HISTSIZE=5000
 SAVEHIST=5000
 setopt inc_append_history
@@ -37,11 +35,8 @@ setopt hist_find_no_dups
 setopt hist_reduce_blanks
 
 CASE_SENSITIVE="false"
-
 ENABLE_CORRECTION="true"
-
 COMPLETION_WAITING_DOTS="true"
-
 plugins=(git)
 
 # enable colors
@@ -49,7 +44,11 @@ autoload -U colors && colors
 . "/usr/share/LS_COLORS/dircolors.sh"
 
 # set prompt
-PROMPT="%B%F{10}%n%F{15}@%F{14}%m%f:%F{4}%~%F{15}$ %f"
+case "$(hostname --short)" in
+	"dodo") SERVER_COLOR="14" ;;
+	*) SERVER_COLOR="208" ;;
+esac
+PROMPT="%B%F{10}%n%F{15}@%F{${SERVER_COLOR}}%m%f:%F{4}%~%F{15}$ %f"
 
 # git prompt
 setopt prompt_subst
@@ -59,17 +58,16 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr '*'
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:git*' formats '%B%F{15}%F{9}%u%F{15}%b%F{10}%c%f%a'
-precmd() { vcs_info }
+precmd() {
+	vcs_info;
+	echo -ne "\033]0;$USER@$(hostname -s):${PWD/#$HOME/~}\007";
+	echo -ne '\e[3 q'; # Use beam shaped cursor for each new prompt.
+}
 
 RPROMPT='${vcs_info_msg_0_}'
 
 # tab complete
-zstyle :compinstall filename '/home/ak/.config/zsh/.zshrc'
-autoload -Uz compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)
+autoload -U compinit; compinit
 
 # fuzzy completion
 zstyle ':completion:*' completer _complete _match _approximate
@@ -84,6 +82,7 @@ alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="ls --color=auto --group-directories-first"
 alias ll="ls --color=auto --group-directories-first -l"
+alias la="ls --color=auto --group-directories-first -al"
 alias grep="grep --color=auto"
 alias s="sudo "
 alias se="sudoedit"
@@ -95,22 +94,28 @@ alias py="python"
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias update-mirrors="reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
 alias yacc="byacc" # I did this so that something would install right
-
-# Other
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
 
 # locations
 alias apps="cd /usr/share/applications"
 alias themes="cd /usr/share/themes"
 alias input="cd /usr/share/X11/xorg.conf.d"
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
 
 # global configs
 alias grubrc="sudoedit /etc/default/grub"
 alias tlprc="sudoedit /etc/tlp.conf"
 alias libinputrc="cd /etc/X11/xorg.conf.d"
 
-source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
-source /usr/share/zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh 2>/dev/null
-source /usr/share/zsh/plugins/zsh-autopair/autopair.zsh
+source $XDG_DATA_HOME/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+source $XDG_DATA_HOME/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
+source $XDG_DATA_HOME/zsh/zsh-autopair/autopair.zsh
+source $XDG_DATA_HOME/zsh/fzf-tab/fzf-tab.plugin.zsh
+source <(fzf --zsh)
+_fzf_compgen_path() {
+	fd --type f --follow . "$1"
+}
+_fzf_compgen_dir() {
+	fd --type d --follow . "$1"
+}
