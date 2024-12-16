@@ -45,7 +45,8 @@ autoload -U colors && colors
 
 # set prompt
 case "$(hostname --short)" in
-	"dodo") SERVER_COLOR="14" ;;
+	"dodo")   SERVER_COLOR="14" ;;
+	"goose")  SERVER_COLOR="7" ;;
 	*) SERVER_COLOR="208" ;;
 esac
 PROMPT="%B%F{10}%n%F{15}@%F{${SERVER_COLOR}}%m%f:%F{4}%~%F{15}$ %f"

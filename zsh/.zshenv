@@ -11,7 +11,7 @@ export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
 export LC_ALL=en_US.UTF-8
 export GTK_THEME=Material-Black-Lime-4.0
 export PASSWORD_STORE_GENERATED_LENGTH=16
-export FZF_DEFAULT_OPTS="--reverse --bind=tab:down,btab:up,change:top"
+export FZF_DEFAULT_OPTS="--reverse --cycle --bind=tab:down,btab:up,change:top"
 export FZF_DEFAULT_COMMAND="fd --type f --follow"
 #export CM_LAUNCHER=fzf
 #export CM_HISTLENGTH=8
