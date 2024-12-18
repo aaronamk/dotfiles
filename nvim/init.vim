@@ -44,8 +44,7 @@ end)
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",
-  ignore_install = { "phpdoc" },
+  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini" }
   highlight = {enable = true},
   context_commentstring = {enable = true},
   autopairs = {enable = true},
