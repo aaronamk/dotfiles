@@ -4,6 +4,18 @@
 " run :PackerSync to install/update all plugins
 
 lua <<EOF
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
 require('packer').startup(function()
@@ -44,7 +56,7 @@ end)
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini" }
+  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini" },
   highlight = {enable = true},
   context_commentstring = {enable = true},
   autopairs = {enable = true},
