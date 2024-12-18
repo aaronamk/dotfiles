@@ -165,12 +165,12 @@ npairs.add_rules {
 -- git signs
 require('gitsigns').setup {
   signs = {
-    add          = { hl = 'DiffAdd',    text = ' ▎' },
-    change       = { hl = 'DiffChange', text = '▪ ' },
-    changedelete = { hl = 'DiffChange', text = '▪▁' },
-    delete       = { hl = 'DiffDelete', text = ' ▁' },
-    topdelete    = { hl = 'DiffDelete', text = ' ▔' },
-    untracked    = { hl = 'DiffAdd',    text = '┆ ' },
+    add          = {  text = ' ▎' },
+    change       = {  text = '▪ ' },
+    changedelete = {  text = '▪▁' },
+    delete       = {  text = ' ▁' },
+    topdelete    = {  text = ' ▔' },
+    untracked    = {  text = '┆ ' },
   },
   signcolumn = true,
   numhl = false,
@@ -419,6 +419,12 @@ vim.api.nvim_set_hl(0, 'DiffAdded',                { fg=colors.green_bold,  cter
 vim.api.nvim_set_hl(0, 'DiffRemoved',              { fg=colors.red_bold,    ctermfg=ansi.red_bold })
 vim.api.nvim_set_hl(0, 'GitSignsDeleteLn',         { fg=colors.red_bold,    ctermfg=ansi.red_bold })
 vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', { fg=colors.bg3,         ctermfg=ansi.bg3 })
+vim.api.nvim_set_hl(0, 'GitSignsAdd', { link = 'DiffAdd' })
+vim.api.nvim_set_hl(0, 'GitSignsChange', { link = 'DiffChange' })
+vim.api.nvim_set_hl(0, 'GitSignsChangedelete', { link = 'DiffChange' })
+vim.api.nvim_set_hl(0, 'GitSignsDelete', { link = 'DiffDelete' })
+vim.api.nvim_set_hl(0, 'GitSignsTopdelete', { link = 'DiffDelete' })
+vim.api.nvim_set_hl(0, 'GitSignsUntracked', { link = 'DiffAdd' })
 EOF
 
 set number " add line numbers
