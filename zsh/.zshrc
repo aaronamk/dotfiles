@@ -41,7 +41,6 @@ plugins=(git)
 
 # enable colors
 autoload -U colors && colors
-. "/usr/share/LS_COLORS/dircolors.sh"
 
 # set prompt
 case "$(hostname --short)" in
@@ -113,6 +112,7 @@ source $XDG_DATA_HOME/zsh/zsh-history-substring-search/zsh-history-substring-sea
 source $XDG_DATA_HOME/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
 source $XDG_DATA_HOME/zsh/zsh-autopair/autopair.zsh
 source $XDG_DATA_HOME/zsh/fzf-tab/fzf-tab.plugin.zsh
+source $XDG_DATA_HOME/zsh/LS_COLORS/lscolors.sh
 source <(fzf --zsh)
 _fzf_compgen_path() {
 	fd --type f --follow . "$1"
