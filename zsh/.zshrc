@@ -73,6 +73,11 @@ autoload -U compinit; compinit
 zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'timeout 1 eza -1 --color=always --classify=auto --icons=auto $realpath'
 
 
 # aliases
@@ -80,9 +85,9 @@ alias startx="sx"
 alias xdg-open="omni-open"
 alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
-alias ls="ls --color=auto --group-directories-first"
-alias ll="ls --color=auto --group-directories-first -l"
-alias la="ls --color=auto --group-directories-first -al"
+alias ls="eza --group-directories-first"
+alias ll="eza --group-directories-first --git --color-scale --classify=auto --icons=auto -l"
+alias la='eza --group-directories-first --git --color-scale --classify=auto --icons=auto -la'
 alias grep="grep --color=auto"
 alias s="sudo "
 alias se="sudoedit"

@@ -130,24 +130,20 @@ end
 
 local cmp = require("cmp")
 cmp.setup {
-  completion = { autocomplete = false, completeopt = 'menu,noinsert,popup,fuzzy' },
+  completion = { completeopt = 'menu,noselect,popup,fuzzy' },
   sources = { { name = "luasnip" }, { name = "nvim_lsp" }, { name = "nvim_lua" }, { name = "path" } },
   snippet = { expand = function(args) require("luasnip").lsp_expand(args.body) end },
   experimental = { ghost_text = true },
   mapping = {
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.select_next_item({behavior=cmp.SelectBehavior.Select})
+      if cmp.visible() then cmp.select_next_item()
       elseif has_words_before() then cmp.complete()
       else fallback()
       end
     end, { "i", "s" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.select_prev_item({behavior=cmp.SelectBehavior.Select}) else fallback() end
+      if cmp.visible() then cmp.select_prev_item() else fallback() end
     end, { "i", "s" }),
-    ["<Esc>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.abort() else fallback() end
-    end, { "i", "s" }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ["<C-k>"] = cmp.mapping(function() luasnip.jump() end, { "i", "s" }),
     ["<C-j>"] = cmp.mapping(function() luasnip.jump(-1) end, { "i", "s" }),
   }
