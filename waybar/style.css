@@ -2,39 +2,38 @@
     border: none;
     border-radius: 0;
     font-family: mono;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: bold;
     min-height: 0;
 }
 
 window#waybar {
-    background-color: #000000;
-    color: #ffffff;
-    transition-property: background-color;
-    transition-duration: .5s;
+    background-color: #282828;
+    color: #ebdbb2;
 }
 
 window#waybar.hidden {
     opacity: 0.0;
 }
 
+
+button {
+    all: initial;
+}
 #tags button {
-    padding: 0 0px;
-    margin: 0 0px;
-	margin-right:0px;
-	margin-left:0px;
+    padding: 0 8px;
     background-color: transparent;
-    color: #ffffff;
-	border: none;
-	border-radius: 0;
+    color: #ebdbb2;
 }
 
 #tags button.focused {
-    background-color: #fabd2f;
-    color: #000000
+    padding: 0 12px;
+    background-color: #bdae93;
+    color: #282828;
 }
 
 #tags button.urgent {
-    background-color: #eb4d4b;
+    background-color: #fb4934;
 }
 
 #clock,
@@ -47,21 +46,27 @@ window#waybar.hidden {
 #mpd {
     padding: 0 8px;
     margin: 0 2px;
-    color: #ffffff;
+    color: #ebdbb2;
 }
-
-#window,
-#tags {
-	padding: 0 0px;
-    margin: 0 0px;
-	margin-right:0px;
-	margin-left:0px;
+#layout {
+    background-color: #bdae93;
+    color: #282828;
+    padding: 0 3px;
 }
-#workspace button {
-	padding: 0 0px;
-    margin: 0 0px;
-	margin-right:0px;
-	margin-left:0px;
+#layout.focused {
+    background-color: #fabd2f;
+    color: #282828;
+    padding: 0 3px;
+}
+#window {
+    background-color: #bdae93;
+    color: #282828;
+    padding: 0 0px;
+}
+#window.focused {
+    background-color: #fabd2f;
+    color: #282828;
+    padding: 0 0px;
 }
 
 /* If tags is the leftmost module, omit left margin */
@@ -75,16 +80,18 @@ window#waybar.hidden {
 }
 
 #clock {
-    background-color: #64727D;
+    background-color: #665c54;
+    color: #ebdbb2;
+    margin-right:0;
 }
 
 label:focus {
-    background-color: #000000;
+    background-color: #1d2021;
 }
 
 #cpu {
     background-color: #2ecc71;
-    color: #000000;
+    color: #1d2021;
 }
 
 #memory {
@@ -92,21 +99,22 @@ label:focus {
 }
 
 #network {
-    background-color: #2980b9;
+    background-color: #665c54;
+    color: #ebdbb2;
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+    background-color: #fb4934;
 }
 
 #pulseaudio {
-    background-color: #f1c40f;
-    color: #000000;
+    background-color: #665c54;
+    color: #ebdbb2;
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+    background-color: #665c54;
+    color: #ebdbb2;
 }
 
 #temperature {
@@ -114,22 +122,22 @@ label:focus {
 }
 
 #temperature.critical {
-    background-color: #eb4d4b;
+    background-color: #fb4934;
 }
 
 #mpd {
-    background-color: #66cc99;
-    color: #000000;
+    background-color: #665c54;
+    color: #ebdbb2;
 }
 
 #mpd.disconnected {
-    background-color: #f53c3c;
+    padding: 0 0px;
 }
 
 #mpd.stopped {
-    background-color: #90b1b1;
+    padding: 0 0px;
 }
 
 #mpd.paused {
-    background-color: #51a37a;
+    padding: 0 0px;
 }

@@ -496,6 +496,7 @@ set tabstop=4
 set shiftwidth=4
 set list
 set listchars=tab:>-,trail:·
+set expandtab
 
 " file completion
 set path+=**
