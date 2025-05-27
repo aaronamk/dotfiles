@@ -3,60 +3,71 @@
 " Dependencies: git (a decently modern version), fzf, packer.nvim, tree-sitter, LSP clients (clang, jedi, etc.)
 " run :PackerSync to install/update all plugins
 
-lua <<EOF
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
 
-local packer_bootstrap = ensure_packer()
+
+lua <<EOF
+vim.loader.enable()
+
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- set leader key
+vim.g.mapleader = " "
+
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
-require('packer').startup(function()
-  -- treesitter
-  use 'nvim-treesitter/nvim-treesitter'             -- smart syntax parser
-  use 'nvim-treesitter/nvim-treesitter-textobjects' -- treesitter text objects
-  use 'nvim-treesitter/nvim-treesitter-refactor'    -- highlight references
-  use 'nvim-treesitter/playground'                  -- treesitter info
+require("lazy").setup({
+  spec = {
+    {'nvim-treesitter/nvim-treesitter', lazy=true},             -- smart syntax parser
+    {'nvim-treesitter/nvim-treesitter-textobjects', lazy=true}, -- treesitter text objects
+    {'nvim-treesitter/nvim-treesitter-refactor', lazy=true},    -- highlight references
+    {'nvim-treesitter/playground', lazy=true},                  -- treesitter info
 
-  -- completion
-  use 'neovim/nvim-lspconfig'     -- lsp configurations for servers
-  use 'hrsh7th/nvim-cmp'          -- completion helper
-  use 'hrsh7th/cmp-nvim-lsp'      -- LSP completion
-  use 'hrsh7th/cmp-path'          -- path completion
-  use 'hrsh7th/cmp-nvim-lua'      -- internal lua completion
-  use 'L3MON4D3/LuaSnip'          -- snippets
-  use 'saadparwaiz1/cmp_luasnip'  -- snippets cmp integration
-  use 'smjonas/inc-rename.nvim'   -- preview changes when renaming lsp symbols
-  use 'windwp/nvim-autopairs'     -- delimiter auto pairing
-  use { 'vijaymarupudi/nvim-fzf', -- fzf
-        requires = { 'ibhagwan/fzf-lua' } }
+    -- completion
+    {'neovim/nvim-lspconfig'},     -- lsp configurations for servers
+    {'hrsh7th/nvim-cmp'},          -- completion helper
+    {'hrsh7th/cmp-nvim-lsp'},      -- LSP completion
+    {'hrsh7th/cmp-path'},          -- path completion
+    {'hrsh7th/cmp-nvim-lua', lazy=true},      -- internal lua completion
+    {'L3MON4D3/LuaSnip', lazy=true},          -- snippets
+    {'saadparwaiz1/cmp_luasnip', lazy=true},  -- snippets cmp integration
+    {'smjonas/inc-rename.nvim', lazy=true},   -- preview changes when renaming lsp symbols
+    {'windwp/nvim-autopairs'},     -- delimiter auto pairing
+    {'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = {'nvim-lua/plenary.nvim'}, lazy=true},
 
-  -- git
-  use 'tpope/vim-fugitive'      -- git commands
-  use 'lewis6991/gitsigns.nvim' -- git change indicators
+    -- git
+    {'tpope/vim-fugitive', lazy=true},      -- git commands
+    {'lewis6991/gitsigns.nvim', lazy=true}, -- git change indicators
 
-  -- other
-  use 'wbthomason/packer.nvim'      -- plugin manager
-  use 'lewis6991/impatient.nvim'    -- uses caching to speed up startup time
-  use 'Chiel92/vim-autoformat'      -- code formatter
-  use 'norcalli/nvim-colorizer.lua' -- highlight colors in that color
-  use 'wellle/targets.vim'          -- smarter text objects
-  use 'machakann/vim-sandwich'      -- delimiter bindings
-  use 'numToStr/Comment.nvim'       -- commenting bindings
-  use 'nvim-lualine/lualine.nvim'   -- status line
-end)
+    -- other
+    {'Chiel92/vim-autoformat', lazy=true},      -- code formatter
+    {'norcalli/nvim-colorizer.lua', lazy=true}, -- highlight colors in that color
+    {'wellle/targets.vim', lazy=true},          -- smarter text objects
+    {'machakann/vim-sandwich'},      -- delimiter bindings
+    {'numToStr/Comment.nvim', lazy=true},       -- commenting bindings
+    {'nvim-lualine/lualine.nvim'},   -- status line
+  },
+  checker = { enabled = false }
+})
 
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini", "toml" },
+  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini", "toml", "yaml" },
   highlight = {enable = true},
   context_commentstring = {enable = true},
   autopairs = {enable = true},
@@ -110,7 +121,25 @@ for _, lsp in ipairs(servers) do
   require('lspconfig')[lsp].setup { capabilities = capabilities }
 end
 
-vim.diagnostic.config({ virtual_text = { prefix = '•' }, severity_sort = true })
+vim.diagnostic.config({
+  virtual_text = { prefix = '•' },
+  severity_sort = true,
+  -- just highlight the number
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = ''
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+      [vim.diagnostic.severity.WARN] = 'WarningMsg',
+      [vim.diagnostic.severity.INFO] = 'InfoMsg',
+      [vim.diagnostic.severity.HINT] = 'HintMsg'
+    }
+  }
+})
 
 
 -- luasnip
@@ -172,12 +201,12 @@ npairs.add_rules {
 -- git signs
 require('gitsigns').setup {
   signs = {
-    add          = {  text = ' ▎' },
-    change       = {  text = '▪ ' },
-    changedelete = {  text = '▪▁' },
-    delete       = {  text = ' ▁' },
-    topdelete    = {  text = ' ▔' },
-    untracked    = {  text = '┆ ' },
+    add          = { text = ' ▎' },
+    change       = { text = '▪ ' },
+    changedelete = { text = '▪▁' },
+    delete       = { text = ' ▁' },
+    topdelete    = { text = ' ▔' },
+    untracked    = { text = '┆ ' },
   },
   signcolumn = true,
   numhl = false,
@@ -220,15 +249,24 @@ require('gitsigns').setup {
     end
 }
 
-
 -- nvim_comment
 require('Comment').setup()
 
--- impatient
-require('impatient')
-
--- fzf-lua
-require('fzf-lua').setup { previewers = { builtin = { delay = 0 } } }
+-- telescope
+require('telescope').setup({
+defaults = {
+  layout_strategy = "vertical",
+  layout_config = { preview_height = 0.75, prompt_position="top", width = 0.9, height = 0.9, mirror = true },
+  mappings = {
+    i = {
+      ["<esc>"] = require('telescope.actions').close,
+      ["<Tab>"] = require('telescope.actions').move_selection_next,
+      ["<S-Tab>"] = require('telescope.actions').move_selection_previous,
+    },
+  },
+  sorting_strategy = "ascending"
+}
+})
 
 
 -- lualine
@@ -395,6 +433,8 @@ vim.api.nvim_set_hl(0, 'Exception',            { fg=colors.red,         ctermfg=
 
 vim.api.nvim_set_hl(0, 'PreProc',              { fg=colors.red_bold,  ctermfg=ansi.red_bold })
 vim.api.nvim_set_hl(0, 'Include',              { fg=colors.aqua_bold, ctermfg=ansi.aqua_bold })
+vim.api.nvim_set_hl(0, '@keyword.import',      { fg=colors.aqua_bold, ctermfg=ansi.aqua_bold })
+vim.api.nvim_set_hl(0, '@module',              { fg=colors.fg, ctermfg=ansi.fg })
 
 vim.api.nvim_set_hl(0, 'Type',                 { fg=colors.yellow_bold, ctermfg=ansi.yellow_bold })
 vim.api.nvim_set_hl(0, '@type.builtin',        { fg=colors.yellow_bold, ctermfg=ansi.yellow_bold, bold=true })
@@ -450,12 +490,6 @@ set cc=80,120
 " highlight current line
 set cursorline
 
-" just highlight the number
-sign define DiagnosticSignError numhl=DiagnosticError
-sign define DiagnosticSignWarn  numhl=DiagnosticWarn
-sign define DiagnosticSignInfo  numhl=DiagnosticInfo
-sign define DiagnosticSignHint  numhl=DiagnosticHint
-
 
 " general
 " ---------------------------------------------------------------------------------------------------------------------
@@ -492,11 +526,11 @@ autocmd VimResized * :silent! set scroll=10
 autocmd WinEnter * :silent! set scroll=10
 
 " whitespace
+set expandtab
 set tabstop=4
 set shiftwidth=4
 set list
 set listchars=tab:>-,trail:·
-set expandtab
 
 " file completion
 set path+=**
@@ -506,7 +540,6 @@ set wildoptions=pum
 set inccommand=nosplit
 
 " clipboard
-set clipboard=unnamedplus
 autocmd TextYankPost * lua vim.highlight.on_yank { on_visual = false }
 
 " folding
@@ -522,10 +555,6 @@ let g:netrw_dirhistmax = 0 " disable hist file
 
 " keybindings
 " ---------------------------------------------------------------------------------------------------------------------
-" set leader key
-noremap <space> <nop>
-let mapleader=" "
-
 " Make Y work the way you'd expect
 nmap Y y$
 
@@ -566,9 +595,9 @@ nnoremap <Esc> :noh<CR>
 nnoremap <Leader><Tab> :ClangdSwitchSourceHeader<CR>
 
 " fzf
-nnoremap <Leader>/ :FzfLua files<CR>
-nnoremap z= :FzfLua spell_suggest<CR>
-nnoremap g/ :FzfLua builtin<CR>
+nnoremap <Leader>/ :Telescope find_files<CR>
+nnoremap z= :Telescope spell_suggest<CR>
+nnoremap g/ :Telescope builtin<CR>
 
 " lsp
 nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
@@ -576,15 +605,18 @@ nnoremap <silent> gl <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
 nnoremap <silent> zl <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <Leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> gr :FzfLua lsp_references<CR>
+nnoremap <silent> gr :Telescope lsp_references<CR>
 
 cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
 cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
 " emulate vim surround bindings
 runtime macros/sandwich/keymap/surround.vim
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+" add spaces inside bracket
 let g:sandwich#recipes += [
 \ {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
 \ {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
@@ -594,5 +626,5 @@ let g:sandwich#recipes += [
 \ {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
 \]
 vmap s S
-" turn of truecolor if not supported
+" turn off truecolor if not supported
 autocmd VimEnter * if $COLORTERM != "truecolor" | set notermguicolors | endif
