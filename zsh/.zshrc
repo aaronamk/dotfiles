@@ -86,8 +86,8 @@ alias xdg-open="omni-open"
 alias irssi="irssi --config $XDG_CONFIG_HOME/irssi/config"
 alias units="units --history $XDG_CACHE_HOME/unitshst"
 alias ls="eza --group-directories-first"
-alias ll="eza --group-directories-first --git --color-scale --classify=auto --icons=auto -l"
-alias la='eza --group-directories-first --git --color-scale --classify=auto --icons=auto -la'
+alias ll="eza --group-directories-first --git --color-scale --classify=auto --icons=auto -lg"
+alias la='eza --group-directories-first --git --color-scale --classify=auto --icons=auto -lag'
 alias grep="grep --color=auto"
 alias s="sudo "
 alias se="sudoedit"
@@ -113,8 +113,9 @@ alias grubrc="sudoedit /etc/default/grub"
 alias tlprc="sudoedit /etc/tlp.conf"
 alias libinputrc="cd /etc/X11/xorg.conf.d"
 
+source ~/.local/share/venvs/dev/bin/activate
 source $XDG_DATA_HOME/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-source $XDG_DATA_HOME/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
+#source $XDG_DATA_HOME/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
 source $XDG_DATA_HOME/zsh/zsh-autopair/autopair.zsh
 source $XDG_DATA_HOME/zsh/fzf-tab/fzf-tab.plugin.zsh
 source $XDG_DATA_HOME/zsh/LS_COLORS/lscolors.sh
