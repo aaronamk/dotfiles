@@ -106,6 +106,7 @@ riverctl input 1133:49291:Logitech_G502_HERO_Gaming_Mouse accel-profile flat
 # Set app-ids of views which should float
 # riverctl float-filter-add "float"
 # riverctl float-filter-add "popup"
+ riverctl rule-add ssd
 
 # keyboard
 riverctl input pointer-1133-49291-Logitech_G502_HERO_Gaming_Mouse accel-profile flat
