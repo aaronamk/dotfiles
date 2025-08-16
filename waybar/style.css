@@ -51,7 +51,7 @@ button {
 #layout {
     background-color: #bdae93;
     color: #282828;
-    padding: 0 3px;
+    padding: 0 0px;
 }
 #layout.focused {
     background-color: #fabd2f;
