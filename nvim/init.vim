@@ -25,99 +25,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- set leader key
 vim.g.mapleader = " "
+vim.opt.completeopt = { "menuone", "noselect", "popup" }
 
--- plugins
------------------------------------------------------------------------------------------------------------------------
-require("lazy").setup({
-  spec = {
-    {'nvim-treesitter/nvim-treesitter', lazy=true},             -- smart syntax parser
-    {'nvim-treesitter/nvim-treesitter-textobjects', lazy=true}, -- treesitter text objects
-    {'nvim-treesitter/nvim-treesitter-refactor', lazy=true},    -- highlight references
-    {'nvim-treesitter/playground', lazy=true},                  -- treesitter info
-
-    -- completion
-    {'neovim/nvim-lspconfig'},     -- lsp configurations for servers
-    {'hrsh7th/nvim-cmp'},          -- completion helper
-    {'hrsh7th/cmp-nvim-lsp'},      -- LSP completion
-    {'hrsh7th/cmp-path'},          -- path completion
-    {'hrsh7th/cmp-nvim-lua', lazy=true},      -- internal lua completion
-    {'L3MON4D3/LuaSnip', lazy=true},          -- snippets
-    {'saadparwaiz1/cmp_luasnip', lazy=true},  -- snippets cmp integration
-    {'smjonas/inc-rename.nvim', lazy=true},   -- preview changes when renaming lsp symbols
-    {'windwp/nvim-autopairs'},     -- delimiter auto pairing
-    {'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = {'nvim-lua/plenary.nvim'}, lazy=true},
-
-    -- git
-    {'tpope/vim-fugitive', lazy=true},      -- git commands
-    {'lewis6991/gitsigns.nvim', lazy=true}, -- git change indicators
-
-    -- other
-    {'Chiel92/vim-autoformat', lazy=true},      -- code formatter
-    {'norcalli/nvim-colorizer.lua', lazy=true}, -- highlight colors in that color
-    {'wellle/targets.vim', lazy=true},          -- smarter text objects
-    {'machakann/vim-sandwich'},      -- delimiter bindings
-    {'numToStr/Comment.nvim', lazy=true},       -- commenting bindings
-    {'nvim-lualine/lualine.nvim'},   -- status line
-  },
-  checker = { enabled = false }
-})
-
-
--- treesitter
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini", "toml", "yaml" },
-  highlight = {enable = true},
-  context_commentstring = {enable = true},
-  autopairs = {enable = true},
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true, -- Automatic jumps like in targets.vim
-      keymaps             = { ["aB"] = "@block.outer",
-                              ["iB"] = "@block.inner",
-                              ["aa"] = "@parameter.outer",
-                              ["ia"] = "@parameter.inner",
-                              ["af"] = "@function.outer",
-                              ["if"] = "@function.inner",
-                              ["ac"] = "@class.outer",
-                              ["ic"] = "@class.inner" },
-    },
-    move = {
-      enable = true,
-      set_jumps = false,
-      goto_next_start     = { ["]B"] = "@block.outer",
-                              ["]a"] = "@parameter.outer",
-                              ["]f"] = "@function.outer",
-                              ["]]"] = "@call.outer" },
-      goto_next_end       = { ["]A"] = "@parameter.outer",
-                              ["]F"] = "@function.outer",
-                              ["]["] = "@call.outer" },
-      goto_previous_start = { ["[B"] = "@block.outer",
-                              ["[a"] = "@parameter.outer",
-                              ["[f"] = "@function.outer",
-                              ["[["] = "@call.outer" },
-      goto_previous_end   = { ["[A"] = "@parameter.outer",
-                              ["[F"] = "@function.outer",
-                              ["[]"] = "@call.outer" },
-    },
-  },
-  refactor = {
-    highlight_definitions = { enable = true, clear_on_cursor_move = false },
-    navigation = { enable = true, keymaps   = { goto_definition_lsp_fallback = "gd",
-                                                goto_next_usage              = "]r",
-                                                goto_previous_usage          = "[r" } }
-  },
-}
-
-
--- lsp
-local servers = { 'clangd', 'pyright', 'bashls', 'lua_ls' }
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup { capabilities = capabilities }
-end
+vim.cmd("set termguicolors")
 
 vim.diagnostic.config({
   virtual_text = { prefix = '•' },
@@ -140,158 +50,241 @@ vim.diagnostic.config({
 })
 
 
--- luasnip
-local luasnip = require("luasnip")
-luasnip.config.set_config{
-  history = true,
-  updateevents = "TextChanged,TextChangedI",
-  enable_autosnippets = true
-}
+-- plugins
+-----------------------------------------------------------------------------------------------------------------------
+require("lazy").setup({
+  { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    opts = {
+      ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini", "toml", "yaml" },
+      highlight = {enable = true},
+      indent = {enable = true},
+      context_commentstring = {enable = true},
+      autopairs = {enable = true},
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatic jumps like in targets.vim
+          keymaps             = { ["aB"] = "@block.outer",
+                                  ["iB"] = "@block.inner",
+                                  ["aa"] = "@parameter.outer",
+                                  ["ia"] = "@parameter.inner",
+                                  ["af"] = "@function.outer",
+                                  ["if"] = "@function.inner",
+                                  ["ac"] = "@class.outer",
+                                  ["ic"] = "@class.inner" },
+        },
+        move = {
+          enable = true,
+          set_jumps = false,
+          goto_next_start     = { ["]B"] = "@block.outer",
+                                  ["]a"] = "@parameter.outer",
+                                  ["]f"] = "@function.outer",
+                                  ["]]"] = "@call.outer" },
+          goto_next_end       = { ["]A"] = "@parameter.outer",
+                                  ["]F"] = "@function.outer",
+                                  ["]["] = "@call.outer" },
+          goto_previous_start = { ["[B"] = "@block.outer",
+                                  ["[a"] = "@parameter.outer",
+                                  ["[f"] = "@function.outer",
+                                  ["[["] = "@call.outer" },
+          goto_previous_end   = { ["[A"] = "@parameter.outer",
+                                  ["[F"] = "@function.outer",
+                                  ["[]"] = "@call.outer" },
+        },
+      },
+      refactor = {
+        highlight_definitions = { enable = true, clear_on_cursor_move = false },
+        navigation = { enable = true, keymaps   = { goto_definition_lsp_fallback = "gd",
+                                                    goto_next_usage              = "]r",
+                                                    goto_previous_usage          = "[r" } }
+      },
+    }
+  },
+  {'nvim-treesitter/nvim-treesitter-textobjects'}, -- treesitter text objects
+  {'nvim-treesitter/nvim-treesitter-refactor'},    -- highlight references
+
+  -- completion
+  {'neovim/nvim-lspconfig'},     -- lsp configurations for servers
+  {'saghen/blink.cmp', lazy=true,
+    event = 'VimEnter',
+    version = '1.*',
+    dependencies = {
+      -- Snippet Engine
+      {
+        'L3MON4D3/LuaSnip',
+        version = '2.*',
+        build = (function()
+          -- Build Step is needed for regex support in snippets.
+          -- This step is not supported in many windows environments.
+          -- Remove the below condition to re-enable on windows.
+          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+            return
+          end
+          return 'make install_jsregexp'
+        end)(),
+      },
+      'folke/lazydev.nvim',
+    },
+    --- @module 'blink.cmp'
+    opts = {
+      keymap = {
+        preset = 'none',
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+        ['<Right>'] = { 'snippet_forward', 'fallback' },
+        ['<Left>'] = { 'snippet_backward', 'fallback' },
+        ['<Up>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<Down>'] = { 'scroll_documentation_down', 'fallback' },
+      },
+      completion = {
+        documentation = { auto_show = true, auto_show_delay_ms = 0 },
+        list = { selection = { preselect = false, auto_insert = true } },
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        providers = { lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 }, },
+      },
+      snippets = { preset = 'luasnip' },
+      fuzzy = { implementation = 'lua' },
+      signature = { enabled = true },
+      cmdline = {
+        keymap = { preset = 'inherit' },
+        completion = {
+          menu = {auto_show = true},
+          list = { selection = { preselect = false, auto_insert = true } },
+        },
+      },
+    },
+  },
+
+  {'smjonas/inc-rename.nvim', lazy=true, opts={}},   -- preview changes when renaming lsp symbols
+  {'windwp/nvim-autopairs', opts={ check_ts = true }},     -- delimiter auto pairing
+  {'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = {'nvim-lua/plenary.nvim'}, opts=function()
+    local actions = require("telescope.actions")
+    return {
+      defaults = {
+        layout_strategy = "vertical",
+        layout_config = { preview_height = 0.75, prompt_position="top", width = 0.9, height = 0.9, mirror = true },
+        mappings = {
+          i = {
+            ["<esc>"] = actions.close,
+            ["<Tab>"] = actions.move_selection_next,
+            ["<S-Tab>"] = actions.move_selection_previous,
+          },
+        },
+        sorting_strategy = "ascending"
+      }
+    }
+    end,
+  },
+
+  -- git
+  {'tpope/vim-fugitive', lazy=true},      -- git commands
+
+  {'lewis6991/gitsigns.nvim', opts = {
+    signs = {
+      add          = { text = ' ▎' },
+      change       = { text = '▪ ' },
+      changedelete = { text = '▪▁' },
+      delete       = { text = ' ▁' },
+      topdelete    = { text = ' ▔' },
+      untracked    = { text = '┆ ' },
+    },
+    signcolumn = true,
+    numhl = false,
+    linehl = false,
+    watch_gitdir = { interval = 1000, follow_files = true },
+    current_line_blame = true,
+    current_line_blame_opts = { delay = 50, position = 'eol' },
+    sign_priority = 6,
+    update_debounce = 50,
+    on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']h', function()
+          if vim.wo.diff then return ']h' end
+          vim.schedule(function() gs.next_hunk() end)
+          return '<Ignore>'
+        end, {expr=true})
+
+        map('n', '[h', function()
+          if vim.wo.diff then return '[h' end
+          vim.schedule(function() gs.prev_hunk() end)
+          return '<Ignore>'
+        end, {expr=true})
+
+        -- Actions
+        map('n', 'zh', gs.reset_hunk)
+        map('v', 'zh', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+        map('n', 'zH', gs.reset_buffer)
+        map('n', 'gh', gs.preview_hunk)
+
+        -- Text object
+        map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+      end
+    }}, -- git change indicators
+
+    -- other
+    {'NMAC427/guess-indent.nvim'}, -- Detect tabstop and shiftwidth automatically
+    {'norcalli/nvim-colorizer.lua', opts={'*'}}, -- highlight colors in that color
+    {'echasnovski/mini.ai', version = '*', opts={}},
+    {'echasnovski/mini.surround', version = '*', opts={
+      mappings = {delete='ds', replace='cs'},
+      n_lines = 100,
+      respect_selection_type = true,
+      search_method = 'cover_or_nearest'
+    }},
+    {'numToStr/Comment.nvim', lazy=true, opts={}},       -- commenting bindings
+    {'nvim-lualine/lualine.nvim', opts={
+      options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
+      sections = {
+        lualine_a = {{'filename', file_status = true, path = 1}},
+        lualine_b = {'progress'},
+        lualine_c = {{'diagnostics', sources = {'nvim_diagnostic'}, symbols = {error = '✖ ', warn = '! ', info = 'i ', hint = 'h '}}},
+        lualine_x = {}, lualine_y = {},
+        lualine_z = {'branch'}
+      }
+    }},   -- status line
+  checker = { enabled = false }
+})
 
 
--- nvim-cmp
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+-- lsp
+local servers = { 'clangd', 'pyright', 'bashls', 'lua_ls' }
+
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+for _, lsp in ipairs(servers) do
+  require('lspconfig')[lsp].setup { capabilities = capabilities }
 end
 
-local cmp = require("cmp")
-cmp.setup {
-  completion = { completeopt = 'menu,noselect,popup,fuzzy' },
-  sources = { { name = "luasnip" }, { name = "nvim_lsp" }, { name = "nvim_lua" }, { name = "path" } },
-  snippet = { expand = function(args) require("luasnip").lsp_expand(args.body) end },
-  experimental = { ghost_text = true },
-  mapping = {
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.select_next_item()
-      elseif has_words_before() then cmp.complete()
-      else fallback()
-      end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then cmp.select_prev_item() else fallback() end
-    end, { "i", "s" }),
-    ["<C-k>"] = cmp.mapping(function() luasnip.jump() end, { "i", "s" }),
-    ["<C-j>"] = cmp.mapping(function() luasnip.jump(-1) end, { "i", "s" }),
-  }
-}
-
-
--- inc-rename
-require('inc_rename').setup()
-vim.keymap.set("n", "cd", function()
-  return ":IncRename " .. vim.fn.expand("<cword>")
-end, { expr = true })
+vim.keymap.set("n", "K",  vim.lsp.buf.hover)
+vim.keymap.set("n", "gl", function() vim.diagnostic.open_float(0, {scope="line"}) end)
+vim.keymap.set("n", "zl", vim.lsp.buf.code_action)
+vim.keymap.set("n", "]l", vim.diagnostic.goto_next)
+vim.keymap.set("n", "[l", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "gD", vim.lsp.buf.implementation)
+vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references)
+vim.keymap.set("n", "cd", function() return ":IncRename " .. vim.fn.expand("<cword>") end, { expr = true })
 
 
 -- autopairs
-local npairs = require'nvim-autopairs'
-npairs.setup({ check_ts = true })
-
-npairs.add_rules {
+require'nvim-autopairs'.add_rules {
   require'nvim-autopairs.rule'(' ', ' ')
     :with_pair(function (opts)
       return vim.tbl_contains({ '()', '[]', '{}' }, opts.line:sub(opts.col - 1, opts.col))
     end),
 }
-
-
--- git signs
-require('gitsigns').setup {
-  signs = {
-    add          = { text = ' ▎' },
-    change       = { text = '▪ ' },
-    changedelete = { text = '▪▁' },
-    delete       = { text = ' ▁' },
-    topdelete    = { text = ' ▔' },
-    untracked    = { text = '┆ ' },
-  },
-  signcolumn = true,
-  numhl = false,
-  linehl = false,
-  watch_gitdir = { interval = 1000, follow_files = true },
-  current_line_blame = true,
-  current_line_blame_opts = { delay = 50, position = 'eol' },
-  sign_priority = 6,
-  update_debounce = 50,
-  on_attach = function(bufnr)
-      local gs = package.loaded.gitsigns
-
-      local function map(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-      end
-
-      -- Navigation
-      map('n', ']h', function()
-        if vim.wo.diff then return ']h' end
-        vim.schedule(function() gs.next_hunk() end)
-        return '<Ignore>'
-      end, {expr=true})
-
-      map('n', '[h', function()
-        if vim.wo.diff then return '[h' end
-        vim.schedule(function() gs.prev_hunk() end)
-        return '<Ignore>'
-      end, {expr=true})
-
-      -- Actions
-      map('n', 'zh', gs.reset_hunk)
-      map('v', 'zh', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-      map('n', 'zH', gs.reset_buffer)
-      map('n', 'gh', gs.preview_hunk)
-
-      -- Text object
-      map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-    end
-}
-
--- nvim_comment
-require('Comment').setup()
-
--- telescope
-require('telescope').setup({
-defaults = {
-  layout_strategy = "vertical",
-  layout_config = { preview_height = 0.75, prompt_position="top", width = 0.9, height = 0.9, mirror = true },
-  mappings = {
-    i = {
-      ["<esc>"] = require('telescope.actions').close,
-      ["<Tab>"] = require('telescope.actions').move_selection_next,
-      ["<S-Tab>"] = require('telescope.actions').move_selection_previous,
-    },
-  },
-  sorting_strategy = "ascending"
-}
-})
-
-
--- lualine
-require'lualine'.setup {
-  options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
-  sections = {
-    lualine_a = {{'filename', file_status = true, path = 1}},
-    lualine_b = {'progress'},
-    lualine_c = {{'diagnostics', sources = {'nvim_diagnostic'}, symbols = {error = '✖ ', warn = '! ', info = 'i ', hint = 'h '}}},
-    lualine_x = {}, lualine_y = {},
-    lualine_z = {'branch'}
-    }
-}
-
-
--- nvim-colorizer
-vim.cmd("set termguicolors")
-require('colorizer').setup({'*'}, { names = false; })
-
-
--- resize neovim properly
-vim.api.nvim_create_autocmd({"VimEnter"}, {
-  callback = function()
-    local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
-    vim.defer_fn(function() vim.loop.kill(pid, WINCH) end, 20)
-  end
-})
 
 
 -- appearance
@@ -500,6 +493,7 @@ set title " set window title
 set mouse=a " enable mouse
 set jumpoptions=view " restore view position on jumps
 let g:c_syntax_for_h = 1 " .h files are C, not C++
+set cmdheight=0
 
 " update file when changed somewhere else
 set autoread
@@ -515,7 +509,6 @@ set viewoptions=cursor,folds
 
 " detect file type
 autocmd VimEnter * if &filetype == "" | setlocal ft=text | endif
-filetype plugin indent on
 
 " scrolling
 set scrolloff=10
@@ -535,7 +528,7 @@ set path+=**
 set wildmenu
 set wildmode=longest,list,full
 set wildoptions=pum
-set inccommand=nosplit
+set inccommand=split
 
 " clipboard
 autocmd TextYankPost * lua vim.highlight.on_yank { on_visual = false }
@@ -597,32 +590,6 @@ nnoremap <Leader>/ :Telescope find_files<CR>
 nnoremap z= :Telescope spell_suggest<CR>
 nnoremap g/ :Telescope builtin<CR>
 
-" lsp
-nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gl <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
-nnoremap <silent> zl <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
-nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <Leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> gr :Telescope lsp_references<CR>
-
-cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
-cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
-
-" emulate vim surround bindings
-runtime macros/sandwich/keymap/surround.vim
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-" add spaces inside bracket
-let g:sandwich#recipes += [
-\ {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-\ {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-\ {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-\ {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
-\ {'buns': ['\[\s*', '\s*\]'], 'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['[']},
-\ {'buns': ['(\s*', '\s*)'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['(']},
-\]
 vmap s S
 " turn off truecolor if not supported
 autocmd VimEnter * if $COLORTERM != "truecolor" | set notermguicolors | endif
