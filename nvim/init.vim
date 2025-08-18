@@ -48,6 +48,8 @@ vim.diagnostic.config({
     }
   }
 })
+
+
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
 require("lazy").setup({
@@ -137,24 +139,23 @@ require("lazy").setup({
         ['<Up>'] = { 'scroll_documentation_up', 'fallback' },
         ['<Down>'] = { 'scroll_documentation_down', 'fallback' },
       },
-      appearance = { nerd_font_variant = 'mono' },
       completion = {
         documentation = { auto_show = true, auto_show_delay_ms = 0 },
         list = { selection = { preselect = false, auto_insert = true } },
-        trigger = {  }
       },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'lazydev' },
-        providers = {
-          lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-        },
+        providers = { lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 }, },
       },
       snippets = { preset = 'luasnip' },
       fuzzy = { implementation = 'lua' },
       signature = { enabled = true },
       cmdline = {
         keymap = { preset = 'inherit' },
-        completion = { menu = { auto_show = true } },
+        completion = {
+          menu = {auto_show = true},
+          list = { selection = { preselect = false, auto_insert = true } },
+        },
       },
     },
   },
