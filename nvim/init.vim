@@ -235,9 +235,8 @@ require("lazy").setup({
 
     -- other
     {'NMAC427/guess-indent.nvim'}, -- Detect tabstop and shiftwidth automatically
-    {'Chiel92/vim-autoformat', lazy=true},      -- code formatter
     {'norcalli/nvim-colorizer.lua', opts={'*'}}, -- highlight colors in that color
-    {'wellle/targets.vim', lazy=true},          -- smarter text objects
+    {'echasnovski/mini.ai', version = '*', opts={}},
     {'echasnovski/mini.surround', version = '*', opts={
       mappings = {delete='ds', replace='cs'},
       n_lines = 100,
@@ -267,11 +266,15 @@ for _, lsp in ipairs(servers) do
   require('lspconfig')[lsp].setup { capabilities = capabilities }
 end
 
-
--- inc-rename
-vim.keymap.set("n", "cd", function()
-  return ":IncRename " .. vim.fn.expand("<cword>")
-end, { expr = true })
+vim.keymap.set("n", "K",  vim.lsp.buf.hover)
+vim.keymap.set("n", "gl", function() vim.diagnostic.open_float(0, {scope="line"}) end)
+vim.keymap.set("n", "zl", vim.lsp.buf.code_action)
+vim.keymap.set("n", "]l", vim.diagnostic.goto_next)
+vim.keymap.set("n", "[l", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "gD", vim.lsp.buf.implementation)
+vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references)
+vim.keymap.set("n", "cd", function() return ":IncRename " .. vim.fn.expand("<cword>") end, { expr = true })
 
 
 -- autopairs
@@ -489,6 +492,7 @@ set title " set window title
 set mouse=a " enable mouse
 set jumpoptions=view " restore view position on jumps
 let g:c_syntax_for_h = 1 " .h files are C, not C++
+set cmdheight=0
 
 " update file when changed somewhere else
 set autoread
@@ -584,20 +588,6 @@ nnoremap <Leader><Tab> :ClangdSwitchSourceHeader<CR>
 nnoremap <Leader>/ :Telescope find_files<CR>
 nnoremap z= :Telescope spell_suggest<CR>
 nnoremap g/ :Telescope builtin<CR>
-
-" lsp
-nnoremap <silent> K  <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gl <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
-nnoremap <silent> zl <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> ]l <cmd>lua vim.diagnostic.goto_next()<CR>
-nnoremap <silent> [l <cmd>lua vim.diagnostic.goto_prev()<CR>
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <Leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> gr :Telescope lsp_references<CR>
-
-cnoremap <expr> <Tab>   getcmdtype() =~ '[?/]' ? "<c-g>" : "<c-z>"
-cnoremap <expr> <S-Tab> getcmdtype() =~ '[?/]' ? "<c-t>" : "<S-Tab>"
 
 vmap s S
 " turn off truecolor if not supported
