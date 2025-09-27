@@ -1,5 +1,0 @@
-MAPPINGS:
-    # caps as ctrl and esc
-    - KEY: KEY_LEFTCTRL
-      TAP: KEY_ESC
-      HOLD: KEY_LEFTCTRL
