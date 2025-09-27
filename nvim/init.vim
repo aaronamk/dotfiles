@@ -264,7 +264,8 @@ local servers = { 'clangd', 'pyright', 'bashls', 'lua_ls' }
 
 local capabilities = require('blink.cmp').get_lsp_capabilities()
 for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup { capabilities = capabilities }
+  vim.lsp.enable(lsp)
+  vim.lsp.config(lsp, { capabilities = capabilities })
 end
 
 vim.keymap.set("n", "K",  vim.lsp.buf.hover)
