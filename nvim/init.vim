@@ -6,23 +6,6 @@
 lua <<EOF
 vim.loader.enable()
 
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
 -- set leader key
 vim.g.mapleader = " "
 vim.opt.completeopt = { "menuone", "noselect", "popup" }
@@ -52,210 +35,284 @@ vim.diagnostic.config({
 
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
-require("lazy").setup({
-  { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    opts = {
-      ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "python", "bash", "go", "rust", "javascript", "json", "ini", "toml", "yaml" },
-      highlight = {enable = true},
-      indent = {enable = true},
-      context_commentstring = {enable = true},
-      autopairs = {enable = true},
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- Automatic jumps like in targets.vim
-          keymaps             = { ["aB"] = "@block.outer",
-                                  ["iB"] = "@block.inner",
-                                  ["aa"] = "@parameter.outer",
-                                  ["ia"] = "@parameter.inner",
-                                  ["af"] = "@function.outer",
-                                  ["if"] = "@function.inner",
-                                  ["ac"] = "@class.outer",
-                                  ["ic"] = "@class.inner" },
-        },
-        move = {
-          enable = true,
-          set_jumps = false,
-          goto_next_start     = { ["]B"] = "@block.outer",
-                                  ["]a"] = "@parameter.outer",
-                                  ["]f"] = "@function.outer",
-                                  ["]]"] = "@call.outer" },
-          goto_next_end       = { ["]A"] = "@parameter.outer",
-                                  ["]F"] = "@function.outer",
-                                  ["]["] = "@call.outer" },
-          goto_previous_start = { ["[B"] = "@block.outer",
-                                  ["[a"] = "@parameter.outer",
-                                  ["[f"] = "@function.outer",
-                                  ["[["] = "@call.outer" },
-          goto_previous_end   = { ["[A"] = "@parameter.outer",
-                                  ["[F"] = "@function.outer",
-                                  ["[]"] = "@call.outer" },
-        },
-      },
-      refactor = {
-        highlight_definitions = { enable = true, clear_on_cursor_move = false },
-        navigation = { enable = true, keymaps   = { goto_definition_lsp_fallback = "gd",
-                                                    goto_next_usage              = "]r",
-                                                    goto_previous_usage          = "[r" } }
-      },
-    }
-  },
-  {'nvim-treesitter/nvim-treesitter-textobjects'}, -- treesitter text objects
-  {'nvim-treesitter/nvim-treesitter-refactor'},    -- highlight references
+-- plugins
+-----------------------------------------------------------------------------------------------------------------------
+
+-- After installing/updating nvim-treesitter, run :TSUpdate to sync parsers
+vim.api.nvim_create_autocmd('PackChanged', {
+  callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == 'nvim-treesitter' and kind ~= 'delete' then
+      if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
+      -- new main branch install function; falls back gracefully if not yet loaded
+      local ok, ts = pcall(require, 'nvim-treesitter')
+      if ok and ts.update then ts.update() end
+    end
+  end
+})
+
+vim.pack.add({
+  -- treesitter
+  'https://github.com/nvim-treesitter/nvim-treesitter',
+  'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
 
   -- completion
-  {'neovim/nvim-lspconfig'},     -- lsp configurations for servers
-  {'saghen/blink.cmp', lazy=true,
-    event = 'VimEnter',
-    version = '1.*',
-    dependencies = {
-      -- Snippet Engine
-      {
-        'L3MON4D3/LuaSnip',
-        version = '2.*',
-        build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
-      },
-      'folke/lazydev.nvim',
-    },
-    --- @module 'blink.cmp'
-    opts = {
-      keymap = {
-        preset = 'none',
-        ['<Tab>'] = { 'select_next', 'fallback' },
-        ['<S-Tab>'] = { 'select_prev', 'fallback' },
-        ['<Right>'] = { 'snippet_forward', 'fallback' },
-        ['<Left>'] = { 'snippet_backward', 'fallback' },
-        ['<Up>'] = { 'scroll_documentation_up', 'fallback' },
-        ['<Down>'] = { 'scroll_documentation_down', 'fallback' },
-      },
-      completion = {
-        documentation = { auto_show = true, auto_show_delay_ms = 0 },
-        list = { selection = { preselect = false, auto_insert = true } },
-      },
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
-        providers = { lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 }, },
-      },
-      snippets = { preset = 'luasnip' },
-      fuzzy = { implementation = 'lua' },
-      signature = { enabled = true },
-      cmdline = {
-        keymap = { preset = 'inherit' },
-        completion = {
-          menu = {auto_show = true},
-          list = { selection = { preselect = false, auto_insert = true } },
-        },
-      },
-    },
-  },
+  'https://github.com/neovim/nvim-lspconfig',
+  'https://github.com/saghen/blink.lib',        -- required by blink.cmp v2
+  'https://github.com/saghen/blink.cmp',       -- pin with version = 'v1.x.x' if you need stability
+  'https://github.com/smjonas/inc-rename.nvim',
+  'https://github.com/windwp/nvim-autopairs',
 
-  {'smjonas/inc-rename.nvim', lazy=true, opts={}},   -- preview changes when renaming lsp symbols
-  {'windwp/nvim-autopairs', opts={ check_ts = true }},     -- delimiter auto pairing
-  {'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = {'nvim-lua/plenary.nvim'}, opts=function()
-    local actions = require("telescope.actions")
-    return {
-      defaults = {
-        layout_strategy = "vertical",
-        layout_config = { preview_height = 0.75, prompt_position="top", width = 0.9, height = 0.9, mirror = true },
-        mappings = {
-          i = {
-            ["<esc>"] = actions.close,
-            ["<Tab>"] = actions.move_selection_next,
-            ["<S-Tab>"] = actions.move_selection_previous,
-          },
-        },
-        sorting_strategy = "ascending"
-      }
-    }
-    end,
-  },
+  -- telescope (pinned to 0.1.8, same as before)
+  'https://github.com/nvim-lua/plenary.nvim',
+  { src = 'https://github.com/nvim-telescope/telescope.nvim', version = 'v0.2.1' },
 
   -- git
-  {'tpope/vim-fugitive', lazy=true},      -- git commands
+  'https://github.com/tpope/vim-fugitive',
+  'https://github.com/lewis6991/gitsigns.nvim',
 
-  {'lewis6991/gitsigns.nvim', opts = {
-    signs = {
-      add          = { text = ' ▎' },
-      change       = { text = '▪ ' },
-      changedelete = { text = '▪▁' },
-      delete       = { text = ' ▁' },
-      topdelete    = { text = ' ▔' },
-      untracked    = { text = '┆ ' },
+  -- other
+  'https://github.com/NMAC427/guess-indent.nvim',
+  'https://github.com/norcalli/nvim-colorizer.lua',
+  'https://github.com/echasnovski/mini.ai',
+  'https://github.com/echasnovski/mini.surround',
+  'https://github.com/numToStr/Comment.nvim',
+  'https://github.com/nvim-lualine/lualine.nvim',
+})
+
+-- treesitter
+-- new main branch: setup() only controls install location; features are enabled via Neovim APIs
+require('nvim-treesitter').setup({
+  -- install_dir = vim.fn.stdpath('data') .. '/treesitter',  -- optional, uncomment to customise
+})
+
+-- Install parsers (replaces ensure_installed; runs on startup, skips already-installed ones)
+require('nvim-treesitter').install({
+  'c', 'cpp', 'lua', 'vim', 'vimdoc', 'query',
+  'python', 'bash', 'go', 'rust', 'javascript',
+  'json', 'ini', 'toml', 'yaml',
+})
+
+-- Highlighting: activate per-buffer via FileType autocmd (replaces highlight = { enable = true })
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(ev)
+    pcall(vim.treesitter.start, ev.buf)
+  end,
+})
+
+-- Indent: treesitter-based indentation (replaces indent = { enable = true })
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(ev)
+    local ok = pcall(require, 'nvim-treesitter')
+    if ok then
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
+
+-- Textobjects: nvim-treesitter-textobjects now has its own setup and direct keymap API
+require('nvim-treesitter-textobjects').setup({
+  select = { lookahead = true },
+  move   = { set_jumps = false },
+})
+
+local ts_select = require('nvim-treesitter-textobjects.select')
+local ts_move   = require('nvim-treesitter-textobjects.move')
+
+local function sel(obj)  return function() ts_select.select_textobject(obj, 'textobjects') end end
+local function next_s(o) return function() ts_move.goto_next_start(o,     'textobjects') end end
+local function next_e(o) return function() ts_move.goto_next_end(o,       'textobjects') end end
+local function prev_s(o) return function() ts_move.goto_previous_start(o, 'textobjects') end end
+local function prev_e(o) return function() ts_move.goto_previous_end(o,   'textobjects') end end
+
+-- select text objects
+vim.keymap.set({'x','o'}, 'aB', sel('@block.outer'))
+vim.keymap.set({'x','o'}, 'iB', sel('@block.inner'))
+vim.keymap.set({'x','o'}, 'aa', sel('@parameter.outer'))
+vim.keymap.set({'x','o'}, 'ia', sel('@parameter.inner'))
+vim.keymap.set({'x','o'}, 'af', sel('@function.outer'))
+vim.keymap.set({'x','o'}, 'if', sel('@function.inner'))
+vim.keymap.set({'x','o'}, 'ac', sel('@class.outer'))
+vim.keymap.set({'x','o'}, 'ic', sel('@class.inner'))
+
+-- move: next start
+vim.keymap.set('n', ']B', next_s('@block.outer'))
+vim.keymap.set('n', ']a', next_s('@parameter.outer'))
+vim.keymap.set('n', ']f', next_s('@function.outer'))
+vim.keymap.set('n', ']]', next_s('@call.outer'))
+-- move: next end
+vim.keymap.set('n', ']A', next_e('@parameter.outer'))
+vim.keymap.set('n', ']F', next_e('@function.outer'))
+vim.keymap.set('n', '][', next_e('@call.outer'))
+-- move: prev start
+vim.keymap.set('n', '[B', prev_s('@block.outer'))
+vim.keymap.set('n', '[a', prev_s('@parameter.outer'))
+vim.keymap.set('n', '[f', prev_s('@function.outer'))
+vim.keymap.set('n', '[[', prev_s('@call.outer'))
+-- move: prev end
+vim.keymap.set('n', '[A', prev_e('@parameter.outer'))
+vim.keymap.set('n', '[F', prev_e('@function.outer'))
+vim.keymap.set('n', '[]', prev_e('@call.outer'))
+
+-- completion
+require('blink.cmp').setup({
+  keymap = {
+    preset = 'none',
+    ['<Tab>']   = { 'select_next', 'fallback' },
+    ['<S-Tab>'] = { 'select_prev', 'fallback' },
+    ['<Up>']    = { 'scroll_documentation_up', 'fallback' },
+    ['<Down>']  = { 'scroll_documentation_down', 'fallback' },
+  },
+  completion = {
+    documentation = { auto_show = true, auto_show_delay_ms = 0 },
+    list = { selection = { preselect = false, auto_insert = true } },
+  },
+  sources = {
+    default = { 'lsp', 'path' },
+  },
+  fuzzy = { implementation = 'lua' },
+  signature = { enabled = true },
+  cmdline = {
+    keymap = { preset = 'inherit' },
+    completion = {
+      menu = { auto_show = true },
+      list = { selection = { preselect = false, auto_insert = true } },
     },
-    signcolumn = true,
-    numhl = false,
-    linehl = false,
-    watch_gitdir = { interval = 1000, follow_files = true },
-    current_line_blame = true,
-    current_line_blame_opts = { delay = 50, position = 'eol' },
-    sign_priority = 6,
-    update_debounce = 50,
-    on_attach = function(bufnr)
-        local gs = package.loaded.gitsigns
+  },
+})
 
-        local function map(mode, l, r, opts)
-          opts = opts or {}
-          opts.buffer = bufnr
-          vim.keymap.set(mode, l, r, opts)
-        end
+require('inc_rename').setup({})
 
-        -- Navigation
-        map('n', ']h', function()
-          if vim.wo.diff then return ']h' end
-          vim.schedule(function() gs.next_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
+-- LSP
+-- nvim-lspconfig is kept for its server definitions (cmd, filetypes, root_markers).
+-- We no longer call lspconfig[server].setup{} — use vim.lsp.config/enable instead.
+--
+-- Global settings applied to all servers (capabilities, root fallback, etc.)
+vim.lsp.config('*', {
+  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  root_markers = { '.git' },
+})
 
-        map('n', '[h', function()
-          if vim.wo.diff then return '[h' end
-          vim.schedule(function() gs.prev_hunk() end)
-          return '<Ignore>'
-        end, {expr=true})
+-- Per-server overrides (add settings blocks as needed; omit the table entirely
+-- for servers that need no customisation beyond the lspconfig defaults)
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { checkThirdParty = false, library = { vim.env.VIMRUNTIME } },
+      telemetry = { enable = false },
+    },
+  },
+})
 
-        -- Actions
-        map('n', 'zh', gs.reset_hunk)
-        map('v', 'zh', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-        map('n', 'zH', gs.reset_buffer)
-        map('n', 'gh', gs.preview_hunk)
+-- Enable servers — replace/extend this list to match what you had in lspconfig
+vim.lsp.enable({
+  'lua_ls',
+  'pyright',      -- python
+  'gopls',        -- go
+  'rust_analyzer',
+  'ts_ls',        -- javascript/typescript
+  'clangd',       -- c/cpp
+  'bashls',       -- bash
+  'jsonls',
+})
 
-        -- Text object
-        map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-      end
-    }}, -- git change indicators
+require('nvim-autopairs').setup({ check_ts = true })
 
-    -- other
-    {'NMAC427/guess-indent.nvim'}, -- Detect tabstop and shiftwidth automatically
-    {'norcalli/nvim-colorizer.lua', opts={'*'}}, -- highlight colors in that color
-    {'echasnovski/mini.ai', version = '*', opts={}},
-    {'echasnovski/mini.surround', version = '*', opts={
-      mappings = {delete='ds', replace='cs'},
-      n_lines = 100,
-      respect_selection_type = true,
-      search_method = 'cover_or_nearest'
-    }},
-    {'numToStr/Comment.nvim', lazy=true, opts={}},       -- commenting bindings
-    {'nvim-lualine/lualine.nvim', opts={
-      options = {theme = 'gruvbox', section_separators = '', component_separators = ''},
-      sections = {
-        lualine_a = {{'filename', file_status = true, path = 1}},
-        lualine_b = {'progress'},
-        lualine_c = {{'diagnostics', sources = {'nvim_diagnostic'}, symbols = {error = '✖ ', warn = '! ', info = 'i ', hint = 'h '}}},
-        lualine_x = {}, lualine_y = {},
-        lualine_z = {'branch'}
-      }
-    }},   -- status line
-  checker = { enabled = false }
+-- telescope
+local actions = require('telescope.actions')
+require('telescope').setup({
+  defaults = {
+    layout_strategy = "vertical",
+    layout_config = { preview_height = 0.75, prompt_position = "top", width = 0.9, height = 0.9, mirror = true },
+    mappings = {
+      i = {
+        ["<esc>"]   = actions.close,
+        ["<Tab>"]   = actions.move_selection_next,
+        ["<S-Tab>"] = actions.move_selection_previous,
+      },
+    },
+    sorting_strategy = "ascending",
+  }
+})
+
+-- git
+require('gitsigns').setup({
+  signs = {
+    add          = { text = ' ▎' },
+    change       = { text = '▪ ' },
+    changedelete = { text = '▪▁' },
+    delete       = { text = ' ▁' },
+    topdelete    = { text = ' ▔' },
+    untracked    = { text = '┆ ' },
+  },
+  signcolumn = true,
+  numhl = false,
+  linehl = false,
+  watch_gitdir = { interval = 1000, follow_files = true },
+  current_line_blame = true,
+  current_line_blame_opts = { delay = 50, position = 'eol' },
+  sign_priority = 6,
+  update_debounce = 50,
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', ']h', function()
+      if vim.wo.diff then return ']h' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, { expr = true })
+
+    map('n', '[h', function()
+      if vim.wo.diff then return '[h' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, { expr = true })
+
+    -- Actions
+    map('n', 'zh', gs.reset_hunk)
+    map('v', 'zh', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+    map('n', 'zH', gs.reset_buffer)
+    map('n', 'gh', gs.preview_hunk)
+
+    -- Text object
+    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
+})
+
+-- other
+require('guess-indent').setup({})
+
+require('colorizer').setup({ '*' })
+
+require('mini.ai').setup({})
+
+require('mini.surround').setup({
+  mappings = { delete = 'ds', replace = 'cs' },
+  n_lines = 100,
+  respect_selection_type = true,
+  search_method = 'cover_or_nearest',
+})
+
+require('Comment').setup({})
+
+require('lualine').setup({
+  options = { theme = 'gruvbox', section_separators = '', component_separators = '' },
+  sections = {
+    lualine_a = { { 'filename', file_status = true, path = 1 } },
+    lualine_b = { 'progress' },
+    lualine_c = { { 'diagnostics', sources = { 'nvim_diagnostic' }, symbols = { error = '✖ ', warn = '! ', info = 'i ', hint = 'h ' } } },
+    lualine_x = {}, lualine_y = {},
+    lualine_z = { 'branch' },
+  }
 })
 
 

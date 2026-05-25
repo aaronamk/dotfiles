@@ -8,8 +8,8 @@
 }
 
 window#waybar {
-    background-color: #282828;
-    color: #ebdbb2;
+    background: @theme_base_color;
+    color: @theme_text_color;
 }
 
 window#waybar.hidden {
