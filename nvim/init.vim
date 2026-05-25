@@ -1,6 +1,6 @@
 " Neovim config file
 " Author: aaronamk
-" Dependencies: git (a decently modern version), fzf, lazy.nvim, tree-sitter, LSP clients
+" Dependencies: git (a decently modern version), fzf, tree-sitter cli, LSP clients
 
 
 lua <<EOF
@@ -8,7 +8,6 @@ vim.loader.enable()
 
 -- set leader key
 vim.g.mapleader = " "
-vim.opt.completeopt = { "menuone", "noselect", "popup" }
 
 vim.cmd("set termguicolors")
 
@@ -35,21 +34,6 @@ vim.diagnostic.config({
 
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
--- plugins
------------------------------------------------------------------------------------------------------------------------
-
--- After installing/updating nvim-treesitter, run :TSUpdate to sync parsers
-vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if name == 'nvim-treesitter' and kind ~= 'delete' then
-      if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
-      -- new main branch install function; falls back gracefully if not yet loaded
-      local ok, ts = pcall(require, 'nvim-treesitter')
-      if ok and ts.update then ts.update() end
-    end
-  end
-})
 
 vim.pack.add({
   -- treesitter
@@ -58,21 +42,18 @@ vim.pack.add({
 
   -- completion
   'https://github.com/neovim/nvim-lspconfig',
-  'https://github.com/saghen/blink.lib',        -- required by blink.cmp v2
-  'https://github.com/saghen/blink.cmp',       -- pin with version = 'v1.x.x' if you need stability
   'https://github.com/smjonas/inc-rename.nvim',
   'https://github.com/windwp/nvim-autopairs',
 
-  -- telescope (pinned to 0.1.8, same as before)
+  -- telescope
   'https://github.com/nvim-lua/plenary.nvim',
-  { src = 'https://github.com/nvim-telescope/telescope.nvim', version = 'v0.2.1' },
+  { src = 'https://github.com/nvim-telescope/telescope.nvim', version = '0.1.8' },
 
   -- git
   'https://github.com/tpope/vim-fugitive',
   'https://github.com/lewis6991/gitsigns.nvim',
 
   -- other
-  'https://github.com/NMAC427/guess-indent.nvim',
   'https://github.com/norcalli/nvim-colorizer.lua',
   'https://github.com/echasnovski/mini.ai',
   'https://github.com/echasnovski/mini.surround',
@@ -81,26 +62,17 @@ vim.pack.add({
 })
 
 -- treesitter
--- new main branch: setup() only controls install location; features are enabled via Neovim APIs
-require('nvim-treesitter').setup({
-  -- install_dir = vim.fn.stdpath('data') .. '/treesitter',  -- optional, uncomment to customise
-})
-
 -- Install parsers (replaces ensure_installed; runs on startup, skips already-installed ones)
-require('nvim-treesitter').install({
-  'c', 'cpp', 'lua', 'vim', 'vimdoc', 'query',
-  'python', 'bash', 'go', 'rust', 'javascript',
-  'json', 'ini', 'toml', 'yaml',
-})
+require('nvim-treesitter').install({ 'c', 'cpp', 'lua', 'vim', 'vimdoc', 'query', 'python', 'bash', 'go', 'rust', 'javascript', 'json', 'ini', 'toml', 'yaml', })
 
--- Highlighting: activate per-buffer via FileType autocmd (replaces highlight = { enable = true })
+-- Highlighting: activate per-buffer via FileType autocmd
 vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
     pcall(vim.treesitter.start, ev.buf)
   end,
 })
 
--- Indent: treesitter-based indentation (replaces indent = { enable = true })
+-- Indent: treesitter-based indentation
 vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
     local ok = pcall(require, 'nvim-treesitter')
@@ -155,46 +127,29 @@ vim.keymap.set('n', '[F', prev_e('@function.outer'))
 vim.keymap.set('n', '[]', prev_e('@call.outer'))
 
 -- completion
-require('blink.cmp').setup({
-  keymap = {
-    preset = 'none',
-    ['<Tab>']   = { 'select_next', 'fallback' },
-    ['<S-Tab>'] = { 'select_prev', 'fallback' },
-    ['<Up>']    = { 'scroll_documentation_up', 'fallback' },
-    ['<Down>']  = { 'scroll_documentation_down', 'fallback' },
-  },
-  completion = {
-    documentation = { auto_show = true, auto_show_delay_ms = 0 },
-    list = { selection = { preselect = false, auto_insert = true } },
-  },
-  sources = {
-    default = { 'lsp', 'path' },
-  },
-  fuzzy = { implementation = 'lua' },
-  signature = { enabled = true },
-  cmdline = {
-    keymap = { preset = 'inherit' },
-    completion = {
-      menu = { auto_show = true },
-      list = { selection = { preselect = false, auto_insert = true } },
-    },
-  },
+vim.opt.completeopt = { 'menuone', 'noselect', 'popup' }
+vim.opt.autocomplete = true
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp_completion', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client:supports_method('textDocument/completion') then
+      vim.lsp.completion.enable(true, args.data.client_id, args.buf, { autotrigger = false })
+      vim.bo[args.buf].complete = 'o,f'
+    end
+  end,
 })
+vim.keymap.set('i', '<Tab>',   function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'   end, { expr = true })
+vim.keymap.set('i', '<S-Tab>', function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>' end, { expr = true })
 
 require('inc_rename').setup({})
 
 -- LSP
--- nvim-lspconfig is kept for its server definitions (cmd, filetypes, root_markers).
--- We no longer call lspconfig[server].setup{} — use vim.lsp.config/enable instead.
---
 -- Global settings applied to all servers (capabilities, root fallback, etc.)
 vim.lsp.config('*', {
   capabilities = vim.lsp.protocol.make_client_capabilities(),
   root_markers = { '.git' },
 })
-
--- Per-server overrides (add settings blocks as needed; omit the table entirely
--- for servers that need no customisation beyond the lspconfig defaults)
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
@@ -206,17 +161,8 @@ vim.lsp.config('lua_ls', {
   },
 })
 
--- Enable servers — replace/extend this list to match what you had in lspconfig
-vim.lsp.enable({
-  'lua_ls',
-  'pyright',      -- python
-  'gopls',        -- go
-  'rust_analyzer',
-  'ts_ls',        -- javascript/typescript
-  'clangd',       -- c/cpp
-  'bashls',       -- bash
-  'jsonls',
-})
+-- Enable servers
+vim.lsp.enable({ 'lua_ls', 'pyright', 'gopls', 'rust_analyzer', 'ts_ls', 'clangd', 'bashls', 'jsonls', })
 
 require('nvim-autopairs').setup({ check_ts = true })
 
@@ -289,8 +235,6 @@ require('gitsigns').setup({
 })
 
 -- other
-require('guess-indent').setup({})
-
 require('colorizer').setup({ '*' })
 
 require('mini.ai').setup({})
@@ -314,36 +258,6 @@ require('lualine').setup({
     lualine_z = { 'branch' },
   }
 })
-
-
--- lsp
-local servers = { 'clangd', 'pyright', 'bashls', 'lua_ls' }
-
-local capabilities = require('blink.cmp').get_lsp_capabilities()
-for _, lsp in ipairs(servers) do
-  vim.lsp.enable(lsp)
-  vim.lsp.config(lsp, { capabilities = capabilities })
-end
-
-vim.keymap.set("n", "K",  vim.lsp.buf.hover)
-vim.keymap.set("n", "gl", function() vim.diagnostic.open_float(0, {scope="line"}) end)
-vim.keymap.set("n", "zl", vim.lsp.buf.code_action)
-vim.keymap.set("n", "]l", vim.diagnostic.goto_next)
-vim.keymap.set("n", "[l", vim.diagnostic.goto_prev)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gD", vim.lsp.buf.implementation)
-vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references)
-vim.keymap.set("n", "cd", function() return ":IncRename " .. vim.fn.expand("<cword>") end, { expr = true })
-
-
--- autopairs
-require'nvim-autopairs'.add_rules {
-  require'nvim-autopairs.rule'(' ', ' ')
-    :with_pair(function (opts)
-      return vim.tbl_contains({ '()', '[]', '{}' }, opts.line:sub(opts.col - 1, opts.col))
-    end),
-}
-
 
 -- appearance
 -----------------------------------------------------------------------------------------------------------------------
