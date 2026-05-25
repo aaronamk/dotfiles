@@ -265,7 +265,19 @@ require('lualine').setup({
 -- gruvbox dark
 require("gruvbox").setup({ contrast= "hard",
   overrides = {
-    ["@function"] = { GruvboxBlueBold}
+    ["@lsp.type.parameter"] = { fg="#ebdbb2" },
+    ["@variable.parameter"] = { fg="#ebdbb2" },
+    ["@property"] = { fg="#ebdbb2" },
+    ["@variable.member"] = { fg="#ebdbb2" },
+    ["@variable.builtin"] = { fg="#ebdbb2" },
+    ["@constructor"] = { fg="#ebdbb2", bold=true },
+    ["@punctuation.delimiter"] = { fg="#ebdbb2" },
+    ["@punctuation.bracket"] = { fg="#ebdbb2" },
+    ["Function"] = { fg="#83a598" },
+    ["@function.builtin"] = { fg="#83a598" },
+    ["@string.escape"] = { fg="#d3869b" },
+    ["@lsp.type.macro"] = { fg="#d3869b" },
+    ["@character.special"] = { fg="#d3869b" },
   }
 })
 vim.cmd.colorscheme("gruvbox")
