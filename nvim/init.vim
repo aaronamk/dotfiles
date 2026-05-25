@@ -54,6 +54,7 @@ vim.pack.add({
   'https://github.com/lewis6991/gitsigns.nvim',
 
   -- other
+  'https://github.com/ellisonleao/gruvbox.nvim',
   'https://github.com/norcalli/nvim-colorizer.lua',
   'https://github.com/echasnovski/mini.ai',
   'https://github.com/echasnovski/mini.surround',
@@ -262,179 +263,12 @@ require('lualine').setup({
 -- appearance
 -----------------------------------------------------------------------------------------------------------------------
 -- gruvbox dark
-local colors = {
-  none         = "NONE",
-  bg           = "#1d2021",
-  bg0          = "#282828",
-  bg1          = "#3c3836",
-  bg2          = "#504945",
-  bg3          = "#665c54",
-  bg4          = "#7c6f64",
-  fg           = "#ebdbb2",
-  fg0          = "#fbf1c7",
-  fg1          = "#ebdbb2",
-  fg2          = "#d5c4a1",
-  fg3          = "#bdae93",
-  fg4          = "#a89984",
-  gray         = "#928374",
-  red          = "#cc241d",
-  red_bold     = "#fb4934",
-  green        = "#98971a",
-  green_bold   = "#b8bb26",
-  yellow       = "#d79921",
-  yellow_bold  = "#fabd2f",
-  blue         = "#458588",
-  blue_bold    = "#83a598",
-  purple       = "#b16286",
-  purple_bold  = "#d3869b",
-  aqua         = "#689d6a",
-  aqua_bold    = "#8ec07c",
-  orange       = "#d65d0e",
-  orange_bold  = "#fe8019",
-}
-local ansi = {
-  none         = "NONE",
-  bg           = 234,
-  bg0          = 0,
-  bg1          = 236,
-  bg2          = 238,
-  bg3          = 240,
-  bg4          = 242,
-  fg           = 15,
-  fg0          = 254,
-  fg1          = 15,
-  fg2          = 15,
-  fg3          = 248,
-  fg4          = 246,
-  gray         = 7,
-  red          = 1,
-  red_bold     = 9,
-  green        = 2,
-  green_bold   = 10,
-  yellow       = 3,
-  yellow_bold  = 11,
-  blue         = 4,
-  blue_bold    = 12,
-  purple       = 5,
-  purple_bold  = 13,
-  aqua         = 6,
-  aqua_bold    = 14,
-  orange       = 202,
-  orange_bold  = 208,
-}
-
--- editor highlighing
-vim.api.nvim_set_hl(0, 'Normal',       { fg=colors.fg, bg=colors.bg, ctermfg=ansi.fg, ctermbg=ansi.bg})
-vim.api.nvim_set_hl(0, 'Visual',       { bg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'VisualNC',     { bg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'Cursor',       { bg=fg })
-vim.api.nvim_set_hl(0, 'CursorLine',   { bg=colors.bg0,  ctermbg=ansi.bg0 })
-vim.api.nvim_set_hl(0, 'CursorLineNR', { bg=colors.bg0,  ctermbg=ansi.bg0, bold=true })
-vim.api.nvim_set_hl(0, 'TabLine',      { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'TabLineSel',   { fg=colors.bg, bg=colors.fg, ctermfg=ansi.bg, ctermbg=ansi.fg, bold = true })
-vim.api.nvim_set_hl(0, 'TabLineFill',  { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'Whitespace',   { fg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'ColorColumn',  { bg=colors.bg0,  ctermbg=ansi.bg0 })
-vim.api.nvim_set_hl(0, 'LineNR',       { fg=colors.gray, ctermfg=ansi.gray })
-vim.api.nvim_set_hl(0, 'Title',        { fg=colors.green_bold, ctermfg=ansi.green_bold })
-vim.api.nvim_set_hl(0, 'Search',       { bg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'IncSearch',    { bg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'Pmenu',        { bg=colors.bg1,  ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'PmenuSel',     { bg=colors.bg2,  ctermbg=ansi.bg2 })
-vim.api.nvim_set_hl(0, 'PmenuSbar',    { bg=colors.bg1,  ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'PmenuThumb',   { bg=colors.fg,   ctermbg=ansi.fg })
-vim.api.nvim_set_hl(0, 'Folded',       { fg=colors.gray, ctermfg=ansi.gray })
-vim.api.nvim_set_hl(0, 'SpellBad',     { sp=colors.red_bold,    undercurl=true })
-vim.api.nvim_set_hl(0, 'SpellCap',     { sp=colors.yellow_bold, undercurl=true })
-vim.api.nvim_set_hl(0, 'SignColumn',   {})
-vim.api.nvim_set_hl(0, 'WinSeparator', {}) -- removes ugly split divider
-
-
--- lualine highlights
-vim.api.nvim_set_hl(0, 'lualine_c_normal',   { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'lualine_c_insert',   { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'lualine_c_visual',   { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'lualine_c_replace',  { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'lualine_c_command',  { bg=colors.bg1, ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, 'lualine_a_command',  { fg=colors.bg, bg=colors.fg4, ctermfg=ansi.bg, ctermbg=ansi.fg4, bold=true })
-vim.api.nvim_set_hl(0, 'lualine_c_inactive', { bg=colors.bg1, ctermbg=ansi.bg1 })
-
-
--- syntax highlighting
-vim.api.nvim_set_hl(0, 'Comment',              { fg=colors.gray,       ctermfg=ansi.gray, italic=true })
-vim.api.nvim_set_hl(0, '@text.title',          { fg=colors.fg0,        ctermfg=ansi.fg0, bold=true })
-vim.api.nvim_set_hl(0, '@text.literal',        { fg=colors.fg,        ctermfg=ansi.fg, bold=true })
-vim.api.nvim_set_hl(0, '@text.note',           { fg=colors.fg2,        ctermfg=ansi.fg2, bold=true })
-vim.api.nvim_set_hl(0, '@text.warning',        { fg=colors.fg2,        ctermfg=ansi.fg2, bold=true })
-vim.api.nvim_set_hl(0, '@text.reference',      { fg=colors.blue_bold,  ctermfg=ansi.blue_bold, bold=true })
-vim.api.nvim_set_hl(0, '@text.uri',            { fg=colors.blue,       ctermfg=ansi.blue, bold=true })
-vim.api.nvim_set_hl(0, 'Todo',                 { fg=colors.fg2,        ctermfg=ansi.fg2, bold=true, italic=true })
-
-vim.api.nvim_set_hl(0, 'Constant',             { fg=colors.purple_bold, ctermfg=ansi.purple_bold })
-vim.api.nvim_set_hl(0, 'String',               { fg=colors.green_bold,  ctermfg=ansi.green_bold })
-vim.api.nvim_set_hl(0, 'SpecialChar',          { fg=colors.purple_bold, ctermfg=ansi.purple_bold })
-vim.api.nvim_set_hl(0, '@constant.builtin',    { fg=colors.purple_bold, ctermfg=ansi.purple_bold, bold=true })
-
-vim.api.nvim_set_hl(0, 'Identifier',           { fg=colors.fg, ctermfg=ansi.fg })
-vim.api.nvim_set_hl(0, '@variable',            { fg=colors.fg, ctermfg=ansi.fg })
-vim.api.nvim_set_hl(0, '@property',            { italic=true })
-vim.api.nvim_set_hl(0, '@field',               { italic=true })
-vim.api.nvim_set_hl(0, '@variable.builtin',    { bold=true })
-vim.api.nvim_set_hl(0, '@definition',          { bg=colors.bg1,       ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, '@definition.usage',    { bg=colors.bg1,       ctermbg=ansi.bg1 })
-vim.api.nvim_set_hl(0, '@namespace',           { fg=colors.aqua_bold, ctermfg=ansi.aqua_bold })
-
-vim.api.nvim_set_hl(0, 'Function',             { fg=colors.blue_bold, ctermfg=ansi.blue_bold })
-vim.api.nvim_set_hl(0, '@constructor',         { fg=colors.blue_bold, ctermfg=ansi.blue_bold, bold=true, italic=true })
-vim.api.nvim_set_hl(0, '@method',              { fg=colors.blue_bold, ctermfg=ansi.blue_bold, italic=true })
-vim.api.nvim_set_hl(0, '@function.builtin',    { fg=colors.blue_bold, ctermfg=ansi.blue_bold, bold=true })
-vim.api.nvim_set_hl(0, '@function.macro',      { fg=colors.blue_bold, ctermfg=ansi.blue_bold })
-
-vim.api.nvim_set_hl(0, 'Statement',            { fg=colors.red_bold,    ctermfg=ansi.red_bold })
-vim.api.nvim_set_hl(0, 'Operator',             { fg=colors.orange_bold, ctermfg=ansi.orange_bold })
-vim.api.nvim_set_hl(0, 'Exception',            { fg=colors.red,         ctermfg=ansi.red })
-
-vim.api.nvim_set_hl(0, 'PreProc',              { fg=colors.red_bold,  ctermfg=ansi.red_bold })
-vim.api.nvim_set_hl(0, 'Include',              { fg=colors.aqua_bold, ctermfg=ansi.aqua_bold })
-vim.api.nvim_set_hl(0, '@keyword.import',      { fg=colors.aqua_bold, ctermfg=ansi.aqua_bold })
-vim.api.nvim_set_hl(0, '@module',              { fg=colors.fg, ctermfg=ansi.fg })
-
-vim.api.nvim_set_hl(0, 'Type',                 { fg=colors.yellow_bold, ctermfg=ansi.yellow_bold })
-vim.api.nvim_set_hl(0, '@type.builtin',        { fg=colors.yellow_bold, ctermfg=ansi.yellow_bold, bold=true })
-
-vim.api.nvim_set_hl(0, 'Delimiter',            { fg=colors.fg0,  ctermfg=ansi.fg0, bold=true })
-vim.api.nvim_set_hl(0, '@punctuation.delimiter', { fg=colors.fg0,  ctermfg=ansi.fg0, bold=true })
-vim.api.nvim_set_hl(0, '@punctuation.special', { fg=colors.fg0,  ctermfg=ansi.fg0, bold=true })
-vim.api.nvim_set_hl(0, 'MatchParen',           { bg=colors.bg2, ctermbg=ansi.bg2 })
-
-vim.api.nvim_set_hl(0, 'MarkdownURL',          { fg=colors.blue_bold, ctermfg=ansi.blue_bold, underline=true })
-vim.api.nvim_set_hl(0, 'MarkdownLinkText',     { fg=colors.blue_bold, ctermfg=ansi.blue_bold })
-vim.api.nvim_set_hl(0, 'MarkdownCode',         { fg=colors.fg,        ctermfg=ansi.fg, bold=true })
-
--- linting
-vim.api.nvim_set_hl(0, 'DiagnosticError',          { fg=colors.red,         ctermfg=ansi.red,    bold=true })
-vim.api.nvim_set_hl(0, 'DiagnosticWarn',           { fg=colors.yellow,      ctermfg=ansi.yellow, bold=true })
-vim.api.nvim_set_hl(0, 'DiagnosticInfo',           { fg=colors.blue,        ctermfg=ansi.blue,   bold=true })
-vim.api.nvim_set_hl(0, 'DiagnosticHint',           { fg=colors.purple,      ctermfg=ansi.purple, bold=true })
-vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp=colors.red_bold,    undercurl=true })
-vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn',  { sp=colors.yellow_bold, undercurl=true })
-vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo',  { sp=colors.blue_bold,   undercurl=true })
-vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint',  { sp=colors.purple_bold, undercurl=true })
-
--- git
-vim.api.nvim_set_hl(0, 'DiffAdd',                  { fg=colors.green_bold,  ctermfg=ansi.green_bold })
-vim.api.nvim_set_hl(0, 'DiffChange',               { fg=colors.orange_bold, ctermfg=ansi.orange_bold })
-vim.api.nvim_set_hl(0, 'DiffDelete',               { fg=colors.red_bold,    ctermfg=ansi.red_bold })
-vim.api.nvim_set_hl(0, 'DiffAdded',                { fg=colors.green_bold,  ctermfg=ansi.green_bold })
-vim.api.nvim_set_hl(0, 'DiffRemoved',              { fg=colors.red_bold,    ctermfg=ansi.red_bold })
-vim.api.nvim_set_hl(0, 'GitSignsDeleteLn',         { fg=colors.red_bold,    ctermfg=ansi.red_bold })
-vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', { fg=colors.bg3,         ctermfg=ansi.bg3 })
-vim.api.nvim_set_hl(0, 'GitSignsAdd', { link = 'DiffAdd' })
-vim.api.nvim_set_hl(0, 'GitSignsChange', { link = 'DiffChange' })
-vim.api.nvim_set_hl(0, 'GitSignsChangedelete', { link = 'DiffChange' })
-vim.api.nvim_set_hl(0, 'GitSignsDelete', { link = 'DiffDelete' })
-vim.api.nvim_set_hl(0, 'GitSignsTopdelete', { link = 'DiffDelete' })
-vim.api.nvim_set_hl(0, 'GitSignsUntracked', { link = 'DiffAdd' })
+require("gruvbox").setup({ contrast= "hard",
+  overrides = {
+    ["@function"] = { GruvboxBlueBold}
+  }
+})
+vim.cmd.colorscheme("gruvbox")
 EOF
 
 set number " add line numbers
@@ -495,10 +329,13 @@ set shiftwidth=4
 set list
 set listchars=tab:>-,trail:·
 
-" file completion
+" cmdline autocompletion
+autocmd CmdlineChanged [:\/\?] call wildtrigger()
+cnoremap <expr> <Up>   wildmenumode() ? "\<C-E>\<Up>"   : "\<Up>"
+cnoremap <expr> <Down> wildmenumode() ? "\<C-E>\<Down>" : "\<Down>"
 set path+=**
 set wildmenu
-set wildmode=longest,list,full
+set wildmode=noselect:lastused,full
 set wildoptions=pum
 set inccommand=split
 
