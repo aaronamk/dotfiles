@@ -1,5 +1,5 @@
 [Default Applications]
-inode/directory=vifm.desktop;
+inode/directory=yazi.desktop;
 inode/x-empty=nvim.desktop;
 application/octet-stream=nvim.desktop;
 text/plain=nvim.desktop;
@@ -37,12 +37,6 @@ video/quicktime=mpv.desktop;
 x-scheme-handler/http=firefox.desktop;
 x-scheme-handler/https=firefox.desktop;
 application/xhtml+xml=firefox.desktop;
-application/x-zoom=Zoom.desktop;
-x-scheme-handler/callto=Zoom.desktop;
-x-scheme-handler/tel=Zoom.desktop;
-x-scheme-handler/zoommtg=Zoom.desktop;
-x-scheme-handler/zoomphonecall=Zoom.desktop;
-x-scheme-handler/zoomus=Zoom.desktop;
 application/x-gzip=org.gnome.FileRoller.desktop;
 application/zip=org.gnome.FileRoller.desktop;
 application/gzip=org.gnome.FileRoller.desktop;

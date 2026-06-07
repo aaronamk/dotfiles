@@ -4,7 +4,7 @@ export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
 export TERMINAL="foot"
 export BROWSER="firefox"
-export FILE="yazi"
+export FILE="vifm"
 
 # Settings
 export MAKEFLAGS="-j$(expr $(nproc) \+ 1)"
