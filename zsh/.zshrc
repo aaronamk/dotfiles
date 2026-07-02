@@ -113,9 +113,7 @@ alias grubrc="sudoedit /etc/default/grub"
 alias tlprc="sudoedit /etc/tlp.conf"
 alias libinputrc="cd /etc/X11/xorg.conf.d"
 
-source ~/.local/share/venvs/dev/bin/activate
 source $XDG_DATA_HOME/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-#source $XDG_DATA_HOME/zsh/zsh-system-clipboard/zsh-system-clipboard.zsh
 source $XDG_DATA_HOME/zsh/zsh-autopair/autopair.zsh
 source $XDG_DATA_HOME/zsh/fzf-tab/fzf-tab.plugin.zsh
 source $XDG_DATA_HOME/zsh/LS_COLORS/lscolors.sh
