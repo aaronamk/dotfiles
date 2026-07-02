@@ -5,36 +5,11 @@
 
 lua <<EOF
 vim.loader.enable()
-
--- set leader key
 vim.g.mapleader = " "
-
 vim.cmd("set termguicolors")
-
-vim.diagnostic.config({
-  virtual_text = { prefix = '•' },
-  severity_sort = true,
-  -- just highlight the number
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = '',
-      [vim.diagnostic.severity.WARN] = '',
-      [vim.diagnostic.severity.INFO] = '',
-      [vim.diagnostic.severity.HINT] = ''
-    },
-    numhl = {
-      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
-      [vim.diagnostic.severity.WARN] = 'WarningMsg',
-      [vim.diagnostic.severity.INFO] = 'InfoMsg',
-      [vim.diagnostic.severity.HINT] = 'HintMsg'
-    }
-  }
-})
-
 
 -- plugins
 -----------------------------------------------------------------------------------------------------------------------
-
 vim.pack.add({
   -- treesitter
   'https://github.com/nvim-treesitter/nvim-treesitter',
@@ -47,7 +22,7 @@ vim.pack.add({
 
   -- telescope
   'https://github.com/nvim-lua/plenary.nvim',
-  { src = 'https://github.com/nvim-telescope/telescope.nvim', version = '0.1.8' },
+  { src = 'https://github.com/nvim-telescope/telescope.nvim', version = 'v0.2.1' },
 
   -- git
   'https://github.com/tpope/vim-fugitive',
@@ -160,6 +135,27 @@ vim.lsp.config('lua_ls', {
       telemetry = { enable = false },
     },
   },
+})
+
+-- diagnistics config
+vim.diagnostic.config({
+  virtual_text = { prefix = '•' },
+  severity_sort = true,
+  -- just highlight the number
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = ''
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+      [vim.diagnostic.severity.WARN] = 'WarningMsg',
+      [vim.diagnostic.severity.INFO] = 'InfoMsg',
+      [vim.diagnostic.severity.HINT] = 'HintMsg'
+    }
+  }
 })
 
 -- Enable servers
