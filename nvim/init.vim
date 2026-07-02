@@ -408,5 +408,3 @@ nnoremap z= :Telescope spell_suggest<CR>
 nnoremap g/ :Telescope builtin<CR>
 
 vmap s S
-" turn off truecolor if not supported
-autocmd VimEnter * if $COLORTERM != "truecolor" | set notermguicolors | endif
