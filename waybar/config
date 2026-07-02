@@ -57,28 +57,29 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " {essid}",
-        "format-ethernet": " {ipaddr}/{cidr}",
-        "format-linked": " {ifname} (No IP)",
-        "format-disconnected": "⚠",
+        "format-wifi": "  {essid}",
+        "format-ethernet": "  {ipaddr}/{cidr}",
+        "format-linked": "  {ifname} (No IP)",
+        "format-disconnected": "󰖪",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {volume}",
+        "format-bluetooth-muted": "  {icon} {format_source}",
         "format-source": " {volume}%",
         "format-source-muted": "",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
+            "headphone": "󰋋",
+            "headphone-muted": "󰟎",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": "󰓃",
+            "default-muted": "󰓄",
         }
     }
 }

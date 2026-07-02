@@ -62,4 +62,4 @@ export LESSHISTFILE="$XDG_STATE_HOME/lesshst"
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Add scripts to path
-export PATH="$BIN:$(ls -d $BIN/*/ | tr -s '\n' ':' | sed 's/\x2F:/:/g')$PATH"
+export PATH="$BIN:$PATH"
