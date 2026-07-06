@@ -31,8 +31,8 @@ vim.pack.add({
   -- other
   'https://github.com/ellisonleao/gruvbox.nvim',
   'https://github.com/norcalli/nvim-colorizer.lua',
-  'https://github.com/echasnovski/mini.ai',
-  'https://github.com/echasnovski/mini.surround',
+  'https://github.com/nvim-mini/mini.ai',
+  'https://github.com/nvim-mini/mini.surround',
   'https://github.com/numToStr/Comment.nvim',
   'https://github.com/nvim-lualine/lualine.nvim',
 })
@@ -237,7 +237,7 @@ require('colorizer').setup({ '*' })
 require('mini.ai').setup({})
 
 require('mini.surround').setup({
-  mappings = { delete = 'ds', replace = 'cs' },
+  mappings = { add='', find='', find_left='', highlight='', replace='', delete = 'ds', replace = 'cs' },
   n_lines = 100,
   respect_selection_type = true,
   search_method = 'cover_or_nearest',
@@ -407,4 +407,4 @@ nnoremap <Leader>/ :Telescope find_files<CR>
 nnoremap z= :Telescope spell_suggest<CR>
 nnoremap g/ :Telescope builtin<CR>
 
-vmap s S
+vnoremap <silent> s :<C-u>lua MiniSurround.add('visual')<CR>
