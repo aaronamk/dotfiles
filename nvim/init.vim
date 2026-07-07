@@ -376,6 +376,8 @@ inoremap <c-h> <c-w>
 nnoremap <Leader>w :update<CR>
 " quickly reload a file
 nnoremap <Leader>e :mkview<CR>:edit<CR>
+" quickly delete a buffer
+nnoremap <Leader>q :bdelete
 
 " remove trailing spaces
 nnoremap <Leader><space> :%s/\s\+$//e<CR>
